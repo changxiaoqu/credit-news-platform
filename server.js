@@ -153,6 +153,28 @@ app.post('/api/articles/:id/important', (req, res) => {
     });
 });
 
+// API: 触发爬虫
+app.post('/api/trigger-crawler', (req, res) => {
+    const { secret } = req.body;
+    if (secret !== process.env.CRAWLER_SECRET) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    // 执行爬虫脚本
+    const { exec } = require('child_process');
+    const crawlerPath = path.join(__dirname, 'scripts', 'crawler.js');
+    
+    exec(`node "${crawlerPath}"`, (error, stdout, stderr) => {
+        if (error) {
+            console.error('Crawler error:', error);
+            return res.status(500).json({ error: 'Crawler failed', details: error.message });
+        }
+        console.log('Crawler output:', stdout);
+        if (stderr) console.error('Crawler stderr:', stderr);
+        res.json({ success: true, message: 'Crawler triggered successfully' });
+    });
+});
+
 // 启动服务器
 async function start() {
     try {
