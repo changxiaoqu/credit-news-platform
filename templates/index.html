@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,170 +7,928 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                    colors: {
+                        border: 'hsl(var(--border))',
+                        input: 'hsl(var(--input))',
+                        ring: 'hsl(var(--ring))',
+                        background: 'hsl(var(--background))',
+                        foreground: 'hsl(var(--foreground))',
+                        primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+                        secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+                        destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+                        muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+                        accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+                        popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+                        card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+                    },
+                    borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .card-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-shadow:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); transform: translateY(-2px); }
-        .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tag-policy { background: linear-gradient(135deg, #10b981, #059669); }
-        .tag-risk { background: linear-gradient(135deg, #ef4444, #dc2626); }
-        .tag-bid { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .tag-news { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96.1%;
+            --secondary-foreground: 222.2 47.4% 11.2%;
+            --muted: 210 40% 96.1%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96.1%;
+            --accent-foreground: 222.2 47.4% 11.2%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+            --radius: 0.5rem;
+        }
+        .dark {
+            --background: 222.2 84% 4.9%;
+            --foreground: 210 40% 98%;
+            --card: 222.2 84% 4.9%;
+            --card-foreground: 210 40% 98%;
+            --popover: 222.2 84% 4.9%;
+            --popover-foreground: 210 40% 98%;
+            --primary: 217.2 91.2% 59.8%;
+            --primary-foreground: 222.2 47.4% 11.2%;
+            --secondary: 217.2 32.6% 17.5%;
+            --secondary-foreground: 210 40% 98%;
+            --muted: 217.2 32.6% 17.5%;
+            --muted-foreground: 215 20.2% 65.1%;
+            --accent: 217.2 32.6% 17.5%;
+            --accent-foreground: 210 40% 98%;
+            --destructive: 0 62.8% 30.6%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 217.2 32.6% 17.5%;
+            --input: 217.2 32.6% 17.5%;
+            --ring: 224.3 76.3% 48%;
+        }
+        body { font-family: 'Inter', system-ui, sans-serif; background: hsl(var(--background)); color: hsl(var(--foreground)); }
+        .shadcn-card { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); border-radius: var(--radius); box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1); }
+        .shadcn-button { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: calc(var(--radius) - 2px); transition: all 0.2s; }
+        .shadcn-button-primary { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+        .shadcn-button-primary:hover { background: hsl(var(--primary) / 0.9); }
+        .shadcn-button-secondary { background: hsl(var(--secondary)); color: hsl(var(--secondary-foreground)); }
+        .shadcn-button-ghost:hover { background: hsl(var(--accent)); }
+        .shadcn-input { width: 100%; padding: 0.5rem 0.75rem; background: hsl(var(--background)); border: 1px solid hsl(var(--border)); border-radius: calc(var(--radius) - 2px); font-size: 0.875rem; transition: all 0.2s; }
+        .shadcn-input:focus { outline: none; ring: 2px solid hsl(var(--ring)); border-color: hsl(var(--ring)); }
+        .shadcn-badge { display: inline-flex; align-items: center; padding: 0.125rem 0.5rem; font-size: 0.75rem; font-weight: 600; border-radius: 9999px; }
+        .shadcn-badge-policy { background: #dcfce7; color: #166534; }
+        .shadcn-badge-risk { background: #fee2e2; color: #991b1b; }
+        .shadcn-badge-bid { background: #ffedd5; color: #9a3412; }
+        .shadcn-badge-news { background: #dbeafe; color: #1e40af; }
+        .shadcn-badge-business { background: #f3e8ff; color: #7c3aed; }
+        .dark .shadcn-badge-policy { background: #14532d; color: #86efac; }
+        .dark .shadcn-badge-risk { background: #7f1d1d; color: #fca5a5; }
+        .dark .shadcn-badge-bid { background: #7c2d12; color: #fdba74; }
+        .dark .shadcn-badge-news { background: #1e3a8a; color: #93c5fd; }
+        .dark .shadcn-badge-business { background: #5b21b6; color: #c4b5fd; }
+        .sidebar-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; font-size: 0.875rem; font-weight: 500; border-radius: calc(var(--radius) - 2px); color: hsl(var(--muted-foreground)); transition: all 0.2s; }
+        .sidebar-link:hover, .sidebar-link.active { background: hsl(var(--accent)); color: hsl(var(--accent-foreground)); }
+        .animate-in { animation: animateIn 0.3s ease-out; }
+        @keyframes animateIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 移动端底部导航 */
+        .mobile-nav { display: none; }
+        @media (max-width: 768px) {
+            .mobile-nav { 
+                display: flex; 
+                position: fixed; 
+                bottom: 0; 
+                left: 0; 
+                right: 0; 
+                height: 60px; 
+                background: hsl(var(--card)); 
+                border-top: 1px solid hsl(var(--border)); 
+                z-index: 40;
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item { 
+                flex: 1; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
+                gap: 4px; 
+                font-size: 12px; 
+                color: hsl(var(--muted-foreground));
+            }
+            .mobile-nav-item.active { color: hsl(var(--primary)); }
+            .mobile-nav-item i { font-size: 20px; }
+            main { padding-bottom: 60px; }
+        }
+        
+        /* 银行筛选搜索 */
+        .bank-search-container { position: relative; }
+        .bank-search-results { 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            right: 0; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            background: hsl(var(--card)); 
+            border: 1px solid hsl(var(--border)); 
+            border-radius: var(--radius); 
+            z-index: 50; 
+            display: none;
+        }
+        .bank-search-results.show { display: block; }
+        .bank-search-item { 
+            padding: 8px 12px; 
+            cursor: pointer; 
+            font-size: 14px;
+        }
+        .bank-search-item:hover { background: hsl(var(--accent)); }
     </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="glass-effect sticky top-0 z-50 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                        <i class="fas fa-credit-card text-white text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="text-xl font-bold gradient-text">信用卡资讯</span>
-                        <span class="hidden sm:inline text-xs text-gray-500 ml-2">行业动态监控平台</span>
-                    </div>
+<body class="min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card transition-transform duration-300 -translate-x-full md:translate-x-0">
+        <div class="flex h-16 items-center border-b border-border px-6">
+            <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+                    <i class="fas fa-credit-card"></i>
                 </div>
-                <div class="hidden md:flex items-center space-x-1">
-                    <button onclick="filterCategory('all')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all">全部</button>
-                    <button onclick="filterCategory('policy')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-600 hover:bg-green-50 transition-all">监管政策</button>
-                    <button onclick="filterCategory('risk')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all">处罚数据</button>
-                    <button onclick="filterCategory('bid')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-orange-600 hover:bg-orange-50 transition-all">招标信息</button>
+                <span class="text-lg font-semibold">信用卡资讯</span>
+            </div>
+        </div>
+        
+        <nav class="space-y-1 p-4">
+            <a href="#" class="sidebar-link active" onclick="filterCategory('all')">
+                <i class="fas fa-home w-5"></i>全部资讯
+            </a>
+            <a href="#" class="sidebar-link" onclick="filterCategory('policy')">
+                <i class="fas fa-file-alt w-5"></i>监管政策
+            </a>
+            <a href="#" class="sidebar-link" onclick="filterCategory('news')">
+                <i class="fas fa-newspaper w-5"></i>行业资讯
+            </a>
+            <a href="#" class="sidebar-link" onclick="filterCategory('risk')">
+                <i class="fas fa-gavel w-5"></i>处罚数据
+            </a>
+            <a href="#" class="sidebar-link" onclick="filterCategory('business')">
+                <i class="fas fa-briefcase w-5"></i>商机信息
+            </a>
+            <a href="#" class="sidebar-link" onclick="filterCategory('bid')">
+                <i class="fas fa-handshake w-5"></i>投标信息
+            </a>
+        </nav>
+        
+        <div class="absolute bottom-0 left-0 right-0 border-t border-border p-4">
+            <button onclick="toggleTheme()" class="shadcn-button shadcn-button-secondary w-full justify-center">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:inline"></i>
+                <span class="dark:hidden">深色模式</span>
+                <span class="hidden dark:inline">浅色模式</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="min-h-screen transition-all md:ml-64">
+        <!-- Header -->
+        <header class="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div class="flex h-16 items-center gap-4 px-6">
+                <button onclick="toggleSidebar()" class="shadcn-button shadcn-button-ghost md:hidden">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="flex flex-1 items-center gap-4">
+                    <div class="relative flex-1 max-w-md">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></i>
+                        <input type="text" id="searchInput" placeholder="搜索资讯..." 
+                            class="shadcn-input pl-10"
+                            onkeypress="if(event.key==='Enter')performSearch()">
+                    </div>
+                    
+                    <button onclick="performSearch()" class="shadcn-button shadcn-button-primary">
+                        <i class="fas fa-search"></i>搜索
+                    </button>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <button onclick="refreshData()" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="刷新数据">
+                
+                <div class="flex items-center gap-2">
+                    <span id="lastUpdateTime" class="text-xs text-muted-foreground hidden sm:block">更新于: --</span>
+                    <span id="dataStatusIndicator" class="hidden"></span>
+                    <button onclick="refreshData()" class="shadcn-button shadcn-button-secondary" title="刷新数据">
                         <i class="fas fa-sync-alt"></i>
                     </button>
                 </div>
             </div>
-        </div>
-    </nav>
+        </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- 欢迎区域 -->
-        <div class="mb-8">
-            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
-                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                    <div class="mb-6 md:mb-0">
-                        <h1 class="text-3xl font-bold mb-2">信用卡行业资讯平台</h1>
-                        <p class="text-blue-100 text-lg">实时监控监管政策、风险新规、招标信息</p>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold" id="stat-total">0</div>
-                            <div class="text-sm text-blue-100">总资讯</div>
+        <!-- Dashboard -->
+        <div class="p-6 space-y-6">
+            <!-- Stats Cards -->
+            <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-green-400 transition-colors" onclick="filterCategory('policy')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-muted-foreground">监管政策</p>
+                            <h3 class="mt-2 text-3xl font-bold" id="count-policy">0</h3>
                         </div>
-                        <div class="w-px h-12 bg-white/30"></div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold" id="stat-today">0</div>
-                            <div class="text-sm text-blue-100">今日更新</div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+                            <i class="fas fa-file-alt text-green-600 dark:text-green-400 text-xl"></i>
                         </div>
                     </div>
                 </div>
+                
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-blue-400 transition-colors" onclick="filterCategory('news')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-muted-foreground">行业资讯</p>
+                            <h3 class="mt-2 text-3xl font-bold" id="count-news">0</h3>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
+                            <i class="fas fa-newspaper text-blue-600 dark:text-blue-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-red-400 transition-colors" onclick="filterCategory('risk')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-muted-foreground">处罚数据</p>
+                            <h3 class="mt-2 text-3xl font-bold" id="count-risk">0</h3>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+                            <i class="fas fa-gavel text-red-600 dark:text-red-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-purple-400 transition-colors" onclick="filterCategory('business')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-muted-foreground">商机信息</p>
+                            <h3 class="mt-2 text-3xl font-bold" id="count-business">0</h3>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-900">
+                            <i class="fas fa-briefcase text-purple-600 dark:text-purple-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-orange-400 transition-colors" onclick="filterCategory('bid')">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-muted-foreground">投标信息</p>
+                            <h3 class="mt-2 text-3xl font-bold" id="count-bid">0</h3>
+                        </div>
+                        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900">
+                            <i class="fas fa-handshake text-orange-600 dark:text-orange-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- 统计卡片 -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-green-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">监管政策</p>
-                        <p class="text-2xl font-bold text-gray-800" id="count-policy">0</p>
+            <!-- Home Dashboard Sections -->
+            <div id="homeSections" class="grid gap-6 lg:grid-cols-2">
+                <!-- 今日要闻 -->
+                <div class="shadcn-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold flex items-center gap-2">
+                            <i class="fas fa-bolt text-yellow-500"></i>今日要闻
+                        </h3>
+                        <button onclick="filterCategory('news')" class="text-sm text-primary hover:underline">查看更多</button>
                     </div>
-                    <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-file-alt text-green-500"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-red-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">处罚数据</p>
-                        <p class="text-2xl font-bold text-gray-800" id="count-risk">0</p>
-                    </div>
-                    <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-gavel text-red-500"></i>
+                    <div id="todayNewsList" class="space-y-3">
+                        <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
                     </div>
                 </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-orange-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">招标信息</p>
-                        <p class="text-2xl font-bold text-gray-800" id="count-bid">0</p>
-                    </div>
-                    <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-handshake text-orange-500"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-blue-500">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-gray-500 mb-1">行业资讯</p>
-                        <p class="text-2xl font-bold text-gray-800" id="count-news">0</p>
-                    </div>
-                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-newspaper text-blue-500"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 搜索和筛选 -->
-        <div class="bg-white rounded-xl p-5 card-shadow mb-6">
-            <div class="flex flex-col md:flex-row md:items-center gap-4">
-                <div class="flex-1 relative">
-                    <input type="text" id="searchInput" placeholder="搜索标题、内容、来源..." 
-                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                        onkeypress="if(event.key==='Enter')performSearch()">
-                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <!-- 最新处罚速递 -->
+                <div class="shadcn-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle text-red-500"></i>最新处罚速递
+                        </h3>
+                        <button onclick="filterCategory('risk')" class="text-sm text-primary hover:underline">查看更多</button>
+                    </div>
+                    <div id="latestPenaltyList" class="space-y-3">
+                        <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <select id="timeFilter" onchange="applyFilters()" class="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">全部时间</option>
-                        <option value="today">今日</option>
-                        <option value="week">本周</option>
-                        <option value="month">本月</option>
-                    </select>
-                    <button onclick="performSearch()" class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-medium">
-                        <i class="fas fa-search mr-2"></i>搜索
-                    </button>
+
+                <!-- 即将截止商机 -->
+                <div class="shadcn-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold flex items-center gap-2">
+                            <i class="fas fa-clock text-orange-500"></i>即将截止商机
+                            <span class="text-xs font-normal text-muted-foreground">(7天内)</span>
+                        </h3>
+                        <button onclick="filterCategory('bid')" class="text-sm text-primary hover:underline">查看更多</button>
+                    </div>
+                    <div id="upcomingBidsList" class="space-y-3">
+                        <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
+                    </div>
+                </div>
+
+                <!-- 重点政策 -->
+                <div class="shadcn-card p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold flex items-center gap-2">
+                            <i class="fas fa-star text-green-500"></i>重点政策
+                        </h3>
+                        <button onclick="filterCategory('policy')" class="text-sm text-primary hover:underline">查看更多</button>
+                    </div>
+                    <div id="keyPolicyList" class="space-y-3">
+                        <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- 资讯列表 -->
-        <div id="articlesList" class="space-y-4"></div>
+            <!-- Filter Bar -->
+            <div id="filterBar" class="shadcn-card p-4 flex flex-wrap items-center gap-4 hidden">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-filter text-muted-foreground"></i>
+                    <span class="text-sm font-medium">筛选:</span>
+                </div>
+                
+                <select id="timeFilter" onchange="applyFilters()" class="shadcn-input w-auto">
+                    <option value="all">全部时间</option>
+                    <option value="3days">最近三天</option>
+                    <option value="week">最近一周</option>
+                    <option value="month">最近一月</option>
+                    <option value="custom">自定义</option>
+                </select>
+                
+                <div id="customDateRange" class="hidden flex items-center gap-2">
+                    <input type="date" id="startDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
+                    <span class="text-muted-foreground">至</span>
+                    <input type="date" id="endDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
+                </div>
+                
+                <select id="bankFilter" onchange="applyFilters()" class="shadcn-input w-auto">
+                    <option value="all">全部银行</option>
+                    <optgroup label="城市商业银行">
+                        <option value="北京银行">北京银行</option>
+                        <option value="上海银行">上海银行</option>
+                        <option value="江苏银行">江苏银行</option>
+                        <option value="南京银行">南京银行</option>
+                        <option value="宁波银行">宁波银行</option>
+                        <option value="杭州银行">杭州银行</option>
+                        <option value="苏州银行">苏州银行</option>
+                        <option value="成都银行">成都银行</option>
+                        <option value="长沙银行">长沙银行</option>
+                        <option value="重庆银行">重庆银行</option>
+                        <option value="贵阳银行">贵阳银行</option>
+                        <option value="郑州银行">郑州银行</option>
+                        <option value="青岛银行">青岛银行</option>
+                        <option value="厦门银行">厦门银行</option>
+                        <option value="西安银行">西安银行</option>
+                        <option value="齐鲁银行">齐鲁银行</option>
+                        <option value="兰州银行">兰州银行</option>
+                        <option value="东莞银行">东莞银行</option>
+                        <option value="富滇银行">富滇银行</option>
+                        <option value="桂林银行">桂林银行</option>
+                        <option value="龙江银行">龙江银行</option>
+                        <option value="吉林银行">吉林银行</option>
+                        <option value="盛京银行">盛京银行</option>
+                        <option value="大连银行">大连银行</option>
+                        <option value="天津银行">天津银行</option>
+                        <option value="河北银行">河北银行</option>
+                        <option value="晋商银行">晋商银行</option>
+                        <option value="徽商银行">徽商银行</option>
+                        <option value="九江银行">九江银行</option>
+                        <option value="赣州银行">赣州银行</option>
+                        <option value="上饶银行">上饶银行</option>
+                        <option value="汉口银行">汉口银行</option>
+                        <option value="湖北银行">湖北银行</option>
+                        <option value="长沙银行">长沙银行</option>
+                        <option value="华融湘江银行">华融湘江银行</option>
+                        <option value="广东南粤银行">广东南粤银行</option>
+                        <option value="珠海华润银行">珠海华润银行</option>
+                        <option value="广西北部湾银行">广西北部湾银行</option>
+                        <option value="柳州银行">柳州银行</option>
+                        <option value="海南银行">海南银行</option>
+                        <option value="四川天府银行">四川天府银行</option>
+                        <option value="长城华西银行">长城华西银行</option>
+                        <option value="绵阳市商业银行">绵阳市商业银行</option>
+                        <option value="乐山市商业银行">乐山市商业银行</option>
+                        <option value="贵州银行">贵州银行</option>
+                        <option value="曲靖市商业银行">曲靖市商业银行</option>
+                        <option value="云南红塔银行">云南红塔银行</option>
+                        <option value="西藏银行">西藏银行</option>
+                        <option value="长安银行">长安银行</option>
+                        <option value="宁夏银行">宁夏银行</option>
+                        <option value="石嘴山银行">石嘴山银行</option>
+                        <option value="乌鲁木齐银行">乌鲁木齐银行</option>
+                        <option value="昆仑银行">昆仑银行</option>
+                        <option value="哈密市商业银行">哈密市商业银行</option>
+                        <option value="库尔勒银行">库尔勒银行</option>
+                        <option value="新疆汇和银行">新疆汇和银行</option>
+                        <option value="宁波通商银行">宁波通商银行</option>
+                        <option value="温州银行">温州银行</option>
+                        <option value="台州银行">台州银行</option>
+                        <option value="浙江泰隆商业银行">浙江泰隆商业银行</option>
+                        <option value="浙江民泰商业银行">浙江民泰商业银行</option>
+                        <option value="浙江稠州商业银行">浙江稠州商业银行</option>
+                        <option value="福建海峡银行">福建海峡银行</option>
+                        <option value="泉州银行">泉州银行</option>
+                        <option value="厦门国际银行">厦门国际银行</option>
+                        <option value="厦门银行">厦门银行</option>
+                        <option value="福建华通银行">福建华通银行</option>
+                        <option value="辽阳银行">辽阳银行</option>
+                        <option value="营口银行">营口银行</option>
+                        <option value="阜新银行">阜新银行</option>
+                        <option value="抚顺银行">抚顺银行</option>
+                        <option value="丹东银行">丹东银行</option>
+                        <option value="锦州银行">锦州银行</option>
+                        <option value="葫芦岛银行">葫芦岛银行</option>
+                        <option value="营口沿海银行">营口沿海银行</option>
+                        <option value="朝阳银行">朝阳银行</option>
+                        <option value="盘锦银行">盘锦银行</option>
+                        <option value="铁岭银行">铁岭银行</option>
+                        <option value="本溪银行">本溪银行</option>
+                        <option value="鞍山银行">鞍山银行</option>
+                        <option value="内蒙古银行">内蒙古银行</option>
+                        <option value="包商银行">包商银行</option>
+                        <option value="鄂尔多斯银行">鄂尔多斯银行</option>
+                        <option value="乌海银行">乌海银行</option>
+                        <option value="蒙商银行">蒙商银行</option>
+                    </optgroup>
+                    <optgroup label="农村商业银行">
+                        <option value="北京农商行">北京农商行</option>
+                        <option value="上海农商行">上海农商行</option>
+                        <option value="重庆农商行">重庆农商行</option>
+                        <option value="天津农商行">天津农商行</option>
+                        <option value="深圳农商行">深圳农商行</option>
+                        <option value="广州农商行">广州农商行</option>
+                        <option value="东莞农商行">东莞农商行</option>
+                        <option value="顺德农商行">顺德农商行</option>
+                        <option value="南海农商行">南海农商行</option>
+                        <option value="佛山农商行">佛山农商行</option>
+                        <option value="中山农商行">中山农商行</option>
+                        <option value="珠海农商行">珠海农商行</option>
+                        <option value="江门农商行">江门农商行</option>
+                        <option value="惠州农商行">惠州农商行</option>
+                        <option value="肇庆农商行">肇庆农商行</option>
+                        <option value="清远农商行">清远农商行</option>
+                        <option value="汕头农商行">汕头农商行</option>
+                        <option value="揭阳农商行">揭阳农商行</option>
+                        <option value="梅州农商行">梅州农商行</option>
+                        <option value="河源农商行">河源农商行</option>
+                        <option value="阳江农商行">阳江农商行</option>
+                        <option value="茂名农商行">茂名农商行</option>
+                        <option value="湛江农商行">湛江农商行</option>
+                        <option value="云浮农商行">云浮农商行</option>
+                        <option value="韶关农商行">韶关农商行</option>
+                        <option value="江苏省联社">江苏省联社</option>
+                        <option value="江南农商行">江南农商行</option>
+                        <option value="常熟农商行">常熟农商行</option>
+                        <option value="张家港农商行">张家港农商行</option>
+                        <option value="江阴农商行">江阴农商行</option>
+                        <option value="昆山农商行">昆山农商行</option>
+                        <option value="苏州农商行">苏州农商行</option>
+                        <option value="太仓农商行">太仓农商行</option>
+                        <option value="无锡农商行">无锡农商行</option>
+                        <option value="宜兴农商行">宜兴农商行</option>
+                        <option value="丹阳农商行">丹阳农商行</option>
+                        <option value="扬中农商行">扬中农商行</option>
+                        <option value="句容农商行">句容农商行</option>
+                        <option value="靖江农商行">靖江农商行</option>
+                        <option value="泰兴农商行">泰兴农商行</option>
+                        <option value="兴化农商行">兴化农商行</option>
+                        <option value="姜堰农商行">姜堰农商行</option>
+                        <option value="如皋农商行">如皋农商行</option>
+                        <option value="海安农商行">海安农商行</option>
+                        <option value="如东农商行">如东农商行</option>
+                        <option value="启东农商行">启东农商行</option>
+                        <option value="海门农商行">海门农商行</option>
+                        <option value="通州农商行">通州农商行</option>
+                        <option value="紫金农商行">紫金农商行</option>
+                        <option value="南京农商行">南京农商行</option>
+                        <option value="杭州联合农商行">杭州联合农商行</option>
+                        <option value="萧山农商行">萧山农商行</option>
+                        <option value="余杭农商行">余杭农商行</option>
+                        <option value="富阳农商行">富阳农商行</option>
+                        <option value="桐庐农商行">桐庐农商行</option>
+                        <option value="建德农商行">建德农商行</option>
+                        <option value="临安农商行">临安农商行</option>
+                        <option value="淳安农商行">淳安农商行</option>
+                        <option value="温州农商行">温州农商行</option>
+                        <option value="宁波鄞州农商行">宁波鄞州农商行</option>
+                        <option value="宁波余姚农商行">宁波余姚农商行</option>
+                        <option value="宁波慈溪农商行">宁波慈溪农商行</option>
+                        <option value="宁波奉化农商行">宁波奉化农商行</option>
+                        <option value="宁波宁海农商行">宁波宁海农商行</option>
+                        <option value="宁波象山农商行">宁波象山农商行</option>
+                        <option value="绍兴瑞丰农商行">绍兴瑞丰农商行</option>
+                        <option value="绍兴恒信农商行">绍兴恒信农商行</option>
+                        <option value="绍兴上虞农商行">绍兴上虞农商行</option>
+                        <option value="绍兴诸暨农商行">绍兴诸暨农商行</option>
+                        <option value="绍兴嵊州农商行">绍兴嵊州农商行</option>
+                        <option value="绍兴新昌农商行">绍兴新昌农商行</option>
+                        <option value="金华成泰农商行">金华成泰农商行</option>
+                        <option value="金华兰溪农商行">金华兰溪农商行</option>
+                        <option value="金华东阳农商行">金华东阳农商行</option>
+                        <option value="金华永康农商行">金华永康农商行</option>
+                        <option value="金华义乌农商行">金华义乌农商行</option>
+                        <option value="金华浦江农商行">金华浦江农商行</option>
+                        <option value="金华武义农商行">金华武义农商行</option>
+                        <option value="金华磐安农商行">金华磐安农商行</option>
+                        <option value="衢州农商行">衢州农商行</option>
+                        <option value="台州路桥农商行">台州路桥农商行</option>
+                        <option value="台州黄岩农商行">台州黄岩农商行</option>
+                        <option value="台州椒江农商行">台州椒江农商行</option>
+                        <option value="台州玉环农商行">台州玉环农商行</option>
+                        <option value="台州三门农商行">台州三门农商行</option>
+                        <option value="台州天台农商行">台州天台农商行</option>
+                        <option value="台州仙居农商行">台州仙居农商行</option>
+                        <option value="台州温岭农商行">台州温岭农商行</option>
+                        <option value="台州临海农商行">台州临海农商行</option>
+                        <option value="丽水农商行">丽水农商行</option>
+                        <option value="湖州吴兴农商行">湖州吴兴农商行</option>
+                        <option value="湖州南浔农商行">湖州南浔农商行</option>
+                        <option value="湖州德清农商行">湖州德清农商行</option>
+                        <option value="湖州长兴农商行">湖州长兴农商行</option>
+                        <option value="湖州安吉农商行">湖州安吉农商行</option>
+                        <option value="嘉兴农商行">嘉兴农商行</option>
+                        <option value="嘉兴嘉善农商行">嘉兴嘉善农商行</option>
+                        <option value="嘉兴海盐农商行">嘉兴海盐农商行</option>
+                        <option value="嘉兴海宁农商行">嘉兴海宁农商行</option>
+                        <option value="嘉兴平湖农商行">嘉兴平湖农商行</option>
+                        <option value="嘉兴桐乡农商行">嘉兴桐乡农商行</option>
+                        <option value="舟山定海海洋农商行">舟山定海海洋农商行</option>
+                        <option value="舟山普陀农商行">舟山普陀农商行</option>
+                        <option value="合肥科技农商行">合肥科技农商行</option>
+                        <option value="合肥农商行">合肥农商行</option>
+                        <option value="芜湖扬子农商行">芜湖扬子农商行</option>
+                        <option value="蚌埠农商行">蚌埠农商行</option>
+                        <option value="淮南淮河农商行">淮南淮河农商行</option>
+                        <option value="马鞍山农商行">马鞍山农商行</option>
+                        <option value="淮北农商行">淮北农商行</option>
+                        <option value="铜陵农商行">铜陵农商行</option>
+                        <option value="安庆农商行">安庆农商行</option>
+                        <option value="黄山屯溪农商行">黄山屯溪农商行</option>
+                        <option value="滁州皖东农商行">滁州皖东农商行</option>
+                        <option value="阜阳颍东农商行">阜阳颍东农商行</option>
+                        <option value="宿州农商行">宿州农商行</option>
+                        <option value="六安农商行">六安农商行</option>
+                        <option value="亳州药都农商行">亳州药都农商行</option>
+                        <option value="池州九华农商行">池州九华农商行</option>
+                        <option value="宣城皖南农商行">宣城皖南农商行</option>
+                        <option value="武汉农商行">武汉农商行</option>
+                        <option value="湖北三峡农商行">湖北三峡农商行</option>
+                        <option value="长沙农商行">长沙农商行</option>
+                        <option value="湖南浏阳农商行">湖南浏阳农商行</option>
+                        <option value="成都农商行">成都农商行</option>
+                        <option value="成都金堂汇金村镇银行">成都金堂汇金村镇银行</option>
+                        <option value="自贡农商行">自贡农商行</option>
+                        <option value="攀枝花农商行">攀枝花农商行</option>
+                        <option value="泸州农商行">泸州农商行</option>
+                        <option value="德阳农商行">德阳农商行</option>
+                        <option value="绵阳农商行">绵阳农商行</option>
+                        <option value="广元农商行">广元农商行</option>
+                        <option value="遂宁农商行">遂宁农商行</option>
+                        <option value="内江农商行">内江农商行</option>
+                        <option value="乐山农商行">乐山农商行</option>
+                        <option value="南充农商行">南充农商行</option>
+                        <option value="眉山农商行">眉山农商行</option>
+                        <option value="宜宾农商行">宜宾农商行</option>
+                        <option value="广安农商行">广安农商行</option>
+                        <option value="达州农商行">达州农商行</option>
+                        <option value="雅安农商行">雅安农商行</option>
+                        <option value="巴中农商行">巴中农商行</option>
+                        <option value="资阳农商行">资阳农商行</option>
+                        <option value="贵阳农商行">贵阳农商行</option>
+                        <option value="贵州花溪农商行">贵州花溪农商行</option>
+                        <option value="贵州乌当农商行">贵州乌当农商行</option>
+                        <option value="贵州白云农商行">贵州白云农商行</option>
+                        <option value="贵州小河农商行">贵州小河农商行</option>
+                        <option value="贵阳观山湖农商行">贵阳观山湖农商行</option>
+                        <option value="贵阳南明农商行">贵阳南明农商行</option>
+                        <option value="贵阳云岩农商行">贵阳云岩农商行</option>
+                        <option value="遵义汇川农商行">遵义汇川农商行</option>
+                        <option value="遵义红花岗农商行">遵义红花岗农商行</option>
+                        <option value="六盘水农商行">六盘水农商行</option>
+                        <option value="安顺农商行">安顺农商行</option>
+                        <option value="铜仁农商行">铜仁农商行</option>
+                        <option value="毕节农商行">毕节农商行</option>
+                        <option value="黔西南州农商行">黔西南州农商行</option>
+                        <option value="黔东南州农商行">黔东南州农商行</option>
+                        <option value="黔南州农商行">黔南州农商行</option>
+                        <option value="昆明官渡农合行">昆明官渡农合行</option>
+                        <option value="昆明五华农合行">昆明五华农合行</option>
+                        <option value="昆明盘龙农合行">昆明盘龙农合行</option>
+                        <option value="昆明西山农合行">昆明西山农合行</option>
+                        <option value="昆明呈贡农合行">昆明呈贡农合行</option>
+                        <option value="曲靖农商行">曲靖农商行</option>
+                        <option value="玉溪农商行">玉溪农商行</option>
+                        <option value="保山农商行">保山农商行</option>
+                        <option value="昭通农商行">昭通农商行</option>
+                        <option value="丽江农商行">丽江农商行</option>
+                        <option value="普洱农商行">普洱农商行</option>
+                        <option value="临沧农商行">临沧农商行</option>
+                        <option value="楚雄农商行">楚雄农商行</option>
+                        <option value="红河农商行">红河农商行</option>
+                        <option value="文山农商行">文山农商行</option>
+                        <option value="西双版纳农商行">西双版纳农商行</option>
+                        <option value="大理农商行">大理农商行</option>
+                        <option value="德宏农商行">德宏农商行</option>
+                        <option value="怒江农商行">怒江农商行</option>
+                        <option value="迪庆农商行">迪庆农商行</option>
+                        <option value="西安农商行">西安农商行</option>
+                        <option value="陕西信合">陕西信合</option>
+                        <option value="兰州农商行">兰州农商行</option>
+                        <option <option value="甘肃省联社">甘肃省联社</option>
+                        <option value="西宁农商行">西宁农商行</option>
+                        <option value="青海省联社">青海省联社</option>
+                        <option value="银川农商行">银川农商行</option>
+                        <option value="黄河农商行">黄河农商行</option>
+                        <option value="新疆天山农商行">新疆天山农商行</option>
+                        <option value="新疆汇和农商行">新疆汇和农商行</option>
+                        <option value="海口农商行">海口农商行</option>
+                        <option value="海南农信">海南农信</option>
+                        <option value="哈尔滨农商行">哈尔滨农商行</option>
+                        <option value="黑龙江省联社">黑龙江省联社</option>
+                        <option value="长春农商行">长春农商行</option>
+                        <option value="吉林省联社">吉林省联社</option>
+                        <option value="沈阳农商行">沈阳农商行</option>
+                        <option value="辽宁省联社">辽宁省联社</option>
+                        <option value="大连农商行">大连农商行</option>
+                        <option value="石家庄汇融农商行">石家庄汇融农商行</option>
+                        <option value="河北省联社">河北省联社</option>
+                        <option value="太原农商行">太原农商行</option>
+                        <option value="山西省联社">山西省联社</option>
+                        <option value="郑州农商行">郑州农商行</option>
+                        <option value="河南省联社">河南省联社</option>
+                        <option value="济南农商行">济南农商行</option>
+                        <option value="山东省联社">山东省联社</option>
+                        <option value="青岛农商行">青岛农商行</option>
+                        <option value="福州农商行">福州农商行</option>
+                        <option value="福建省联社">福建省联社</option>
+                        <option value="厦门农商行">厦门农商行</option>
+                        <option value="南昌农商行">南昌农商行</option>
+                        <option value="江西省联社">江西省联社</option>
+                        <option value="南宁市区联社">南宁市区联社</option>
+                        <option value="广西自治区联社">广西自治区联社</option>
+                        <option value="海口联合农商行">海口联合农商行</option>
+                        <option value="海南省联社">海南省联社</option>
+                        <option value="呼和浩特金谷农商行">呼和浩特金谷农商行</option>
+                        <option value="内蒙古自治区联社">内蒙古自治区联社</option>
+                        <option value="拉萨农商行">拉萨农商行</option>
+                        <option value="西藏自治区联社">西藏自治区联社</option>
+                        <option value="宁夏黄河农商行">宁夏黄河农商行</option>
+                        <option value="宁夏自治区联社">宁夏自治区联社</option>
+                        <option value="乌鲁木齐农商行">乌鲁木齐农商行</option>
+                        <option value="新疆自治区联社">新疆自治区联社</option>
+                    </optgroup>
+                </select>
+                
+                <div class="flex-1"></div>
+                
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs text-muted-foreground self-center mr-1">业务标签:</span>
+                    <button onclick="filterTag('收单')" class="shadcn-button shadcn-button-secondary text-xs">收单</button>
+                    <button onclick="filterTag('支付')" class="shadcn-button shadcn-button-secondary text-xs">支付</button>
+                    <button onclick="filterTag('信用卡')" class="shadcn-button shadcn-button-secondary text-xs">信用卡</button>
+                    <button onclick="filterTag('消费信贷')" class="shadcn-button shadcn-button-secondary text-xs">消费信贷</button>
+                    <button onclick="filterTag('权益营销')" class="shadcn-button shadcn-button-secondary text-xs">权益营销</button>
+                    <button onclick="filterTag('AI')" class="shadcn-button shadcn-button-secondary text-xs">AI</button>
+                    <button onclick="filterTag('大数据')" class="shadcn-button shadcn-button-secondary text-xs">大数据</button>
+                    <button onclick="filterTag('风控')" class="shadcn-button shadcn-button-secondary text-xs">风控</button>
+                </div>
+            </div>
 
-        <!-- 分页 -->
-        <div class="flex justify-center mt-8">
-            <nav class="flex items-center space-x-2 bg-white rounded-xl p-2 card-shadow">
-                <button onclick="changePage(-1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-all">
+            <!-- Articles List -->
+            <div id="articlesList" class="space-y-4"></div>
+
+            <!-- Pagination -->
+            <div id="paginationBar" class="flex items-center justify-center gap-2 hidden">
+                <button onclick="changePage(-1)" class="shadcn-button shadcn-button-secondary">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <span id="pageInfo" class="px-4 py-2 text-gray-600">第 1 页</span>
-                <button onclick="changePage(1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-all">
+                <span id="pageInfo" class="text-sm text-muted-foreground">第 1 页</span>
+                <button onclick="changePage(1)" class="shadcn-button shadcn-button-secondary">
                     <i class="fas fa-chevron-right"></i>
                 </button>
-            </nav>
+            </div>
         </div>
     </main>
 
-    <script>
-        let articles = [];
-        let currentPage = 1;
-        let currentCategory = 'all';
-        let filteredArticles = [];
+    <!-- Mobile Bottom Navigation -->
+    <nav id="mobileNav" class="mobile-nav hidden">
+        <a href="#" class="mobile-nav-item active" onclick="filterCategory('all'); return false;">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </a>
+        <a href="#" class="mobile-nav-item" onclick="showSearchMobile(); return false;">
+            <i class="fas fa-search"></i>
+            <span>搜索</span>
+        </a>
+    </nav>
 
+    <!-- Detail Modal -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="absolute inset-x-4 top-[5%] md:inset-x-auto md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-3xl md:top-[10%] max-h-[85vh]">
+            <div class="shadcn-card max-h-[85vh] overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between p-6 border-b border-border">
+                    <div class="flex items-center gap-3">
+                        <span id="modalCategory"></span>
+                        <span id="modalDate" class="text-sm text-muted-foreground"></span>
+                    </div>
+                    <button onclick="closeModal()" class="shadcn-button shadcn-button-ghost">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6 overflow-y-auto">
+                    <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+                    
+                    <!-- 通用信息 -->
+                    <div id="modalCommonInfo" class="mb-4 p-4 bg-muted/50 rounded-lg text-sm space-y-2">
+                        <div class="flex gap-4">
+                            <span class="text-muted-foreground w-20">来源:</span>
+                            <span id="modalSource"></span>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="text-muted-foreground w-20">发布日期:</span>
+                            <span id="modalPublishDate"></span>
+                        </div>
+                        <div class="flex gap-4" id="modalTagsRow">
+                            <span class="text-muted-foreground w-20">标签:</span>
+                            <span id="modalTags"></span>
+                        </div>
+                        <div class="flex gap-4" id="modalBanksRow">
+                            <span class="text-muted-foreground w-20">关联银行:</span>
+                            <span id="modalBanks"></span>
+                        </div>
+                    </div>
+
+                    <!-- 处罚数据专用区块 -->
+                    <div id="modalPenaltySection" class="hidden mb-4 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                        <h4 class="font-semibold text-red-700 dark:text-red-400 mb-3 flex items-center gap-2">
+                            <i class="fas fa-gavel"></i>处罚详情
+                        </h4>
+                        <div class="grid gap-2 text-sm">
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">受罚机构:</span>
+                                <span id="modalPenalizedInst" class="font-medium"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">机构层级:</span>
+                                <span id="modalInstLevel"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">所属总行:</span>
+                                <span id="modalParentBank"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">银行类型:</span>
+                                <span id="modalBankType"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">处罚机关:</span>
+                                <span id="modalPenaltyAuth"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">处罚日期:</span>
+                                <span id="modalPenaltyDate"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">罚款金额:</span>
+                                <span id="modalPenaltyAmount" class="text-red-600 font-bold text-lg"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">处罚文号:</span>
+                                <span id="modalPenaltyDocNo"></span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-muted-foreground">违规事由:</span>
+                                <p id="modalPenaltyReason" class="mt-1 text-foreground"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 投标/商机专用区块 -->
+                    <div id="modalBidSection" class="hidden mb-4 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                        <h4 class="font-semibold text-orange-700 dark:text-orange-400 mb-3 flex items-center gap-2">
+                            <i class="fas fa-handshake"></i>项目信息
+                        </h4>
+                        <div class="grid gap-2 text-sm">
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">项目名称:</span>
+                                <span id="modalProjectName" class="font-medium"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">采购方:</span>
+                                <span id="modalProcuringEntity"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">采购层级:</span>
+                                <span id="modalProcuringLevel"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">银行类型:</span>
+                                <span id="modalBidBankType"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">预算金额:</span>
+                                <span id="modalBudget" class="text-blue-600 font-bold"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">投标截止:</span>
+                                <span id="modalBidDeadline"></span>
+                                <span id="modalCountdown" class="text-orange-600 font-medium"></span>
+                            </div>
+                            <div class="flex gap-4 hidden" id="modalWinnerRow">
+                                <span class="text-muted-foreground w-24">中标单位:</span>
+                                <span id="modalWinner"></span>
+                            </div>
+                            <div class="flex gap-4 hidden" id="modalWinnerAmountRow">
+                                <span class="text-muted-foreground w-24">中标金额:</span>
+                                <span id="modalWinnerAmount"></span>
+                            </div>
+                            <div class="mt-2 hidden" id="modalRequirementsRow">
+                                <span class="text-muted-foreground">核心需求:</span>
+                                <p id="modalCoreRequirements" class="mt-1 text-foreground"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 政策专用区块 -->
+                    <div id="modalPolicySection" class="hidden mb-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                        <h4 class="font-semibold text-green-700 dark:text-green-400 mb-3 flex items-center gap-2">
+                            <i class="fas fa-file-alt"></i>政策信息
+                        </h4>
+                        <div class="grid gap-2 text-sm">
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">政策文号:</span>
+                                <span id="modalPolicyNo"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">发文机关:</span>
+                                <span id="modalIssuingAuth"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">生效日期:</span>
+                                <span id="modalEffectiveDate"></span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="text-muted-foreground w-24">效力级别:</span>
+                                <span id="modalPolicyLevel"></span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-muted-foreground">核心要点:</span>
+                                <p id="modalKeyPoints" class="mt-1 text-foreground"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 正文内容 -->
+                    <div class="prose dark:prose-invert max-w-none">
+                        <h4 class="font-semibold mb-2">内容摘要</h4>
+                        <p id="modalContent" class="text-muted-foreground leading-relaxed mb-4"></p>
+                        <a id="modalContentLink" href="#" target="_blank" class="inline-flex items-center gap-2 text-primary hover:underline text-sm">
+                            <i class="fas fa-external-link-alt"></i>阅读完整正文
+                        </a>
+                    </div>
+
+                    <!-- 原始链接 -->
+                    <div class="mt-6 pt-4 border-t border-border">
+                        <a id="modalSourceUrl" href="#" target="_blank" class="text-primary hover:underline text-sm flex items-center gap-2">
+                            <i class="fas fa-external-link-alt"></i>查看原始链接
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let articles = [], currentPage = 1, currentCategory = 'all', filteredArticles = [];
+        
         const categoryConfig = {
-            policy: { name: '监管政策', class: 'tag-policy', icon: 'fa-file-alt' },
-            risk: { name: '处罚数据', class: 'tag-risk', icon: 'fa-gavel' },
-            bid: { name: '招标信息', class: 'tag-bid', icon: 'fa-handshake' },
-            news: { name: '行业资讯', class: 'tag-news', icon: 'fa-newspaper' }
+            policy: { name: '监管政策', badgeClass: 'shadcn-badge-policy', icon: 'fa-file-alt' },
+            risk: { name: '处罚数据', badgeClass: 'shadcn-badge-risk', icon: 'fa-gavel' },
+            business: { name: '商机信息', badgeClass: 'shadcn-badge-business', icon: 'fa-briefcase' },
+            bid: { name: '投标信息', badgeClass: 'shadcn-badge-bid', icon: 'fa-handshake' },
+            news: { name: '行业资讯', badgeClass: 'shadcn-badge-news', icon: 'fa-newspaper' }
         };
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
@@ -185,59 +943,268 @@
             }
             filteredArticles = articles;
             updateStats();
-            renderArticles();
+            renderHomeSections();
+            updateBankFilter();
+            updateLastUpdateTime();
+        }
+
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleString('zh-CN', { 
+                month: '2-digit', 
+                day: '2-digit', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.getElementById('lastUpdateTime').textContent = `更新于: ${timeStr}`;
+            
+            // 检查数据是否过期（超过2小时）
+            const lastUpdate = localStorage.getItem('lastUpdateTime');
+            if (lastUpdate) {
+                const lastTime = new Date(lastUpdate);
+                const diffHours = (now - lastTime) / (1000 * 60 * 60);
+                const indicator = document.getElementById('dataStatusIndicator');
+                
+                if (diffHours > 2) {
+                    indicator.innerHTML = `<span class="text-xs text-orange-500" title="数据已过期，请手动刷新"><i class="fas fa-exclamation-circle"></i> 数据过期</span>`;
+                    indicator.classList.remove('hidden');
+                } else {
+                    indicator.classList.add('hidden');
+                }
+            }
+            
+            // 保存当前更新时间
+            localStorage.setItem('lastUpdateTime', now.toISOString());
         }
 
         function getMockData() {
+            // 2026年1月1日至今的数据
+            const jan1 = '2026-01-01';
+            const jan15 = '2026-01-15';
+            const feb1 = '2026-02-01';
+            const feb15 = '2026-02-15';
+            const mar1 = '2026-03-01';
+            const mar15 = '2026-03-15';
+            const apr1 = '2026-04-01';
+            const apr2 = '2026-04-02';
+            
+            // 未来日期（用于投标截止）
+            const futureApr10 = '2026-04-10';
+            const futureApr15 = '2026-04-15';
+            const futureApr20 = '2026-04-20';
+            const futureMay10 = '2026-05-10';
+            const futureMay15 = '2026-05-15';
+            
+            // 已过期日期（用于已截止投标）
+            const expiredJan20 = '2026-01-20';
+            const expiredFeb10 = '2026-02-10';
+            const expiredMar20 = '2026-03-20';
+            
             return [
-                { id: 1, title: "信用卡分期业务新规即将实施，利率上限下调至18%", summary: "银保监会发布《关于进一步规范信用卡分期业务的通知》，自2026年4月1日起，信用卡分期业务年化利率上限将下调至18%...", category: "policy", source: "银保监会", publish_date: "2026-03-27", is_important: true, tags: ["信用卡", "消费信贷"], policy_no: "银保监办发〔2026〕12号" },
-                { id: 2, title: "建设银行静安支行因信用卡资金违规被罚125.5万元", summary: "国家金融监督管理总局上海监管局对建设银行静安支行作出行政处罚决定，罚款125.5万元...", category: "risk", source: "国家金融监督管理总局", publish_date: "2026-03-25", is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "中国建设银行股份有限公司上海市分行静安支行", penalty_amount: 125.50 },
-                { id: 3, title: "中国银行信用卡中心AI智能风控系统采购项目", summary: "中国银行信用卡中心就AI智能风控系统采购项目进行公开招标，预算金额850万元...", category: "bid", source: "中国政府采购网", publish_date: "2026-03-24", is_important: false, tags: ["AI", "风险审批"], budget: "850万元", bid_deadline: "2026-04-20" },
-                { id: 4, title: "2024年信用卡市场报告：发卡量突破10亿张", summary: "央行发布最新数据显示，截至2024年末，全国信用卡和借贷合一卡发卡量达10.2亿张...", category: "news", source: "央行官网", publish_date: "2026-03-28", is_important: false, tags: ["信用卡", "大数据"] }
+                // ========== 监管政策（全行业） ==========
+                { id: 1, title: "《信用卡业务监督管理办法》修订版正式发布", summary: "国家金融监督管理总局发布修订后的《信用卡业务监督管理办法》，自2026年5月1日起施行。新规对信用卡授信管理、风险防控、消费者权益保护等方面进行了全面完善...", category: "policy", source: "国家金融监督管理总局", publish_date: apr1, is_important: true, is_key_policy: true, tags: ["信用卡", "风控", "监管"], policy_no: "金监规〔2026〕8号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-05-01", policy_level: "部门规章", key_points: "1.明确信用卡资金不得用于投资、购房等非消费领域；2.强化授信额度动态管理；3.完善消费者权益保护机制" },
+                { id: 2, title: "央行：进一步加强信用卡分期业务管理", summary: "中国人民银行发布通知，要求各银行加强信用卡分期业务管理，规范分期手续费披露，禁止诱导性营销...", category: "policy", source: "中国人民银行", publish_date: mar15, is_important: true, is_key_policy: true, tags: ["信用卡", "消费信贷", "监管"], policy_no: "银发〔2026〕45号", issuing_authority: "中国人民银行", effective_date: "2026-04-01", policy_level: "规范性文件", key_points: "1.分期手续费必须明示年化利率；2.禁止默认勾选分期；3.加强分期营销合规管理" },
+                { id: 3, title: "关于规范信用卡积分业务的指导意见", summary: "银保监会发布指导意见，规范信用卡积分累积、兑换和使用，保护持卡人合法权益...", category: "policy", source: "银保监会", publish_date: feb15, is_important: false, is_key_policy: false, tags: ["信用卡", "权益营销"], policy_no: "银保监办发〔2026〕23号", issuing_authority: "银保监会", effective_date: "2026-03-01", policy_level: "规范性文件", key_points: "1.积分规则须清晰透明；2.禁止单方面调整已累积积分价值；3.保障持卡人积分兑换权益" },
+                { id: 4, title: "金融数据安全管理办法：信用卡数据保护新规", summary: "《金融数据安全管理办法》正式施行，对信用卡业务中的个人数据收集、使用、存储提出更高要求...", category: "policy", source: "国家金融监督管理总局", publish_date: jan15, is_important: true, is_key_policy: true, tags: ["信用卡", "大数据", "风控"], policy_no: "金监规〔2026〕2号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-02-01", policy_level: "部门规章", key_points: "1.强化信用卡持卡人数据保护；2.规范数据共享和外包管理；3.明确数据安全责任" },
+                
+                // ========== 处罚数据（城商行和农商行） ==========
+                // 城商行处罚
+                { id: 101, title: "江苏银行南京分行因信用卡资金违规流入楼市被罚180万元", summary: "国家金融监督管理总局江苏监管局对江苏银行南京分行作出行政处罚，因信用卡资金违规流入房地产市场、贷前调查不尽职等违规行为...", category: "risk", source: "国家金融监督管理总局江苏监管局", publish_date: mar1, is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "江苏银行股份有限公司南京分行", institution_level: "分行", parent_bank: "江苏银行", bank_type: "城商行", penalty_authority: "国家金融监督管理总局江苏监管局", penalty_date: mar1, penalty_amount: 180.00, penalty_document_no: "苏金罚决字〔2026〕15号", penalty_reason: "信用卡资金违规流入房地产市场；贷前调查不尽职；信用卡授信审批不审慎" },
+                { id: 102, title: "南京银行信用卡中心因风控模型缺陷被罚95万元", summary: "南京银行信用卡中心因信用卡风控模型存在缺陷、未能有效识别异常交易被处罚...", category: "risk", source: "国家金融监督管理总局", publish_date: feb1, is_important: true, tags: ["信用卡", "风控"], penalized_institution: "南京银行股份有限公司信用卡中心", institution_level: "总行", parent_bank: "南京银行", bank_type: "城商行", penalty_authority: "国家金融监督管理总局", penalty_date: feb1, penalty_amount: 95.00, penalty_document_no: "金罚决字〔2026〕28号", penalty_reason: "信用卡风控模型存在重大缺陷；未能有效识别和拦截异常交易；反欺诈措施不到位" },
+                { id: 103, title: "宁波银行某支行因信用卡营销违规被罚42万元", summary: "宁波银行某支行因信用卡营销宣传不规范、误导消费者被当地监管局处罚...", category: "risk", source: "宁波监管局", publish_date: jan15, is_important: false, tags: ["信用卡", "权益营销"], penalized_institution: "宁波银行股份有限公司某支行", institution_level: "支行", parent_bank: "宁波银行", bank_type: "城商行", penalty_authority: "宁波监管局", penalty_date: jan15, penalty_amount: 42.00, penalty_document_no: "甬金罚决字〔2026〕8号", penalty_reason: "信用卡营销宣传含有误导性内容；未充分告知持卡人权益和费用；违规承诺收益" },
+                { id: 104, title: "杭州银行因信用卡催收不规范被罚75万元", summary: "杭州银行因信用卡催收行为不规范、侵害持卡人合法权益被处罚...", category: "risk", source: "浙江监管局", publish_date: mar15, is_important: true, tags: ["信用卡", "风控"], penalized_institution: "杭州银行股份有限公司", institution_level: "总行", parent_bank: "杭州银行", bank_type: "城商行", penalty_authority: "浙江监管局", penalty_date: mar15, penalty_amount: 75.00, penalty_document_no: "浙金罚决字〔2026〕19号", penalty_reason: "信用卡催收行为不规范；催收话术不当；未建立完善的催收管理制度" },
+                { id: 105, title: "北京银行上海分行因信用卡授信管理不审慎被罚120万元", summary: "北京银行上海分行因信用卡授信管理不审慎、多头授信未有效控制被处罚...", category: "risk", source: "上海监管局", publish_date: feb15, is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "北京银行股份有限公司上海分行", institution_level: "分行", parent_bank: "北京银行", bank_type: "城商行", penalty_authority: "上海监管局", penalty_date: feb15, penalty_amount: 120.00, penalty_document_no: "沪金罚决字〔2026〕12号", penalty_reason: "信用卡授信管理不审慎；多头授信风险控制不到位；授信额度核定不合理" },
+                { id: 106, title: "上海银行信用卡中心因数据报送违规被罚38万元", summary: "上海银行信用卡中心因信用卡业务数据报送不及时、不准确被处罚...", category: "risk", source: "上海监管局", publish_date: jan1, is_important: false, tags: ["信用卡", "大数据"], penalized_institution: "上海银行股份有限公司信用卡中心", institution_level: "总行", parent_bank: "上海银行", bank_type: "城商行", penalty_authority: "上海监管局", penalty_date: jan1, penalty_amount: 38.00, penalty_document_no: "沪金罚决字〔2026〕3号", penalty_reason: "信用卡业务数据报送不及时；数据质量不达标；未按规定报送风险信息" },
+                { id: 107, title: "成都银行因信用卡合作机构管理不善被罚55万元", summary: "成都银行因信用卡合作第三方机构管理不到位、风险管控缺失被处罚...", category: "risk", source: "四川监管局", publish_date: mar1, is_important: false, tags: ["信用卡", "风控"], penalized_institution: "成都银行股份有限公司", institution_level: "总行", parent_bank: "成都银行", bank_type: "城商行", penalty_authority: "四川监管局", penalty_date: mar1, penalty_amount: 55.00, penalty_document_no: "川金罚决字〔2026〕21号", penalty_reason: "信用卡合作机构准入管理不严；对合作机构风险管控不到位；未建立有效的合作机构评估机制" },
+                { id: 108, title: "长沙银行某支行因信用卡违规办卡被罚28万元", summary: "长沙银行某支行因信用卡违规批量办卡、未落实面签要求被处罚...", category: "risk", source: "湖南监管局", publish_date: feb1, is_important: false, tags: ["信用卡"], penalized_institution: "长沙银行股份有限公司某支行", institution_level: "支行", parent_bank: "长沙银行", bank_type: "城商行", penalty_authority: "湖南监管局", penalty_date: feb1, penalty_amount: 28.00, penalty_document_no: "湘金罚决字〔2026〕9号", penalty_reason: "信用卡违规批量办卡；未落实亲访亲签要求；信用卡申请资料审核不严" },
+                
+                // 农商行处罚
+                { id: 201, title: "重庆农商行因信用卡资金违规被罚135万元", summary: "重庆农村商业银行因信用卡资金违规流入股市、未按规定监控资金流向被处罚...", category: "risk", source: "重庆监管局", publish_date: mar15, is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "重庆农村商业银行股份有限公司", institution_level: "总行", parent_bank: "重庆农商行", bank_type: "农商行", penalty_authority: "重庆监管局", penalty_date: mar15, penalty_amount: 135.00, penalty_document_no: "渝金罚决字〔2026〕18号", penalty_reason: "信用卡资金违规流入股市；未建立有效的资金流向监控机制；贷后管理不到位" },
+                { id: 202, title: "上海农商行浦东分行因信用卡审批不严被罚68万元", summary: "上海农商行浦东分行因信用卡审批不审慎、向不符合条件申请人发卡被处罚...", category: "risk", source: "上海监管局", publish_date: feb15, is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "上海农村商业银行股份有限公司浦东分行", institution_level: "分行", parent_bank: "上海农商行", bank_type: "农商行", penalty_authority: "上海监管局", penalty_date: feb15, penalty_amount: 68.00, penalty_document_no: "沪金罚决字〔2026〕14号", penalty_reason: "信用卡审批不审慎；向收入不稳定申请人发放大额信用卡；未充分核实申请人资信状况" },
+                { id: 203, title: "北京农商行某支行因信用卡违规营销被罚35万元", summary: "北京农商行某支行因信用卡违规营销、虚假宣传被当地监管局处罚...", category: "risk", source: "北京监管局", publish_date: jan15, is_important: false, tags: ["信用卡", "权益营销"], penalized_institution: "北京农村商业银行股份有限公司某支行", institution_level: "支行", parent_bank: "北京农商行", bank_type: "农商行", penalty_authority: "北京监管局", penalty_date: jan15, penalty_amount: 35.00, penalty_document_no: "京金罚决字〔2026〕7号", penalty_reason: "信用卡营销宣传含有虚假内容；违规承诺积分奖励；未充分披露信用卡费用" },
+                { id: 204, title: "广州农商行因信用卡不良处置不规范被罚82万元", summary: "广州农村商业银行因信用卡不良资产处置不规范、违规转让被处罚...", category: "risk", source: "广东监管局", publish_date: mar1, is_important: true, tags: ["信用卡", "风控"], penalized_institution: "广州农村商业银行股份有限公司", institution_level: "总行", parent_bank: "广州农商行", bank_type: "农商行", penalty_authority: "广东监管局", penalty_date: mar1, penalty_amount: 82.00, penalty_document_no: "粤金罚决字〔2026〕25号", penalty_reason: "信用卡不良资产处置不规范；违规向非持牌机构转让不良资产；不良资产转让程序不合规" },
+                { id: 205, title: "东莞农商行因信用卡系统安全漏洞被罚45万元", summary: "东莞农村商业银行因信用卡业务系统存在安全漏洞、客户信息保护不到位被处罚...", category: "risk", source: "广东监管局", publish_date: feb1, is_important: false, tags: ["信用卡", "大数据"], penalized_institution: "东莞农村商业银行股份有限公司", institution_level: "总行", parent_bank: "东莞农商行", bank_type: "农商行", penalty_authority: "广东监管局", penalty_date: feb1, penalty_amount: 45.00, penalty_document_no: "粤金罚决字〔2026〕11号", penalty_reason: "信用卡业务系统存在安全漏洞；客户敏感信息保护不到位；未及时发现和修复系统缺陷" },
+                { id: 206, title: "深圳农商行因信用卡套现监测不力被罚58万元", summary: "深圳农村商业银行因信用卡套现交易监测不力、未及时采取管控措施被处罚...", category: "risk", source: "深圳监管局", publish_date: jan1, is_important: false, tags: ["信用卡", "风控"], penalized_institution: "深圳农村商业银行股份有限公司", institution_level: "总行", parent_bank: "深圳农商行", bank_type: "农商行", penalty_authority: "深圳监管局", penalty_date: jan1, penalty_amount: 58.00, penalty_document_no: "深金罚决字〔2026〕5号", penalty_reason: "信用卡套现交易监测机制不完善；对异常交易未及时采取管控措施；未建立有效的反套现模型" },
+                
+                // ========== 商机信息（城商行和农商行） ==========
+                { id: 301, title: "江苏银行信用卡智能风控系统供应商招募", summary: "江苏银行招募信用卡智能风控系统供应商，要求具备AI风控模型能力和实时交易监控经验...", category: "business", source: "江苏银行", publish_date: mar15, is_important: true, tags: ["信用卡", "AI", "风控"], project_name: "信用卡智能风控系统供应商招募", procuring_entity: "江苏银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "1.具备信用卡实时风控系统建设经验；2.支持机器学习模型部署；3.提供7×24小时风控服务" },
+                { id: 302, title: "北京农商行信用卡核心系统升级项目", summary: "北京农商行发布信用卡核心系统升级项目合作意向，寻求技术合作伙伴...", category: "business", source: "北京农商行", publish_date: feb15, is_important: true, tags: ["信用卡", "大数据"], project_name: "信用卡核心系统升级", procuring_entity: "北京农村商业银行股份有限公司", procuring_level: "总行", bank_type: "农商行", core_requirements: "1.信用卡核心系统架构升级；2.支持高并发交易处理；3.具备容灾备份能力" },
+                { id: 303, title: "南京银行信用卡营销平台建设项目", summary: "南京银行招募信用卡营销平台建设供应商，要求具备精准营销和权益管理能力...", category: "business", source: "南京银行", publish_date: jan15, is_important: false, tags: ["信用卡", "权益营销", "大数据"], project_name: "信用卡营销平台建设", procuring_entity: "南京银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "1.客户画像和精准营销能力；2.权益管理和积分系统；3.营销活动配置平台" },
+                { id: 304, title: "杭州银行信用卡APP重构项目", summary: "杭州银行寻求信用卡移动端APP重构合作伙伴，提升用户体验...", category: "business", source: "杭州银行", publish_date: mar1, is_important: false, tags: ["信用卡", "支付"], project_name: "信用卡APP重构", procuring_entity: "杭州银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "1.原生APP开发能力；2.UI/UX设计优化；3.支持生物识别支付" },
+                { id: 305, title: "上海农商行信用卡数据中台建设项目", summary: "上海农商行招募信用卡数据中台建设供应商，构建统一数据平台...", category: "business", source: "上海农商行", publish_date: feb1, is_important: false, tags: ["信用卡", "大数据"], project_name: "信用卡数据中台建设", procuring_entity: "上海农村商业银行股份有限公司", procuring_level: "总行", bank_type: "农商行", core_requirements: "1.数据仓库建设；2.实时数据分析能力；3.数据治理和安全管理" },
+                { id: 306, title: "宁波银行信用卡反欺诈系统升级", summary: "宁波银行寻求信用卡反欺诈系统升级合作伙伴，提升欺诈识别能力...", category: "business", source: "宁波银行", publish_date: jan1, is_important: false, tags: ["信用卡", "AI", "风控"], project_name: "信用卡反欺诈系统升级", procuring_entity: "宁波银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "1.基于AI的反欺诈模型；2.实时交易风险评估；3.欺诈案例库建设" },
+                
+                // ========== 投标信息（城商行和农商行） ==========
+                // 招标中
+                { id: 401, title: "宁波银行信用卡中心AI智能风控系统采购项目", summary: "宁波银行信用卡中心就AI智能风控系统采购项目进行公开招标，预算金额850万元，要求供应商具备金融行业风控系统建设经验...", category: "bid", source: "宁波银行", publish_date: mar15, is_important: true, tags: ["AI", "风险审批"], budget: "850万元", bid_deadline: futureApr15, bid_status: "招标中", procuring_entity: "宁波银行股份有限公司信用卡中心", procuring_level: "总行", bank_type: "城商行", core_requirements: "基于机器学习构建信用卡交易反欺诈模型，要求具备实时风控能力，支持千万级日交易量" },
+                { id: 402, title: "广州农商行信用卡营销活动策划招标", summary: "广州农商行发布信用卡营销活动策划招标公告，预算200万元，寻求专业营销服务机构...", category: "bid", source: "广州农商行", publish_date: mar1, is_important: false, tags: ["信用卡", "权益营销"], budget: "200万元", bid_deadline: futureApr10, bid_status: "招标中", procuring_entity: "广州农村商业银行股份有限公司", procuring_level: "总行", bank_type: "农商行", core_requirements: "年度信用卡营销策划方案，包含获客、激活、留存等全生命周期营销活动设计" },
+                { id: 403, title: "杭州银行信用卡风控模型建设项目", summary: "杭州银行就信用卡风控模型建设项目进行招标，预算500万元...", category: "bid", source: "杭州银行", publish_date: feb15, is_important: true, tags: ["信用卡", "风控", "大数据"], budget: "500万元", bid_deadline: futureApr20, bid_status: "招标中", procuring_entity: "杭州银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "建设覆盖申请、交易、催收全流程的风控模型体系，支持模型自动迭代优化" },
+                { id: 404, title: "江苏银行信用卡客服智能系统采购", summary: "江苏银行采购信用卡客服智能系统，预算300万元，提升客户服务效率...", category: "bid", source: "江苏银行", publish_date: mar15, is_important: false, tags: ["信用卡", "AI"], budget: "300万元", bid_deadline: futureMay10, bid_status: "招标中", procuring_entity: "江苏银行股份有限公司", procuring_level: "总行", bank_type: "城商行", core_requirements: "智能客服机器人系统，支持语音识别、自然语言处理，7×24小时在线服务" },
+                { id: 405, title: "重庆农商行信用卡核心系统维护项目", summary: "重庆农商行信用卡核心系统维护服务项目招标，预算180万元/年...", category: "bid", source: "重庆农商行", publish_date: feb1, is_important: false, tags: ["信用卡"], budget: "180万元/年", bid_deadline: futureMay15, bid_status: "招标中", procuring_entity: "重庆农村商业银行股份有限公司", procuring_level: "总行", bank_type: "农商行", core_requirements: "信用卡核心系统日常运维、故障处理、版本升级等技术支持服务" },
+                
+                // 已中标
+                { id: 501, title: "北京银行信用卡数据分析平台中标公示", summary: "北京银行信用卡数据分析平台建设项目中标结果公示，中标单位：某科技公司，中标金额398万元...", category: "bid", source: "北京银行", publish_date: feb15, is_important: false, tags: ["信用卡", "大数据"], budget: "450万元", bid_deadline: expiredFeb10, bid_status: "中标公示", winner: "某某数据科技有限公司", winner_amount: "398万元", procuring_entity: "北京银行股份有限公司", procuring_level: "总行", bank_type: "城商行" },
+                { id: 502, title: "上海农商行信用卡催收系统中标公告", summary: "上海农商行信用卡催收管理系统采购项目中标公告，中标单位：某金融科技公司...", category: "bid", source: "上海农商行", publish_date: jan15, is_important: false, tags: ["信用卡", "风控"], budget: "120万元", bid_deadline: expiredJan20, bid_status: "中标公示", winner: "某某金融科技股份有限公司", winner_amount: "108万元", procuring_entity: "上海农村商业银行股份有限公司", procuring_level: "总行", bank_type: "农商行" },
+                
+                // 已结束（已截止未中标公示）
+                { id: 601, title: "成都银行信用卡APP开发项目（已截止）", summary: "成都银行信用卡APP开发项目招标已截止，共收到5家供应商投标...", category: "bid", source: "成都银行", publish_date: mar1, is_important: false, tags: ["信用卡"], budget: "280万元", bid_deadline: expiredMar20, bid_status: "已结束", procuring_entity: "成都银行股份有限公司", procuring_level: "总行", bank_type: "城商行" },
+                
+                // ========== 行业资讯（全行业） ==========
+                { id: 701, title: "2026年一季度信用卡发卡量同比增长8.5%", summary: "央行发布数据显示，2026年一季度全国信用卡和借贷合一卡发卡量达10.8亿张，同比增长8.5%，城商行和农商行发卡增速领先...", category: "news", source: "央行官网", publish_date: apr1, is_important: true, tags: ["信用卡", "大数据"], media_type: "官方媒体" },
+                { id: 702, title: "AI技术重塑信用卡风控：从规则到智能", summary: "随着大模型技术的发展，信用卡风控正在从传统规则引擎向AI智能决策转变，多家银行已开始试点应用...", category: "news", source: "21世纪经济报道", publish_date: mar15, is_important: true, tags: ["信用卡", "AI", "风控"], media_type: "财经媒体" },
+                { id: 703, title: "信用卡分期业务新规落地，利率上限下调影响几何", summary: "信用卡分期业务新规正式施行，年化利率上限下调至18%，业内预计将对银行分期收入产生一定影响...", category: "news", source: "财新网", publish_date: apr1, is_important: true, tags: ["信用卡", "消费信贷"], media_type: "财经媒体" },
+                { id: 704, title: "城商行信用卡数字化转型加速，科技投入持续增长", summary: "据统计，2026年城商行信用卡业务科技投入同比增长25%，重点投向风控、营销和客户服务领域...", category: "news", source: "银行家杂志", publish_date: mar1, is_important: false, tags: ["信用卡", "大数据"], media_type: "行业自媒体" },
+                { id: 705, title: "信用卡欺诈手段升级，银行如何应对", summary: "随着数字化支付普及，信用卡欺诈手段不断升级，银行需建立更智能的风控体系应对新型欺诈...", category: "news", source: "支付百科", publish_date: feb15, is_important: false, tags: ["信用卡", "风控"], media_type: "行业自媒体" },
+                { id: 706, title: "信用卡权益营销新趋势：从积分到场景", summary: "信用卡权益营销正在从传统的积分兑换向场景化权益转变，餐饮、出行、娱乐成为热门权益场景...", category: "news", source: "零售银行", publish_date: feb1, is_important: false, tags: ["信用卡", "权益营销"], media_type: "行业自媒体" },
+                { id: 707, title: "支付机构推出信用卡分期新服务，支持灵活还款", summary: "某头部支付机构宣布推出创新信用卡分期服务，支持按日计息、随借随还，挑战银行传统分期业务...", category: "news", source: "支付百科", publish_date: jan15, is_important: false, tags: ["信用卡", "支付", "消费信贷"], media_type: "行业自媒体" },
+                { id: 708, title: "信用卡不良率持续下降，资产质量改善", summary: "银保监会数据显示，2026年一季度信用卡不良率降至1.8%，较上季度下降0.2个百分点，资产质量持续改善...", category: "news", source: "银保监会", publish_date: mar15, is_important: true, tags: ["信用卡", "风控"], media_type: "官方媒体" },
+                { id: 709, title: "生物识别技术在信用卡支付中的应用", summary: "指纹、人脸等生物识别技术在信用卡支付中的应用日益普及，提升支付便捷性和安全性...", category: "news", source: "金融科技时代", publish_date: jan1, is_important: false, tags: ["信用卡", "AI", "支付"], media_type: "行业自媒体" },
+                { id: 710, title: "信用卡跨境支付市场迎来新机遇", summary: "随着出境游恢复，信用卡跨境支付市场迎来增长，银行纷纷推出境外消费优惠活动...", category: "news", source: "环球旅讯", publish_date: feb1, is_important: false, tags: ["信用卡", "支付"], media_type: "行业自媒体" }
             ];
         }
 
+        function updateBankFilter() {
+            // 银行筛选下拉已由静态HTML定义，包含城商行和农商行
+            // 此方法保留用于后续动态更新
+        }
+
+        function renderHomeSections() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            // 今日要闻 - 最新5条行业资讯
+            const todayNews = articles.filter(a => a.category === 'news').slice(0, 5);
+            renderSectionList('todayNewsList', todayNews, 'news');
+            
+            // 最新处罚速递 - 最新处罚数据，突出支行级别
+            const latestPenalties = articles.filter(a => a.category === 'risk').slice(0, 5);
+            renderSectionList('latestPenaltyList', latestPenalties, 'risk');
+            
+            // 即将截止商机 - 投标截止<7天的项目，按紧急程度排序
+            const sevenDaysLater = new Date(Date.now() + 7 * 86400000).toISOString().split('T')[0];
+            const upcomingBids = articles.filter(a => 
+                (a.category === 'bid' || a.category === 'business') && 
+                a.bid_deadline && 
+                a.bid_deadline <= sevenDaysLater
+            ).sort((a, b) => {
+                // 按截止日期升序排序（最近截止的排在最前面）
+                return new Date(a.bid_deadline) - new Date(b.bid_deadline);
+            }).slice(0, 5);
+            renderSectionList('upcomingBidsList', upcomingBids, 'bid');
+            
+            // 重点政策 - is_key_policy=true
+            const keyPolicies = articles.filter(a => a.category === 'policy' && a.is_key_policy).slice(0, 5);
+            renderSectionList('keyPolicyList', keyPolicies, 'policy');
+        }
+
+        function renderSectionList(containerId, items, category) {
+            const container = document.getElementById(containerId);
+            if (items.length === 0) {
+                container.innerHTML = '<div class="text-center text-muted-foreground py-4"><i class="fas fa-inbox text-2xl mb-2"></i><p class="text-sm">暂无数据</p></div>';
+                return;
+            }
+            
+            const config = categoryConfig[category];
+            container.innerHTML = items.map(item => `
+                <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors" onclick="showDetail(${item.id})">
+                    <div class="flex-shrink-0 mt-0.5">
+                        <span class="shadcn-badge ${config.badgeClass}"><i class="fas ${config.icon}"></i></span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-medium truncate">${item.title}</h4>
+                        <div class="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                            <span>${item.source}</span>
+                            <span>·</span>
+                            <span>${item.publish_date}</span>
+                            ${item.penalty_amount ? `<span class="text-red-600 font-medium">· 罚款${item.penalty_amount}万</span>` : ''}
+                            ${item.budget ? `<span class="text-blue-600 font-medium">· ${item.budget}</span>` : ''}
+                            ${item.bid_deadline ? (() => { const days = getDaysUntil(item.bid_deadline); return `<span class="${days.expired ? 'text-gray-400' : days.urgent ? 'text-red-600 font-bold' : 'text-orange-600 font-medium'}">${days.text}</span>`; })() : ''}
+                            ${item.bank_type ? `<span class="${item.bank_type === '城商行' ? 'text-blue-600' : 'text-green-600'} font-medium">· ${item.bank_type}</span>` : ''}
+                        </div>
+                    </div>
+                    ${item.is_key_policy ? '<i class="fas fa-star text-yellow-500 text-xs"></i>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function getDaysUntil(dateStr) {
+            const target = new Date(dateStr);
+            const now = new Date();
+            const diffMs = target - now;
+            const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
+            
+            if (diffMs < 0) {
+                return { text: '已截止', expired: true };
+            } else if (diffHours <= 24) {
+                return { text: `剩余${diffHours}小时`, expired: false, urgent: true };
+            } else {
+                return { text: `截止${diffDays}天`, expired: false, urgent: diffDays <= 3 };
+            }
+        }
+
+        function showListView() {
+            document.getElementById('homeSections').classList.add('hidden');
+            document.getElementById('filterBar').classList.remove('hidden');
+            document.getElementById('articlesList').classList.remove('hidden');
+            document.getElementById('paginationBar').classList.remove('hidden');
+        }
+
+        function showHomeView() {
+            document.getElementById('homeSections').classList.remove('hidden');
+            document.getElementById('filterBar').classList.add('hidden');
+            document.getElementById('articlesList').classList.add('hidden');
+            document.getElementById('paginationBar').classList.add('hidden');
+            renderHomeSections();
+        }
+
         function updateStats() {
-            document.getElementById('stat-total').textContent = articles.length;
-            document.getElementById('stat-today').textContent = articles.filter(a => a.publish_date === new Date().toISOString().split('T')[0]).length;
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('count-today').textContent = articles.filter(a => a.publish_date === today).length;
             Object.keys(categoryConfig).forEach(cat => {
                 const el = document.getElementById(`count-${cat}`);
                 if (el) el.textContent = articles.filter(a => a.category === cat).length;
             });
         }
 
-        function renderArticles() {
+        function renderArticles(highlightKeyword = '') {
             const container = document.getElementById('articlesList');
             const start = (currentPage - 1) * 10;
             const pageData = filteredArticles.slice(start, start + 10);
 
             if (pageData.length === 0) {
-                container.innerHTML = '<div class="text-center py-16"><i class="fas fa-inbox text-6xl text-gray-200 mb-4"></i><p class="text-gray-500">暂无数据</p></div>';
+                container.innerHTML = '<div class="shadcn-card p-12 text-center text-muted-foreground"><i class="fas fa-inbox text-4xl mb-4"></i><p>暂无数据</p></div>';
                 return;
             }
 
             container.innerHTML = pageData.map(item => {
                 const config = categoryConfig[item.category];
+                // 高亮关键词
+                let title = item.title;
+                let summary = item.summary;
+                if (highlightKeyword) {
+                    const regex = new RegExp(`(${highlightKeyword})`, 'gi');
+                    title = title.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>');
+                    summary = summary.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">$1</mark>');
+                }
                 return `
-                    <div class="bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="alert('${item.title}')">
-                        <div class="flex items-start justify-between">
+                    <div class="shadcn-card p-6 cursor-pointer hover:border-primary/50 transition-colors" onclick="showDetail(${item.id})">
+                        <div class="flex items-start justify-between gap-4">
                             <div class="flex-1">
                                 <div class="flex items-center gap-2 mb-3">
-                                    <span class="${config.class} text-white text-xs px-3 py-1 rounded-full font-medium"><i class="fas ${config.icon} mr-1"></i>${config.name}</span>
-                                    ${item.is_important ? '<span class="bg-red-100 text-red-600 text-xs px-3 py-1 rounded-full font-medium"><i class="fas fa-star mr-1"></i>重要</span>' : ''}
-                                    <span class="text-sm text-gray-400">${item.publish_date}</span>
+                                    <span class="shadcn-badge ${config.badgeClass}"><i class="fas ${config.icon} mr-1"></i>${config.name}</span>
+                                    ${item.is_important ? '<span class="shadcn-badge bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"><i class="fas fa-star mr-1"></i>重要</span>' : ''}
+                                    <span class="text-sm text-muted-foreground">${item.publish_date}</span>
                                 </div>
-                                <h3 class="text-lg font-semibold text-gray-800 mb-2">${item.title}</h3>
-                                <p class="text-gray-600 text-sm leading-relaxed mb-3">${item.summary}</p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
-                                        <span class="text-sm text-gray-500">${item.source}</span>
-                                        <div class="flex gap-2">${(item.tags || []).map(tag => `<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">${tag}</span>`).join('')}</div>
-                                    </div>
-                                    ${item.penalty_amount ? `<span class="text-lg font-bold text-red-600">${item.penalty_amount}万元</span>` : ''}
-                                    ${item.budget ? `<span class="text-lg font-bold text-blue-600">${item.budget}</span>` : ''}
+                                <h3 class="text-lg font-semibold mb-2">${title}</h3>
+                                <p class="text-sm text-muted-foreground mb-3 line-clamp-2">${summary}</p>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-sm text-muted-foreground"><i class="fas fa-building mr-1"></i>${item.source}</span>
+                                    <div class="flex gap-1">${(item.tags || []).map(tag => `<span class="text-xs bg-secondary px-2 py-1 rounded">${tag}</span>`).join('')}</div>
                                 </div>
                             </div>
+                            ${item.penalty_amount ? `<div class="text-right"><span class="text-2xl font-bold text-red-600">${item.penalty_amount}万</span></div>` : ''}
+                            ${item.budget ? `<div class="text-right"><span class="text-lg font-semibold text-blue-600">${item.budget}</span></div>` : ''}
+                            ${item.bank_type ? `<div class="text-right"><span class="shadcn-badge ${item.bank_type === '城商行' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}">${item.bank_type}</span></div>` : ''}
                         </div>
                     </div>
                 `;
@@ -250,14 +1217,48 @@
             currentCategory = category;
             currentPage = 1;
             filteredArticles = category === 'all' ? articles : articles.filter(a => a.category === category);
-            renderArticles();
+            
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-link').forEach(el => {
+                el.classList.remove('active');
+                if (category === 'all' && el.textContent.includes('全部资讯')) {
+                    el.classList.add('active');
+                } else if (category === 'policy' && el.textContent.includes('监管政策')) {
+                    el.classList.add('active');
+                } else if (category === 'news' && el.textContent.includes('行业资讯')) {
+                    el.classList.add('active');
+                } else if (category === 'risk' && el.textContent.includes('处罚数据')) {
+                    el.classList.add('active');
+                } else if (category === 'business' && el.textContent.includes('商机信息')) {
+                    el.classList.add('active');
+                } else if (category === 'bid' && el.textContent.includes('投标信息')) {
+                    el.classList.add('active');
+                }
+            });
+            
+            if (category === 'all') {
+                showHomeView();
+            } else {
+                showListView();
+                renderArticles();
+            }
         }
 
         function performSearch() {
-            const keyword = document.getElementById('searchInput').value.toLowerCase();
-            filteredArticles = keyword ? articles.filter(a => a.title.toLowerCase().includes(keyword) || a.summary.toLowerCase().includes(keyword)) : articles;
+            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!keyword) {
+                filteredArticles = articles;
+            } else {
+                // 支持标题、摘要、正文全文检索
+                filteredArticles = articles.filter(a => 
+                    a.title.toLowerCase().includes(keyword) || 
+                    (a.summary && a.summary.toLowerCase().includes(keyword)) ||
+                    (a.full_content && a.full_content.toLowerCase().includes(keyword))
+                );
+            }
             currentPage = 1;
-            renderArticles();
+            showListView();
+            renderArticles(keyword);
         }
 
         function changePage(delta) {
@@ -265,9 +1266,295 @@
             renderArticles();
         }
 
+        function showDetail(id) {
+            const item = articles.find(a => a.id === id);
+            if (!item) return;
+            const config = categoryConfig[item.category];
+            
+            // 基本信息
+            document.getElementById('modalCategory').innerHTML = `<span class="shadcn-badge ${config.badgeClass}">${config.name}</span>`;
+            document.getElementById('modalDate').textContent = item.publish_date;
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalSource').textContent = item.source;
+            document.getElementById('modalPublishDate').textContent = item.publish_date;
+            
+            // 标签
+            const tagsHtml = (item.tags || []).map(tag => `<span class="shadcn-badge bg-secondary text-secondary-foreground mr-1">${tag}</span>`).join('');
+            document.getElementById('modalTags').innerHTML = tagsHtml || '-';
+            document.getElementById('modalTagsRow').style.display = (item.tags || []).length > 0 ? 'flex' : 'none';
+            
+            // 关联银行
+            const banks = [];
+            if (item.parent_bank) banks.push(item.parent_bank);
+            if (item.penalized_institution) banks.push(item.penalized_institution);
+            if (item.procuring_entity) banks.push(item.procuring_entity);
+            document.getElementById('modalBanks').textContent = banks.length > 0 ? banks.join(', ') : '-';
+            document.getElementById('modalBanksRow').style.display = banks.length > 0 ? 'flex' : 'none';
+            
+            // 内容摘要
+            document.getElementById('modalContent').textContent = item.summary;
+            
+            // 处罚数据专用区块
+            const penaltySection = document.getElementById('modalPenaltySection');
+            if (item.category === 'risk') {
+                penaltySection.classList.remove('hidden');
+                document.getElementById('modalPenalizedInst').textContent = item.penalized_institution || '-';
+                document.getElementById('modalInstLevel').textContent = item.institution_level || '-';
+                document.getElementById('modalParentBank').textContent = item.parent_bank || '-';
+                document.getElementById('modalBankType').textContent = item.bank_type || '-';
+                document.getElementById('modalPenaltyAuth').textContent = item.penalty_authority || item.source || '-';
+                document.getElementById('modalPenaltyDate').textContent = item.penalty_date || item.publish_date || '-';
+                document.getElementById('modalPenaltyAmount').textContent = item.penalty_amount ? `${item.penalty_amount}万元` : '-';
+                document.getElementById('modalPenaltyDocNo').textContent = item.penalty_document_no || '-';
+                document.getElementById('modalPenaltyReason').textContent = item.penalty_reason || item.summary || '-';
+            } else {
+                penaltySection.classList.add('hidden');
+            }
+            
+            // 投标/商机专用区块
+            const bidSection = document.getElementById('modalBidSection');
+            if (item.category === 'bid' || item.category === 'business') {
+                bidSection.classList.remove('hidden');
+                document.getElementById('modalProjectName').textContent = item.project_name || item.title || '-';
+                document.getElementById('modalProcuringEntity').textContent = item.procuring_entity || item.source || '-';
+                document.getElementById('modalProcuringLevel').textContent = item.procuring_level || '-';
+                document.getElementById('modalBidBankType').textContent = item.bank_type || '-';
+                document.getElementById('modalBudget').textContent = item.budget || '-';
+                document.getElementById('modalBidDeadline').textContent = item.bid_deadline || '-';
+                
+                // 倒计时
+                const countdownEl = document.getElementById('modalCountdown');
+                if (item.bid_deadline) {
+                    const days = getDaysUntil(item.bid_deadline);
+                    countdownEl.textContent = days.text;
+                    if (days.expired) {
+                        countdownEl.className = 'text-gray-400 font-medium';
+                    } else if (days.urgent) {
+                        countdownEl.className = 'text-red-600 font-bold';
+                    } else {
+                        countdownEl.className = 'text-orange-600 font-medium';
+                    }
+                } else {
+                    countdownEl.textContent = '';
+                }
+                
+                // 中标信息
+                const winnerRow = document.getElementById('modalWinnerRow');
+                const winnerAmountRow = document.getElementById('modalWinnerAmountRow');
+                if (item.winner) {
+                    winnerRow.classList.remove('hidden');
+                    winnerAmountRow.classList.remove('hidden');
+                    document.getElementById('modalWinner').textContent = item.winner;
+                    document.getElementById('modalWinnerAmount').textContent = item.winner_amount || '-';
+                } else {
+                    winnerRow.classList.add('hidden');
+                    winnerAmountRow.classList.add('hidden');
+                }
+                
+                // 核心需求
+                const requirementsRow = document.getElementById('modalRequirementsRow');
+                if (item.core_requirements) {
+                    requirementsRow.classList.remove('hidden');
+                    document.getElementById('modalCoreRequirements').textContent = item.core_requirements;
+                } else {
+                    requirementsRow.classList.add('hidden');
+                }
+            } else {
+                bidSection.classList.add('hidden');
+            }
+            
+            // 政策专用区块
+            const policySection = document.getElementById('modalPolicySection');
+            if (item.category === 'policy') {
+                policySection.classList.remove('hidden');
+                document.getElementById('modalPolicyNo').textContent = item.policy_no || '-';
+                document.getElementById('modalIssuingAuth').textContent = item.issuing_authority || item.source || '-';
+                document.getElementById('modalEffectiveDate').textContent = item.effective_date || '-';
+                document.getElementById('modalPolicyLevel').textContent = item.policy_level || '-';
+                document.getElementById('modalKeyPoints').textContent = item.key_points || item.summary || '-';
+            } else {
+                policySection.classList.add('hidden');
+            }
+            
+            // 原始链接
+            const sourceUrlEl = document.getElementById('modalSourceUrl');
+            const contentLinkEl = document.getElementById('modalContentLink');
+            if (item.source_url) {
+                sourceUrlEl.href = item.source_url;
+                sourceUrlEl.classList.remove('hidden');
+                contentLinkEl.href = item.source_url;
+                contentLinkEl.classList.remove('hidden');
+            } else {
+                sourceUrlEl.classList.add('hidden');
+                contentLinkEl.classList.add('hidden');
+            }
+            
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+
         function refreshData() {
             loadData();
         }
+
+        function filterTag(tag) {
+            filteredArticles = articles.filter(a => (a.tags || []).includes(tag));
+            currentPage = 1;
+            showListView();
+            renderArticles();
+        }
+
+        function applyFilters() {
+            const timeFilter = document.getElementById('timeFilter').value;
+            const bankFilter = document.getElementById('bankFilter').value;
+            const customDateRange = document.getElementById('customDateRange');
+            const today = new Date();
+            
+            // 显示/隐藏自定义日期范围
+            if (timeFilter === 'custom') {
+                customDateRange.classList.remove('hidden');
+            } else {
+                customDateRange.classList.add('hidden');
+            }
+            
+            filteredArticles = articles.filter(a => {
+                const date = new Date(a.publish_date);
+                let timeMatch = true;
+                
+                if (timeFilter === '3days') {
+                    const threeDaysAgo = new Date(today - 3 * 24 * 60 * 60 * 1000);
+                    timeMatch = date >= threeDaysAgo;
+                } else if (timeFilter === 'week') {
+                    const weekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
+                    timeMatch = date >= weekAgo;
+                } else if (timeFilter === 'month') {
+                    const monthAgo = new Date(today - 30 * 24 * 60 * 60 * 1000);
+                    timeMatch = date >= monthAgo;
+                } else if (timeFilter === 'custom') {
+                    const startDate = document.getElementById('startDate').value;
+                    const endDate = document.getElementById('endDate').value;
+                    if (startDate) timeMatch = timeMatch && date >= new Date(startDate);
+                    if (endDate) timeMatch = timeMatch && date <= new Date(endDate + 'T23:59:59');
+                }
+                
+                // 银行筛选
+                let bankMatch = true;
+                if (bankFilter !== 'all') {
+                    bankMatch = (a.parent_bank === bankFilter) || 
+                                (a.penalized_institution && a.penalized_institution.includes(bankFilter)) ||
+                                (a.procuring_entity && a.procuring_entity.includes(bankFilter));
+                }
+                
+                return timeMatch && bankMatch;
+            });
+            
+            currentPage = 1;
+            renderArticles();
+        }
+
+        // 移动端搜索
+        function showSearchMobile() {
+            const keyword = prompt('请输入搜索关键词：');
+            if (keyword !== null) {
+                document.getElementById('searchInput').value = keyword;
+                performSearch();
+            }
+        }
+
+        // 银行筛选搜索功能
+        function initBankSearch() {
+            const bankFilter = document.getElementById('bankFilter');
+            if (!bankFilter) return;
+
+            // 创建搜索容器
+            const wrapper = document.createElement('div');
+            wrapper.className = 'bank-search-container';
+            bankFilter.parentNode.insertBefore(wrapper, bankFilter);
+            wrapper.appendChild(bankFilter);
+
+            // 创建搜索输入框（移动端显示）
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.placeholder = '搜索银行...';
+            searchInput.className = 'shadcn-input w-auto md:hidden mb-2';
+            wrapper.insertBefore(searchInput, bankFilter);
+
+            // 创建搜索结果下拉框
+            const resultsDiv = document.createElement('div');
+            resultsDiv.className = 'bank-search-results';
+            wrapper.appendChild(resultsDiv);
+
+            // 获取所有银行选项
+            const allBanks = [];
+            bankFilter.querySelectorAll('option').forEach(opt => {
+                if (opt.value !== 'all') {
+                    allBanks.push({ value: opt.value, text: opt.textContent, group: opt.parentElement.label });
+                }
+            });
+
+            // 搜索功能
+            searchInput.addEventListener('input', (e) => {
+                const keyword = e.target.value.toLowerCase();
+                if (!keyword) {
+                    resultsDiv.classList.remove('show');
+                    return;
+                }
+
+                const filtered = allBanks.filter(b => b.text.toLowerCase().includes(keyword));
+                if (filtered.length > 0) {
+                    resultsDiv.innerHTML = filtered.map(b => `
+                        <div class="bank-search-item" data-value="${b.value}">
+                            <span class="text-xs text-muted-foreground">${b.group}</span>
+                            <div>${b.text}</div>
+                        </div>
+                    `).join('');
+                    resultsDiv.classList.add('show');
+
+                    // 绑定点击事件
+                    resultsDiv.querySelectorAll('.bank-search-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            bankFilter.value = item.dataset.value;
+                            searchInput.value = item.querySelector('div').textContent;
+                            resultsDiv.classList.remove('show');
+                            applyFilters();
+                        });
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<div class="bank-search-item text-muted-foreground">无匹配结果</div>';
+                    resultsDiv.classList.add('show');
+                }
+            });
+
+            // 点击外部关闭搜索结果
+            document.addEventListener('click', (e) => {
+                if (!wrapper.contains(e.target)) {
+                    resultsDiv.classList.remove('show');
+                }
+            });
+
+            // 在移动端隐藏原下拉框，使用搜索框代替
+            if (window.innerWidth < 768) {
+                bankFilter.classList.add('hidden');
+            }
+            window.addEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    bankFilter.classList.add('hidden');
+                } else {
+                    bankFilter.classList.remove('hidden');
+                    searchInput.classList.add('hidden');
+                }
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            initBankSearch();
+            showMobileNav();
+        });
     </script>
 </body>
 </html>
