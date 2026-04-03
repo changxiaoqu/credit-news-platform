@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信用卡行业资讯平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .glass-effect { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .card-shadow { box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .card-shadow:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); transform: translateY(-2px); }
+        .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tag-policy { background: linear-gradient(135deg, #10b981, #059669); }
+        .tag-risk { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .tag-bid { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .tag-news { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <nav class="glass-effect sticky top-0 z-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <i class="fas fa-credit-card text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold gradient-text">信用卡资讯</span>
+                        <span class="hidden sm:inline text-xs text-gray-500 ml-2">行业动态监控平台</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-1">
+                    <button onclick="filterCategory('all')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-all">全部</button>
+                    <button onclick="filterCategory('policy')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-600 hover:bg-green-50 transition-all">监管政策</button>
+                    <button onclick="filterCategory('risk')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all">处罚数据</button>
+                    <button onclick="filterCategory('bid')" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-orange-600 hover:bg-orange-50 transition-all">招标信息</button>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="refreshData()" class="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all" title="刷新数据">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 欢迎区域 -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                    <div class="mb-6 md:mb-0">
+                        <h1 class="text-3xl font-bold mb-2">信用卡行业资讯平台</h1>
+                        <p class="text-blue-100 text-lg">实时监控监管政策、风险新规、招标信息</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold" id="stat-total">0</div>
+                            <div class="text-sm text-blue-100">总资讯</div>
+                        </div>
+                        <div class="w-px h-12 bg-white/30"></div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold" id="stat-today">0</div>
+                            <div class="text-sm text-blue-100">今日更新</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">监管政策</p>
+                        <p class="text-2xl font-bold text-gray-800" id="count-policy">0</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-green-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">处罚数据</p>
+                        <p class="text-2xl font-bold text-gray-800" id="count-risk">0</p>
+                    </div>
+                    <div class="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-gavel text-red-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-orange-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">招标信息</p>
+                        <p class="text-2xl font-bold text-gray-800" id="count-bid">0</p>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-handshake text-orange-500"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl p-5 card-shadow border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">行业资讯</p>
+                        <p class="text-2xl font-bold text-gray-800" id="count-news">0</p>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-newspaper text-blue-500"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索和筛选 -->
+        <div class="bg-white rounded-xl p-5 card-shadow mb-6">
+            <div class="flex flex-col md:flex-row md:items-center gap-4">
+                <div class="flex-1 relative">
+                    <input type="text" id="searchInput" placeholder="搜索标题、内容、来源..." 
+                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                        onkeypress="if(event.key==='Enter')performSearch()">
+                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="timeFilter" onchange="applyFilters()" class="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="all">全部时间</option>
+                        <option value="today">今日</option>
+                        <option value="week">本周</option>
+                        <option value="month">本月</option>
+                    </select>
+                    <button onclick="performSearch()" class="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all font-medium">
+                        <i class="fas fa-search mr-2"></i>搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 资讯列表 -->
+        <div id="articlesList" class="space-y-4"></div>
+
+        <!-- 分页 -->
+        <div class="flex justify-center mt-8">
+            <nav class="flex items-center space-x-2 bg-white rounded-xl p-2 card-shadow">
+                <button onclick="changePage(-1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-all">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span id="pageInfo" class="px-4 py-2 text-gray-600">第 1 页</span>
+                <button onclick="changePage(1)" class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-all">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </nav>
+        </div>
+    </main>
+
+    <script>
+        let articles = [];
+        let currentPage = 1;
+        let currentCategory = 'all';
+        let filteredArticles = [];
+
+        const categoryConfig = {
+            policy: { name: '监管政策', class: 'tag-policy', icon: 'fa-file-alt' },
+            risk: { name: '处罚数据', class: 'tag-risk', icon: 'fa-gavel' },
+            bid: { name: '招标信息', class: 'tag-bid', icon: 'fa-handshake' },
+            news: { name: '行业资讯', class: 'tag-news', icon: 'fa-newspaper' }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
+        async function loadData() {
+            try {
+                const response = await fetch('/api/articles');
+                articles = await response.json();
+            } catch (err) {
+                articles = getMockData();
+            }
+            filteredArticles = articles;
+            updateStats();
+            renderArticles();
+        }
+
+        function getMockData() {
+            return [
+                { id: 1, title: "信用卡分期业务新规即将实施，利率上限下调至18%", summary: "银保监会发布《关于进一步规范信用卡分期业务的通知》，自2026年4月1日起，信用卡分期业务年化利率上限将下调至18%...", category: "policy", source: "银保监会", publish_date: "2026-03-27", is_important: true, tags: ["信用卡", "消费信贷"], policy_no: "银保监办发〔2026〕12号" },
+                { id: 2, title: "建设银行静安支行因信用卡资金违规被罚125.5万元", summary: "国家金融监督管理总局上海监管局对建设银行静安支行作出行政处罚决定，罚款125.5万元...", category: "risk", source: "国家金融监督管理总局", publish_date: "2026-03-25", is_important: true, tags: ["信用卡", "风险审批"], penalized_institution: "中国建设银行股份有限公司上海市分行静安支行", penalty_amount: 125.50 },
+                { id: 3, title: "中国银行信用卡中心AI智能风控系统采购项目", summary: "中国银行信用卡中心就AI智能风控系统采购项目进行公开招标，预算金额850万元...", category: "bid", source: "中国政府采购网", publish_date: "2026-03-24", is_important: false, tags: ["AI", "风险审批"], budget: "850万元", bid_deadline: "2026-04-20" },
+                { id: 4, title: "2024年信用卡市场报告：发卡量突破10亿张", summary: "央行发布最新数据显示，截至2024年末，全国信用卡和借贷合一卡发卡量达10.2亿张...", category: "news", source: "央行官网", publish_date: "2026-03-28", is_important: false, tags: ["信用卡", "大数据"] }
+            ];
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').textContent = articles.length;
+            document.getElementById('stat-today').textContent = articles.filter(a => a.publish_date === new Date().toISOString().split('T')[0]).length;
+            Object.keys(categoryConfig).forEach(cat => {
+                const el = document.getElementById(`count-${cat}`);
+                if (el) el.textContent = articles.filter(a => a.category === cat).length;
+            });
+        }
+
+        function renderArticles() {
+            const container = document.getElementById('articlesList');
+            const start = (currentPage - 1) * 10;
+            const pageData = filteredArticles.slice(start, start + 10);
+
+            if (pageData.length === 0) {
+                container.innerHTML = '<div class="text-center py-16"><i class="fas fa-inbox text-6xl text-gray-200 mb-4"></i><p class="text-gray-500">暂无数据</p></div>';
+                return;
+            }
+
+            container.innerHTML = pageData.map(item => {
+                const config = categoryConfig[item.category];
+                return `
+                    <div class="bg-white rounded-xl p-6 card-shadow cursor-pointer" onclick="alert('${item.title}')">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="${config.class} text-white text-xs px-3 py-1 rounded-full font-medium"><i class="fas ${config.icon} mr-1"></i>${config.name}</span>
+                                    ${item.is_important ? '<span class="bg-red-100 text-red-600 text-xs px-3 py-1 rounded-full font-medium"><i class="fas fa-star mr-1"></i>重要</span>' : ''}
+                                    <span class="text-sm text-gray-400">${item.publish_date}</span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-gray-800 mb-2">${item.title}</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-3">${item.summary}</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-sm text-gray-500">${item.source}</span>
+                                        <div class="flex gap-2">${(item.tags || []).map(tag => `<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">${tag}</span>`).join('')}</div>
+                                    </div>
+                                    ${item.penalty_amount ? `<span class="text-lg font-bold text-red-600">${item.penalty_amount}万元</span>` : ''}
+                                    ${item.budget ? `<span class="text-lg font-bold text-blue-600">${item.budget}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页 / 共 ${Math.ceil(filteredArticles.length / 10)} 页`;
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            currentPage = 1;
+            filteredArticles = category === 'all' ? articles : articles.filter(a => a.category === category);
+            renderArticles();
+        }
+
+        function performSearch() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            filteredArticles = keyword ? articles.filter(a => a.title.toLowerCase().includes(keyword) || a.summary.toLowerCase().includes(keyword)) : articles;
+            currentPage = 1;
+            renderArticles();
+        }
+
+        function changePage(delta) {
+            currentPage = Math.max(1, Math.min(Math.ceil(filteredArticles.length / 10), currentPage + delta));
+            renderArticles();
+        }
+
+        function refreshData() {
+            loadData();
+        }
+    </script>
+</body>
+</html>
