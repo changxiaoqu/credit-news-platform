@@ -23,11 +23,19 @@ function initDB() {
             fs.mkdirSync(DB_DIR, { recursive: true });
         }
 
+        // 检查数据库文件是否已存在（从Git部署的）
+        const dbExists = fs.existsSync(DB_PATH);
+        
         const db = new sqlite3.Database(DB_PATH, (err) => {
             if (err) reject(err);
             else {
-                // 创建表 - 使用内联 schema，避免依赖文件
-                const schema = `
+                if (dbExists) {
+                    // 数据库文件已存在，直接使用
+                    console.log('Using existing database:', DB_PATH);
+                    resolve(db);
+                } else {
+                    // 创建新表
+                    const schema = `
 CREATE TABLE IF NOT EXISTS articles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
@@ -45,11 +53,12 @@ CREATE TABLE IF NOT EXISTS articles (
 CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
 CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
 CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
-                `;
-                db.exec(schema, (err) => {
-                    if (err) reject(err);
-                    else resolve(db);
-                });
+                    `;
+                    db.exec(schema, (err) => {
+                        if (err) reject(err);
+                        else resolve(db);
+                    });
+                }
             }
         });
     });
