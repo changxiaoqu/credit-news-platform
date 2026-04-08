@@ -5,7 +5,11 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_PATH = path.join(__dirname, 'data/news.db');
+
+// Railway Volume 支持：使用环境变量配置数据库路径
+// 本地开发使用 ./data/news.db，Railway 使用 /data/news.db (Volume 挂载点)
+const DB_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, 'data');
+const DB_PATH = path.join(DB_DIR, 'news.db');
 
 // 中间件
 app.use(express.json());
@@ -15,16 +19,33 @@ app.use(express.static('templates'));
 function initDB() {
     return new Promise((resolve, reject) => {
         // 确保数据目录存在
-        const dataDir = path.dirname(DB_PATH);
-        if (!fs.existsSync(dataDir)) {
-            fs.mkdirSync(dataDir, { recursive: true });
+        if (!fs.existsSync(DB_DIR)) {
+            fs.mkdirSync(DB_DIR, { recursive: true });
         }
 
         const db = new sqlite3.Database(DB_PATH, (err) => {
             if (err) reject(err);
             else {
-                // 创建表
-                const schema = fs.readFileSync(path.join(__dirname, 'data/schema.sql'), 'utf8');
+                // 创建表 - 使用内联 schema，避免依赖文件
+                const schema = `
+CREATE TABLE IF NOT EXISTS articles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    summary TEXT,
+    content TEXT,
+    source TEXT,
+    url TEXT UNIQUE,
+    category TEXT,
+    tags TEXT,
+    publish_date DATE,
+    crawl_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_read INTEGER DEFAULT 0,
+    is_important INTEGER DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
+CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
+CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
+                `;
                 db.exec(schema, (err) => {
                     if (err) reject(err);
                     else resolve(db);
@@ -179,7 +200,22 @@ app.post('/api/trigger-crawler', (req, res) => {
 async function start() {
     try {
         await initDB();
-        console.log('Database initialized');
+        console.log('Database initialized at:', DB_PATH);
+
+        // 检查是否需要初始化数据（表为空时）
+        const db = getDB();
+        db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
+            db.close();
+            if (!err && row.count === 0) {
+                console.log('Database is empty, initializing data...');
+                const { initData } = require('./scripts/init-data');
+                initData().then(() => {
+                    console.log('Initial data loaded');
+                }).catch(err => {
+                    console.error('Failed to load initial data:', err);
+                });
+            }
+        });
 
         app.listen(PORT, () => {
             console.log(`Server running on http://localhost:${PORT}`);
