@@ -1,192 +1,14 @@
 #!/usr/bin/env node
 /**
- * 信用卡资讯抓取脚本 - 真实数据版
- * 基于搜索的真实资讯数据
+ * 城商行和农商行信用卡及外围系统投标信息爬虫
  */
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
+const { getAllSearchQueries, getTagsForQuery } = require('./search-config');
 
 const DB_PATH = path.join(__dirname, '../data/news.db');
-
-// 真实数据 - 2025年1月至今
-const REAL_ARTICLES = [
-    // 风险新规类
-    {
-        title: '建设银行信用卡中心14项违规被罚没575万元',
-        summary: '国家金融监督管理总局上海监管局对建行信用卡中心作出行政处罚，罚没合计575.27万元，涉及14项违法违规行为。',
-        content: '2026年3月23日，国家金融监督管理总局上海监管局发布行政处罚信息公开表，对中国建设银行股份有限公司信用卡中心作出行政处罚，罚没合计575.265231万元。本次处罚涉及14项违法违规行为，覆盖信用卡全业务链条：一、客户管理违规（客户资信水平调查、授信额度管理、高风险持卡人管控）；二、信用卡资金管理违规（分期资金管理、透支资金管理）；三、发卡业务违规（未经资格认定从事发卡营销、向关系人发放信用贷款）；四、合规管理违规（可疑交易账户管理、催收外包管理、未按规定退还分期利息）。同时，两名时任风险管理处副处长被警告并各罚款5万元。',
-        source: '国家金融监督管理总局',
-        url: 'https://www.nfra.gov.cn/',
-        category: 'risk',
-        tags: ['行政处罚', '风险控制', '建行信用卡'],
-        publish_date: '2026-03-23'
-    },
-    {
-        title: '中国银行青海省分行因信用卡业务管理不到位被罚55万元',
-        summary: '青海金融监管局对中国银行青海省分行开出罚单，因信用卡业务管理不到位处罚款55万元，相关责任人被追责。',
-        content: '2026年3月20日，青海金融监管局行政处罚信息公开表显示，中国银行股份有限公司青海省分行因信用卡业务管理不到位被处罚款55万元。同时，马宁育（时任中国银行青海省分行风险管理部总经理）因信用卡业务管理不到位被处罚款5.5万元；杨峰伟（时任中国银行青海省分行信用卡部总经理）因信用卡业务管理不到位被给予警告。据统计，2026年以来至今，涉及中国银行及其分支机构的罚单有27张，罚没金额合计近1300万元。',
-        source: '青海金融监管局',
-        url: 'https://www.nfra.gov.cn/',
-        category: 'risk',
-        tags: ['行政处罚', '信用卡业务', '中国银行'],
-        publish_date: '2026-03-20'
-    },
-    {
-        title: '2026年一季度银行业累计收到监管罚单超5亿元',
-        summary: '据iFinD数据统计，2026年一季度银行累计收到监管罚单625条，罚单金额总计高达5.76亿元，信贷违规仍是"重灾区"。',
-        content: '2026年一季度，金融监管部门持续保持高压态势。据iFinD数据统计，截至3月31日，中国人民银行、国家金融监督管理总局及各分局共开出处罚记录625条，罚单金额总计高达5.76亿元，其中包括3张千万元级罚单。从受罚机构类型看，国有大行和地方中小银行合计占比过半。六家国有大行相关罚单记录191条，占比30.56%。信贷违规依然是处罚的"重灾区"，不仅包括传统信贷中的违规问题，信用卡、票据和信用证等业务的违规问题也较为突出。',
-        source: '国际金融报',
-        url: 'https://m.jrj.com.cn/',
-        category: 'risk',
-        tags: ['监管处罚', '风险控制', '行业数据'],
-        publish_date: '2026-04-01'
-    },
-    {
-        title: '反洗钱和数据安全处罚加码，银行合规压力上升',
-        summary: '2026年一季度反洗钱及数据安全领域监管趋严，多家银行因违反网络安全管理规定、数据安全管理规定被处罚。',
-        content: '2026年一季度，反洗钱领域及数据安全领域监管趋严。3月份，涉及"违反网络安全管理规定""违反数据安全管理规定"的处罚记录达23条，占比超过16%。典型案例是3月27日央行湖北省分行对湖北银行开出的罚单，该行因涉及网络安全、数据安全等10条违法行为，被罚249.9万元。2025年11月28日，中国人民银行、国家金融监督管理总局、证监会三部门联合发布《金融机构客户尽职调查和客户身份资料及交易记录保存管理办法》，已于2026年1月1日正式实施，将"客户身份识别"升级为"客户尽职调查"。',
-        source: '金融时报',
-        url: 'http://www.financialnews.com.cn/',
-        category: 'risk',
-        tags: ['反洗钱', '数据安全', '合规管理'],
-        publish_date: '2026-04-02'
-    },
-    // 招标信息类
-    {
-        title: '中信银行信用卡中心2025-2026年度信用卡信息维护集中作业服务采购',
-        summary: '中信银行信用卡中心公开招标，采购2025-2026年度信用卡信息维护集中作业服务。',
-        content: '中信银行股份有限公司信用卡中心发布招标公告，采购2025-2026年度信用卡信息维护集中作业服务。服务期1年，具体服务起始日期以合同约定为准。招标方式为公开招标。投标人必须是中华人民共和国合法境内注册的独立法人或其分支机构，具有承担相应民事责任的能力、良好的商业信誉和健全的财务会计制度。招标文件发售时间为2025年11月，投标截止时间为2025年12月5日。',
-        source: '中信金控采购共享平台',
-        url: 'https://ebid.cfhc.citic/',
-        category: 'bid',
-        tags: ['招标', '信息维护', '中信银行'],
-        publish_date: '2025-11-19'
-    },
-    {
-        title: '邮储银行广东省分行2026年信用卡商圈业务外包项目招标',
-        summary: '中国邮政储蓄银行广东省分行公开招标，选择两家供应商为信用卡商圈建设提供专业服务，项目预算556.6万元。',
-        content: '中国邮政储蓄银行股份有限公司广东省分行2026年信用卡商圈业务外包项目已批准实施。招标内容为：通过公开招标方式选择两家供应商，为信用卡商圈建设提供专业服务，由服务商针对优质连锁品牌商户/综合体/商业街进行商户拓展，并对全量商户进行信息维护、商户培训、商户例行巡检督导、商户退出洽谈、商户侧宣传布放及检查，以及商户活动配置、客诉维护、活动培训等工作。项目预算556.6万元（含税）。',
-        source: '邮储银行',
-        url: 'https://cg.psbc.com/',
-        category: 'bid',
-        tags: ['招标', '商圈业务', '邮储银行'],
-        publish_date: '2025-12-19'
-    },
-    {
-        title: '光大银行信用卡中心外包商现场检查项目中标结果公布',
-        summary: '中国光大银行信用卡中心2025-2026年度引入专业机构协助开展外包商现场检查项目，德勤华永会计师事务所中标。',
-        content: '中国光大银行信用卡中心2025-2026年度引入专业机构协助开展外包商现场检查项目中标结果公布。德勤华永会计师事务所（特殊普通合伙）中标，含税单价3万元/家。采购内容为：根据外包业务监督检查工作需要，合作期限内每年选取部分外包商开展现场检查工作，涉及制卡、账单、外呼营销、客户申请信息核实、催收、档案存储、重要驻场信息科技外包等外包业务领域。现场检查重点包括业务执行情况、信息安全、个人信息保护、网络安全、业务连续性等方面。',
-        source: '诚E招电子采购交易平台',
-        url: 'https://www.chengezhao.com/',
-        category: 'bid',
-        tags: ['中标', '外包检查', '光大银行'],
-        publish_date: '2025-10-28'
-    },
-    {
-        title: '邮储银行信用卡金融知识宣传服务采购项目中标候选人公示',
-        summary: '中国邮政储蓄银行2025-2026年信用卡金融知识宣传服务采购项目，美洋数字传播有限公司为第一中标候选人。',
-        content: '中国邮政储蓄银行2025-2026年信用卡金融知识宣传服务采购项目评标委员会已完成评审。第一中标候选人：美洋数字传播有限公司，金额（含税）598,000.00元；第二中标候选人：艾迪沃思国际传媒广告（北京）有限公司，金额（含税）600,000.00元。招标内容为：常规线下活动策划11场、创新性线下活动策划2场、物料设计6套、物料制作12套、媒体宣传报道11次、视频制作4分钟、漫画6个、长图6套等。',
-        source: '中国邮政集团',
-        url: 'https://www.chinapost.com.cn/',
-        category: 'bid',
-        tags: ['中标', '宣传服务', '邮储银行'],
-        publish_date: '2025-07-21'
-    },
-    {
-        title: '建设银行信用卡中心2025-2026年度高等级信用卡代驾服务采购',
-        summary: '中国建设银行信用卡中心公开招标，采购2025-2026年度高等级信用卡代驾服务。',
-        content: '中国建设银行股份有限公司信用卡中心就2025-2026年度高等级信用卡代驾服务采购项目进行公开招标。采购内容为：为建设银行全球智尊信用卡、私人银行信用卡、钻石信用卡（含个人及商务钻石卡）、尊享白金信用卡（含个人及商务白金卡）、龙卡家庭挚爱信用卡等指定信用卡持卡人提供标准代驾服务。服务期限自2025年7月1日至2026年12月31日。本次拟通过公开招标方式选取1名合格的投标人作为中标人。',
-        source: '建设银行',
-        url: 'http://www.ccb.com/',
-        category: 'bid',
-        tags: ['招标', '代驾服务', '建设银行'],
-        publish_date: '2025-03-21'
-    },
-    // 原有政策类数据
-    {
-    {
-        title: '财政部等三部门：优化实施个人消费贷款财政贴息政策，信用卡账单分期纳入贴息范围',
-        summary: '财政部、中国人民银行、金融监管总局联合发布通知，将个人消费贷款财政贴息政策实施期延长至2026年底，信用卡账单分期业务纳入支持范围，年贴息比例为1个百分点。',
-        content: '2026年1月20日，财政部、中国人民银行、国家金融监督管理总局联合发布《关于优化实施个人消费贷款财政贴息政策有关事项的通知》。主要内容包括：一、延长政策期限至2026年12月31日；二、将信用卡账单分期业务纳入支持范围，年贴息比例为1个百分点；三、取消消费领域限制，各领域真实合规消费均可享受贴息；四、取消单笔贴息500元上限及单机构小额累计1000元上限；五、扩大经办机构范围，将监管评级3A及以上的城商行、农商行、外资银行、消费金融公司、汽车金融公司等纳入范围。',
-        source: '国家金融监督管理总局',
-        url: 'https://www.nfra.gov.cn/cn/view/pages/governmentDetail.html?docId=1243763',
-        category: 'policy',
-        tags: ['监管政策', '财政贴息', '信用卡分期'],
-        publish_date: '2026-01-20'
-    },
-    {
-        title: '多家银行火速响应消费贷贴息政策升级',
-        summary: '农业银行、中国银行、交通银行、邮储银行等多家国有大行表态将积极落实消费贷贴息政策新要求，信用卡分期业务纳入贴息范围。',
-        content: '1月20日晚间，多家国有大行表态将积极落实消费贷贴息政策相关要求。农业银行、中国银行、交通银行、邮储银行等已围绕重点问题进行答疑。对于如何判断贷款/信用卡账单分期的发生时间是否符合贴息条件，各行表示：政策调整后，个人消费贷款财政贴息政策实施期为2025年9月1日至2026年12月31日，且将信用卡账单分期业务纳入支持范围，自2026年1月1日起施行。',
-        source: '证券时报',
-        url: 'https://stcn.com/article/detail/3605806.html',
-        category: 'news',
-        tags: ['银行响应', '贴息政策', '大行动态'],
-        publish_date: '2026-01-22'
-    },
-    {
-        title: '银行业内已出台信用卡分期贴息执行方案',
-        summary: '证券时报记者走访多家银行网点发现，银行业内已根据最新政策要求出台相关优化贴息执行方案，将信用卡分期业务纳入贴息范围。',
-        content: '根据财政部、中国人民银行、国家金融监督管理总局近日联合发布的通知，个人消费贷款财政贴息政策实施期延长至2026年12月31日。证券时报记者近日走访多家银行网点发现，银行业内已根据最新政策要求出台了相关优化贴息的执行方案，比如将信用卡分期业务纳入贴息范围，取消对部分消费贴息使用场景的限制等。根据部分银行网点反馈，当前消费贷利率最低为3%，贷款资金主要适用于装修、购车、旅游等消费用途。',
-        source: '证券时报',
-        url: 'https://www.stcn.com/article/detail/3613235.html',
-        category: 'news',
-        tags: ['行业动态', '信用卡分期', '贴息落地'],
-        publish_date: '2026-01-27'
-    },
-    {
-        title: '个人消费贷"国补"加码：信用卡账单分期纳入贴息，不限消费领域',
-        summary: '2025年8月发布的个人消费贷款财政贴息政策迎来首次优化，信用卡账单分期业务被纳入支持范围，年贴息比例为1个百分点。',
-        content: '1月20日，财政部、央行、金融监管总局联合发布通知，明确将个人消费贷款财政贴息政策实施时间延长至2026年底。此次优化主要包括：取消此前方案中关于消费领域的限制；扩大支持范围，将信用卡账单分期业务纳入支持范围；提高贴息标准，取消单笔消费贴息金额上限500元的要求；增加经办机构，将监管评级3A以上的银行、消费金融公司、汽车金融公司等纳入范围。受访专家指出，此次调整将增强贴息政策对消费者的吸引力。',
-        source: '21世纪经济报道',
-        url: 'https://www.21jingji.com/article/20260123/herald/d70a4eb52d7ed70beb76f6a5be19ab3c.html',
-        category: 'policy',
-        tags: ['国补政策', '信用卡分期', '消费提振'],
-        publish_date: '2026-01-23'
-    },
-    {
-        title: '素喜智研：信用卡分期纳入贴息释放三重积极信号',
-        summary: '素喜智研高级研究员苏筱芮表示，将信用卡分期纳入财政贴息支持范围，释放了三重积极信号。',
-        content: '素喜智研高级研究员苏筱芮表示，此次调整释放了三重积极信号：一是通过延长政策支持期限以稳定市场的长期消费预期；二是通过纳入信用卡分期和扩大经办机构范围，进一步提升政策普惠性；三是激活各类日常消费。她指出，此次将信用卡账单分期纳入财政贴息支持范围，重要考量有二：一是信用卡分期是居民日常消费的重要支付方式；二是信用卡分期业务风险相对可控，纳入贴息范围有助于提升政策效果。',
-        source: '每日经济新闻',
-        url: 'https://www.stcn.com/article/detail/3603259.html',
-        category: 'news',
-        tags: ['专家解读', '信用卡分期', '消费政策'],
-        publish_date: '2026-01-21'
-    },
-    {
-        title: '金融监管总局：发展消费金融助力提振消费',
-        summary: '国家金融监督管理总局印发通知，要求发展消费金融，助力提振消费，探索开展线上开立和激活信用卡业务。',
-        content: '2025年3月14日，国家金融监督管理总局印发《关于发展消费金融助力提振消费的通知》。主要内容包括：增加消费金融供给，鼓励银行业金融机构加大个人消费贷款投放力度；优化消费金融管理，完善个人消费贷款尽职免责要求，在有效核实身份、风险可控前提下，探索开展线上开立和激活信用卡业务；开展个人消费贷款纾困，合理商定贷款偿还期限、频次；优化消费金融环境，规范消费贷款合同条款，明示最终综合融资成本。',
-        source: '国家金融监督管理总局',
-        url: 'https://www.nfra.gov.cn/',
-        category: 'policy',
-        tags: ['监管政策', '消费金融', '信用卡业务'],
-        publish_date: '2025-03-14'
-    },
-    {
-        title: '中共中央办公厅 国务院办公厅印发《提振消费专项行动方案》',
-        summary: '部署8方面30项重点任务，鼓励金融机构加大个人消费贷款投放，2025年对符合条件的个人消费贷款给予财政贴息。',
-        content: '中共中央办公厅、国务院办公厅印发《提振消费专项行动方案》，部署了8方面30项重点任务。第二十九条为强化信贷支持，鼓励金融机构在风险可控前提下加大个人消费贷款投放力度，合理设置消费贷款额度、期限、利率。支持金融机构按照市场化法治化原则优化个人消费贷款偿还方式，有序开展续贷工作。2025年对符合条件的个人消费贷款和消费领域的服务业经营主体贷款给予财政贴息。',
-        source: '中国政府网',
-        url: 'http://www.gov.cn/',
-        category: 'policy',
-        tags: ['国家政策', '提振消费', '财政贴息'],
-        publish_date: '2025-03-01'
-    },
-    {
-        title: '个人消费贷款财政贴息政策实施方案发布',
-        summary: '财政部等三部门印发实施方案，2025年9月1日至2026年8月31日期间，符合条件的个人消费贷款可享受贴息。',
-        content: '2025年8月，财政部、中国人民银行、国家金融监督管理总局印发《个人消费贷款财政贴息政策实施方案》。明确2025年9月1日至2026年8月31日期间，居民个人使用贷款经办机构发放的个人消费贷款（不含信用卡业务）中实际用于消费的部分，可按规定享受贴息政策。贴息范围包括单笔5万元以下消费，以及单笔5万元及以上的家用汽车、养老生育、教育培训、文化旅游、家居家装、电子产品、健康医疗等重点领域消费。',
-        source: '财政部',
-        url: 'https://www.mof.gov.cn/',
-        category: 'policy',
-        tags: ['财政贴息', '消费贷款', '政策发布'],
-        publish_date: '2025-08-12'
-    }
-];
 
 // 初始化数据库
 function initDB() {
@@ -199,16 +21,6 @@ function initDB() {
         const db = new sqlite3.Database(DB_PATH, (err) => {
             if (err) reject(err);
             else resolve(db);
-        });
-    });
-}
-
-// 执行SQL
-function runSQL(db, sql, params = []) {
-    return new Promise((resolve, reject) => {
-        db.run(sql, params, function(err) {
-            if (err) reject(err);
-            else resolve(this);
         });
     });
 }
@@ -227,62 +39,159 @@ async function articleExists(db, url) {
 async function saveArticle(db, article) {
     const exists = await articleExists(db, article.url);
     if (exists) {
-        console.log(`[跳过] 已存在: ${article.title}`);
+        console.log(`  [跳过] ${article.title.substring(0, 40)}...`);
         return false;
     }
 
     const sql = `
-        INSERT INTO articles (title, summary, content, source, url, category, tags, publish_date)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO articles (title, summary, source, url, category, tags, publish_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     
-    await runSQL(db, sql, [
-        article.title,
-        article.summary,
-        article.content,
-        article.source,
-        article.url,
-        article.category,
-        JSON.stringify(article.tags),
-        article.publish_date
-    ]);
+    return new Promise((resolve, reject) => {
+        db.run(sql, [
+            article.title,
+            article.summary,
+            article.source,
+            article.url,
+            article.category,
+            JSON.stringify(article.tags),
+            article.publish_date
+        ], function(err) {
+            if (err) {
+                console.error(`  [错误] ${err.message}`);
+                resolve(false);
+            } else {
+                console.log(`  [新增] ${article.title.substring(0, 40)}...`);
+                resolve(true);
+            }
+        });
+    });
+}
+
+// 处理搜索结果
+async function processSearchResults(db, query, results) {
+    console.log(`\n🔍 ${query}`);
     
-    console.log(`[新增] ${article.title}`);
-    return true;
+    let added = 0;
+    let skipped = 0;
+    const tags = getTagsForQuery(query);
+    
+    for (const item of results) {
+        const article = {
+            title: item.title || '无标题',
+            summary: item.snippet || item.summary || '',
+            source: item.source || '未知来源',
+            url: item.url,
+            category: 'bid',
+            tags: tags,
+            publish_date: item.date || new Date().toISOString().split('T')[0]
+        };
+        
+        const saved = await saveArticle(db, article);
+        if (saved) {
+            added++;
+        } else {
+            skipped++;
+        }
+    }
+    
+    console.log(`   新增: ${added}, 跳过: ${skipped}`);
+    return { added, skipped };
+}
+
+// 运行爬虫
+async function runCrawler(searchResults) {
+    console.log('='.repeat(60));
+    console.log('🏦 城商行和农商行信用卡及外围系统投标信息爬虫');
+    console.log('='.repeat(60));
+    console.log(`开始时间: ${new Date().toLocaleString()}`);
+    console.log('');
+    
+    let db;
+    let totalAdded = 0;
+    let totalSkipped = 0;
+    
+    try {
+        db = await initDB();
+        
+        // 确保表存在
+        const schema = `
+            CREATE TABLE IF NOT EXISTS articles (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                summary TEXT,
+                content TEXT,
+                source TEXT,
+                url TEXT UNIQUE,
+                category TEXT,
+                tags TEXT,
+                publish_date DATE,
+                crawl_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                is_read INTEGER DEFAULT 0,
+                is_important INTEGER DEFAULT 0
+            );
+            CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
+            CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
+        `;
+        await new Promise((resolve, reject) => {
+            db.exec(schema, (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+        
+        // 处理搜索结果
+        if (searchResults && Object.keys(searchResults).length > 0) {
+            for (const [query, results] of Object.entries(searchResults)) {
+                if (Array.isArray(results) && results.length > 0) {
+                    const { added, skipped } = await processSearchResults(db, query, results);
+                    totalAdded += added;
+                    totalSkipped += skipped;
+                }
+            }
+        } else {
+            console.log('⚠️ 未提供搜索结果');
+            console.log('请使用以下关键词通过 kimi_search 搜索:');
+            const queries = getAllSearchQueries();
+            queries.forEach((q, i) => {
+                console.log(`  ${i + 1}. ${q}`);
+            });
+        }
+        
+        console.log('\n' + '='.repeat(60));
+        console.log(`📊 总计: 新增 ${totalAdded} 条, 跳过 ${totalSkipped} 条`);
+        console.log('='.repeat(60));
+        
+    } catch (err) {
+        console.error('❌ 爬虫运行失败:', err);
+        throw err;
+    } finally {
+        if (db) db.close();
+    }
+    
+    return { totalAdded, totalSkipped };
 }
 
 // 主函数
 async function main() {
-    console.log('=== 信用卡资讯抓取任务 ===');
-    console.log(`数据时间范围: 2025年1月 - 2026年4月`);
-    console.log(`开始时间: ${new Date().toLocaleString()}`);
-    
-    let db;
-    try {
-        db = await initDB();
-        
-        // 创建表（如果不存在）
-        const schema = fs.readFileSync(path.join(__dirname, '../data/schema.sql'), 'utf8');
-        await runSQL(db, schema);
-        
-        // 插入真实数据
-        let added = 0;
-        for (const article of REAL_ARTICLES) {
-            const saved = await saveArticle(db, article);
-            if (saved) added++;
-        }
-        
-        console.log(`\n=== 任务完成 ===`);
-        console.log(`新增文章: ${added} 条`);
-        console.log(`跳过重复: ${REAL_ARTICLES.length - added} 条`);
-        console.log(`数据覆盖: 2025年1月至2026年4月最新政策资讯`);
-        
-    } catch (err) {
-        console.error('任务失败:', err);
-        process.exit(1);
-    } finally {
-        if (db) db.close();
-    }
+    console.log('城商行和农商行信用卡及外围系统投标信息爬虫');
+    console.log('');
+    console.log('搜索关键词列表:');
+    const queries = getAllSearchQueries();
+    queries.forEach((q, i) => {
+        console.log(`  ${i + 1}. ${q}`);
+    });
+    console.log('');
+    console.log('使用方法:');
+    console.log('1. 使用 OpenClaw kimi_search 工具搜索以上关键词');
+    console.log('2. 将结果整理为 {query: [results]} 格式');
+    console.log('3. 调用 runCrawler(searchResults) 保存到数据库');
 }
 
-main();
+// 如果直接运行此脚本
+if (require.main === module) {
+    main();
+}
+
+module.exports = { runCrawler, getAllSearchQueries };
