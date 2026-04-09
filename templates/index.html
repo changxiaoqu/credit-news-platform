@@ -936,12 +936,17 @@
 
         async function loadData() {
             try {
-                const response = await fetch('/api/articles');
+                console.log('Loading data from API...');
+                const response = await fetch('/api/articles?limit=1000');
                 articles = await response.json();
+                console.log('Loaded', articles.length, 'articles from API');
             } catch (err) {
+                console.error('API failed, using mock data:', err);
                 articles = getMockData();
+                console.log('Loaded', articles.length, 'articles from mock data');
             }
             filteredArticles = articles;
+            console.log('filteredArticles set to', filteredArticles.length);
             updateStats();
             renderHomeSections();
             updateBankFilter();
@@ -1167,9 +1172,14 @@
         }
 
         function renderArticles(highlightKeyword = '') {
+            console.log('renderArticles called, currentPage:', currentPage, 'filteredArticles.length:', filteredArticles.length);
+            
             const container = document.getElementById('articlesList');
             const start = (currentPage - 1) * 10;
-            const pageData = filteredArticles.slice(start, start + 10);
+            const end = start + 10;
+            const pageData = filteredArticles.slice(start, end);
+            
+            console.log('Pagination - start:', start, 'end:', end, 'pageData.length:', pageData.length);
 
             if (pageData.length === 0) {
                 container.innerHTML = '<div class="shadcn-card p-12 text-center text-muted-foreground"><i class="fas fa-inbox text-4xl mb-4"></i><p>暂无数据</p></div>';
@@ -1210,13 +1220,24 @@
                 `;
             }).join('');
 
-            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页 / 共 ${Math.ceil(filteredArticles.length / 10)} 页`;
+            const totalPages = Math.ceil(filteredArticles.length / 10);
+            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页 (共${filteredArticles.length}条)`;
+            
+            console.log('Page info updated:', currentPage, '/', totalPages);
+            
+            // 更新翻页按钮状态
+            const prevBtn = document.querySelector('#paginationBar button:first-child');
+            const nextBtn = document.querySelector('#paginationBar button:last-child');
+            if (prevBtn) prevBtn.disabled = currentPage <= 1;
+            if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
         }
 
         function filterCategory(category) {
+            console.log('filterCategory called:', category, 'articles.length:', articles.length);
             currentCategory = category;
             currentPage = 1;
             filteredArticles = category === 'all' ? articles : articles.filter(a => a.category === category);
+            console.log('filteredArticles.length:', filteredArticles.length);
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
@@ -1262,8 +1283,14 @@
         }
 
         function changePage(delta) {
-            currentPage = Math.max(1, Math.min(Math.ceil(filteredArticles.length / 10), currentPage + delta));
+            console.log('changePage called, delta:', delta, 'currentPage before:', currentPage);
+            const totalPages = Math.ceil(filteredArticles.length / 10);
+            const newPage = currentPage + delta;
+            currentPage = Math.max(1, Math.min(totalPages, newPage));
+            console.log('currentPage after:', currentPage, 'totalPages:', totalPages);
             renderArticles();
+            // 滚动到列表顶部
+            document.getElementById('articlesList').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function showDetail(id) {
