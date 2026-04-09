@@ -183,7 +183,114 @@ app.post('/api/articles/:id/important', (req, res) => {
     });
 });
 
-// API: 触发爬虫
+// API: 批量导入文章（需要密钥）
+app.post('/api/articles/bulk-import', (req, res) => {
+    const { secret, articles } = req.body;
+    
+    if (secret !== process.env.CRAWLER_SECRET) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    if (!Array.isArray(articles) || articles.length === 0) {
+        return res.status(400).json({ error: 'Invalid articles data' });
+    }
+    
+    const db = getDB();
+    const sql = `
+        INSERT OR IGNORE INTO articles (title, summary, content, source, url, category, tags, publish_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    let added = 0;
+    let skipped = 0;
+    let failed = 0;
+    
+    const stmt = db.prepare(sql);
+    
+    for (const article of articles) {
+        try {
+            stmt.run([
+                article.title,
+                article.summary || '',
+                article.content || '',
+                article.source || '未知来源',
+                article.url,
+                article.category || 'bid',
+                JSON.stringify(article.tags || ['投标']),
+                article.publish_date || new Date().toISOString().split('T')[0]
+            ], function(err) {
+                if (err) {
+                    console.error(`导入失败: ${article.title}`, err.message);
+                    failed++;
+                } else if (this.changes > 0) {
+                    added++;
+                } else {
+                    skipped++;
+                }
+            });
+        } catch (err) {
+            console.error(`处理失败: ${article.title}`, err.message);
+            failed++;
+        }
+    }
+    
+    stmt.finalize((err) => {
+        db.close();
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ 
+            success: true, 
+            added, 
+            skipped, 
+            failed,
+            total: articles.length 
+        });
+    });
+});
+
+// API: 单条添加文章（需要密钥）
+app.post('/api/articles', (req, res) => {
+    const { secret, title, summary, content, source, url, category, tags, publish_date } = req.body;
+    
+    if (secret !== process.env.CRAWLER_SECRET) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    if (!title || !url) {
+        return res.status(400).json({ error: 'Title and URL are required' });
+    }
+    
+    const db = getDB();
+    const sql = `
+        INSERT OR IGNORE INTO articles (title, summary, content, source, url, category, tags, publish_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    db.run(sql, [
+        title,
+        summary || '',
+        content || '',
+        source || '未知来源',
+        url,
+        category || 'bid',
+        JSON.stringify(tags || ['投标']),
+        publish_date || new Date().toISOString().split('T')[0]
+    ], function(err) {
+        db.close();
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        if (this.changes === 0) {
+            return res.status(409).json({ error: 'Article already exists' });
+        }
+        res.status(201).json({ 
+            success: true, 
+            id: this.lastID,
+            message: 'Article added successfully' 
+        });
+    });
+});
 app.post('/api/trigger-crawler', (req, res) => {
     const { secret } = req.body;
     if (secret !== process.env.CRAWLER_SECRET) {
