@@ -1163,8 +1163,7 @@
         }
 
         function updateStats() {
-            // 显示总数量
-            document.getElementById('count-today').textContent = articles.length;
+            // 更新各分类统计
             Object.keys(categoryConfig).forEach(cat => {
                 const el = document.getElementById(`count-${cat}`);
                 if (el) el.textContent = articles.filter(a => a.category === cat).length;
