@@ -15,10 +15,11 @@ const initialData = [
     {title: '六大行迅速发布信用卡分期贴息"指南"', summary: '1月20日，财政部、中国人民银行、国家金融监督管理总局发布《关于优化实施个人消费贷款财政贴息政策有关事项的通知》后，六大行迅速响应发布指南。', source: 'jr.jl.gov.cn', url: 'https://jr.jl.gov.cn/jrzx/zyjrxxzz/gj/202601/t20260130_3551000.html', category: 'policy', tags: JSON.stringify(['监管', '政策']), publish_date: '2026-01-30'},
     {title: '3月信用卡相关监管政策一览', summary: '《国家金融监督管理总局关于发展消费金融助力提振消费的通知》印发，增加消费金融供给。', source: 'sohu.com', url: 'https://www.sohu.com/a/878892714_659885', category: 'policy', tags: JSON.stringify(['监管', '政策']), publish_date: '2025-04-02'},
 
-    // ========== 行业资讯 (industry) - 2026年最新 ==========
-    {title: '年内超45款信用卡被停发！信用卡发卡量三年锐减1.11亿张', summary: '2026年开年以来，农业银行、民生银行、交通银行、广发银行等多家银行密集发布��告，宣布停止发行多款信用卡产品。央行数据显示，截至2025年末，全国信用卡和借贷合一卡数量降至6.96亿张，较2022年三季度末8.07亿张的历史峰值累计减少1.11亿张，回到约7年前水平。', source: '经济参考报', url: 'http://finance.ce.cn/bank12/scroll/202604/t20260420_2915508.shtml', category: 'industry', tags: JSON.stringify(['行业', '停发潮', '发卡量']), publish_date: '2026-04-20'},
-    {title: '信用卡行业步入缩量调整期，从"跑马圈地"转向存量精耕', summary: '随着2024年7月信用卡新规全面实施，银行业从过去的跑马圈地增量竞赛，正式转入存量博弈时代。多家银行从冲量转向提质，清退低效产品、压降高风险客群、收紧授信门槛。', source: '每日经济新闻', url: 'https://www.nbd.com.cn/articles/2026-04-19/4346106.html', category: 'industry', tags: JSON.stringify(['行业', '存量经营', '业务转型']), publish_date: '2026-04-19'},
-    {title: '2025年上市银行信用卡业务数据：发卡量跌破7亿张', summary: '13家A+H股上市银行2025年年报显示，截至2025年末累计发卡7.99亿张，较2024年减少约469.43万张。建设银行信用卡贷款余额同比减少568亿元，降幅达5.6%。', source: '证券时报', url: 'https://www.stcn.com/article/detail/3757804.html', category: 'industry', tags: JSON.stringify(['行业', '上市银行', '年报数据']), publish_date: '2026-03-31'},
+    // ========== 行业资讯 - 2026年最新 ==========
+    // 前端分类用的是 'news'
+    {title: '年内超45款信用卡被停发！信用卡发卡量三年锐减1.11亿张', summary: '2026年开年以来，农业银行、民生银行、交通银行、广发银行等多家银行密集发布公告，宣布停止发行多款信用卡产品。央行数据显示，截至2025年末，全国信用卡和借贷合一卡数量降至6.96亿张，较2022年三季度末8.07亿张的历史峰值累计减少1.11亿张，回到约7年前水平。', source: '经济参考报', url: 'http://finance.ce.cn/bank12/scroll/202604/t20260420_2915508.shtml', category: 'news', tags: JSON.stringify(['行业', '停发潮', '发卡量']), publish_date: '2026-04-20'},
+    {title: '信用卡行业步入缩量调整期，从"跑马圈地"转向存量精耕', summary: '随着2024年7月信用卡新规全面实施，银行业从过去的跑马圈地增量竞赛，正式转入存量博弈时代。多家银行从冲量转向提质，清退低效产品、压降高风险客群、收紧授信门槛。', source: '每日经济新闻', url: 'https://www.nbd.com.cn/articles/2026-04-19/4346106.html', category: 'news', tags: JSON.stringify(['行业', '存量经营', '业务转型']), publish_date: '2026-04-19'},
+    {title: '2025年上市银行信用卡业务数据：发卡量跌破7亿张', summary: '13家A+H股上市银行2025年年报显示，截至2025年末累计发卡7.99亿张，较2024年减少约469.43万张。建设银行信用卡贷款余额同比减少568亿元，降幅达5.6%。', source: '证券时报', url: 'https://www.stcn.com/article/detail/3757804.html', category: 'news', tags: JSON.stringify(['行业', '上市银行', '年报数据']), publish_date: '2026-03-31'},
 
     // ========== 处罚数据 (risk) - 2026年最新 ==========
     {title: '建设银行信用卡中心被罚575.27万元：涉客户资信调查、授信额度管理等14项违规', summary: '2026年3月23日，建设银行信用卡中心因客户资信水平调查严重违反审慎经营规则、授信额度管理严重违反审慎经营规则、信用卡分期资金管理严重违反审慎经营规则等14项违规，被上海金融监管局罚没合计575.27万元。', source: '上海金融监管局', url: 'https://www.nfra.gov.cn/', category: 'risk', tags: JSON.stringify(['处罚', '信用卡中心', '审慎经营']), publish_date: '2026-03-23'},
@@ -26,10 +27,11 @@ const initialData = [
     {title: '2026年一季度银行业监管处罚：累计罚没超5.76亿元，信用卡违规突出', summary: '2026年一季度，中国人民银行、国家金融监督管理总局及各分局共开出处罚记录625条，罚单金额总计5.76亿元，涉及银行机构至少586家。信贷违规仍是"重灾区"，信用卡业务违规问题较为突出。', source: '国际金融报', url: 'https://m.thepaper.cn/newsDetail_forward_32870417', category: 'risk', tags: JSON.stringify(['处罚', '监管处罚', '一季度']), publish_date: '2026-04-01'},
     {title: '中国银行青海省分行信用卡业务管理不到位被罚55万元', summary: '2026年3月20日，中国银行青海省分行因信用卡业务管理不到位，被青海金融监管局罚款55万元。', source: '青海金融监管局', url: 'https://www.nfra.gov.cn/', category: 'risk', tags: JSON.stringify(['处罚', '信用卡业务']), publish_date: '2026-03-20'},
 
-    // ========== 商机信息 (opportunity) ==========
-    {title: '场景金融：信用卡业务从"发卡"转向"场景获客"', summary: '随着信用卡新规实施，银行信用卡业务正从传统的跑马圈地转向场景化、精细化运营。场景金融成为信用卡获客和活客的核心��手，包括线下商超、餐饮、文旅、出行等高频消费场景。', source: '行业研究', url: 'https://credit-news-platform-production-6acb.up.railway.app/', category: 'opportunity', tags: JSON.stringify(['商机', '场景金融', '获客']), publish_date: '2026-04-01'},
-    {title: '数字化创新：AI+大数据赋能信用卡风控与营销', summary: '信用卡行业数字化转型加速，AI大模型、大数据风控、智能营销成为竞争焦点。银行加大对信用卡数字化渠道的投入，通过精准营销提升获客效率。', source: '行业研究', url: 'https://credit-news-platform-production-6acb.up.railway.app/', category: 'opportunity', tags: JSON.stringify(['商机', '数字化', 'AI', '风控']), publish_date: '2026-04-01'},
-    {title: '不良资产处置：信用卡不良资产批量转让市场升温', summary: '随着信用卡不良率攀升，银行加速通过批量转让方式出清信用卡不良资产。2026年1月，个人不良贷款批量转让市场持续升温，信用卡不良资产转让成为银行出清风险的常规渠道。', source: '银登中心', url: 'https://www.nfra.gov.cn/', category: 'opportunity', tags: JSON.stringify(['商机', '不良资产', '批量转让']), publish_date: '2026-04-01'},
+    // ========== 商机信息 ==========
+    // 前端分类用的是 'business'
+    {title: '场景金融：信用卡业务从"发卡"转向"场景获客"', summary: '随着信用卡新规实施，银行信用卡业务正从传统的跑马圈地转向场景化、精细化运营。场景金融成为信用卡获客和活客的核心抓手，包括线下商超、餐饮、文旅、出行等高频消费场景。', source: '行业研究', url: 'https://credit-news-platform-production-6acb.up.railway.app/', category: 'business', tags: JSON.stringify(['商机', '场景金融', '获客']), publish_date: '2026-04-01'},
+    {title: '数字化创新：AI+大数据赋能信用卡风控与营销', summary: '信用卡行业数字化转型加速，AI大模型、大数据风控、智能营销成为竞争焦点。银行加大对信用卡数字化渠道的投入，通过精准营销提升获客效率。', source: '行业研究', url: 'https://credit-news-platform-production-6acb.up.railway.app/', category: 'business', tags: JSON.stringify(['商机', '数字化', 'AI', '风控']), publish_date: '2026-04-01'},
+    {title: '不良资产处置：信用卡不良资产批量转让市场升温', summary: '随着信用卡不良率攀升，银行加速通过批量转让方式出清信用卡不良资产。2026年1月，个人不良贷款批量转让市场持续升温，信用卡不良资产转让成为银行出清风险的常规渠道。', source: '银登中心', url: 'https://www.nfra.gov.cn/', category: 'business', tags: JSON.stringify(['商机', '不良资产', '批量转让']), publish_date: '2026-04-01'},
 
     // ========== 投标信息 (bid) - 2026年最新招标 ==========
     {title: '光大银行成都分行2026年4-12月信用卡场景流量获客项目', summary: '中国光大银行股份有限公司成都分行招标采购2026年4-12月信用卡场景流量获客服务，包括线下获客及活客活动、满减活动、分期营销活动等。', source: '四川东升项目管理', url: 'http://www.scdsxg.com/cms/news/1214.html', category: 'bid', tags: JSON.stringify(['投标', '光大银行', '场景获客']), publish_date: '2026-03-18'},
