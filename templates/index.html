@@ -887,13 +887,6 @@
                             <i class="fas fa-external-link-alt"></i>阅读完整正文
                         </a>
                     </div>
-
-                    <!-- 原始链接 -->
-                    <div class="mt-6 pt-4 border-t border-border">
-                        <a id="modalSourceUrl" href="#" target="_blank" class="text-primary hover:underline text-sm flex items-center gap-2">
-                            <i class="fas fa-external-link-alt"></i>查看原始链接
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1391,15 +1384,11 @@
             }
             
             // 原始链接
-            const sourceUrlEl = document.getElementById('modalSourceUrl');
             const contentLinkEl = document.getElementById('modalContentLink');
             if (item.url) {
-                sourceUrlEl.href = item.url;
-                sourceUrlEl.classList.remove('hidden');
                 contentLinkEl.href = item.url;
                 contentLinkEl.classList.remove('hidden');
             } else {
-                sourceUrlEl.classList.add('hidden');
                 contentLinkEl.classList.add('hidden');
             }
             
