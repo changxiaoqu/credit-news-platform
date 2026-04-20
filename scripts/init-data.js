@@ -96,7 +96,7 @@ CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
 
                     // 插入新数据
                     let inserted = 0;
-                    const stmt = db.prepare(`INSERT INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+                    const stmt = db.prepare(`INSERT OR REPLACE INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`);
                     
                     initialData.forEach(article => {
                         stmt.run([article.title, article.summary, article.source, article.url, article.category, article.tags, article.publish_date], function(err) {
