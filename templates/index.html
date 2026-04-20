@@ -1393,10 +1393,10 @@
             // 原始链接
             const sourceUrlEl = document.getElementById('modalSourceUrl');
             const contentLinkEl = document.getElementById('modalContentLink');
-            if (item.source_url) {
-                sourceUrlEl.href = item.source_url;
+            if (item.url) {
+                sourceUrlEl.href = item.url;
                 sourceUrlEl.classList.remove('hidden');
-                contentLinkEl.href = item.source_url;
+                contentLinkEl.href = item.url;
                 contentLinkEl.classList.remove('hidden');
             } else {
                 sourceUrlEl.classList.add('hidden');
