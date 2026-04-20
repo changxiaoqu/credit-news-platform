@@ -1250,11 +1250,11 @@
             if (!keyword) {
                 filteredArticles = articles;
             } else {
-                // 支持标题、摘要、正文全文检索
+                // 支持标题、摘要、标签全文检索
                 filteredArticles = articles.filter(a => 
                     a.title.toLowerCase().includes(keyword) || 
                     (a.summary && a.summary.toLowerCase().includes(keyword)) ||
-                    (a.full_content && a.full_content.toLowerCase().includes(keyword))
+                    (a.tags && a.tags.toLowerCase().includes(keyword))
                 );
             }
             currentPage = 1;
