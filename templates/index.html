@@ -1276,7 +1276,9 @@
         }
 
         function performSearch() {
+            console.log('performSearch called');
             const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            alert('搜索: ' + keyword);
             if (!keyword) {
                 filteredArticles = articles;
             } else {
