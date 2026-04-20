@@ -1276,9 +1276,15 @@
         }
 
         function performSearch() {
-            console.log('performSearch called');
             const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
-            alert('搜索: ' + keyword);
+            console.log('performSearch called with keyword:', keyword);
+            
+            // 确保内容区域显示
+            document.getElementById('homeSections').classList.add('hidden');
+            document.getElementById('filterBar').classList.remove('hidden');
+            document.getElementById('articlesList').classList.remove('hidden');
+            document.getElementById('paginationBar').classList.remove('hidden');
+            
             if (!keyword) {
                 filteredArticles = articles;
             } else {
