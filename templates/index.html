@@ -1289,6 +1289,9 @@
             }
             currentPage = 1;
             showListView();
+            // 确保搜索时filterBar和articlesList显示
+            document.getElementById('filterBar').classList.remove('hidden');
+            document.getElementById('articlesList').classList.remove('hidden');
             renderArticles(keyword);
         }
 
