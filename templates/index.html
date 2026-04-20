@@ -215,7 +215,7 @@
                             onkeypress="if(event.key==='Enter')performSearch()">
                     </div>
                     
-                    <button onclick="alert('搜索按钮被点击!'); performSearch();" class="shadcn-button shadcn-button-primary">
+                    <button onclick="performSearch()" class="shadcn-button shadcn-button-primary">
                         <i class="fas fa-search"></i>搜索
                     </button>
                 </div>
@@ -1285,21 +1285,20 @@
             document.getElementById('articlesList').classList.remove('hidden');
             document.getElementById('paginationBar').classList.remove('hidden');
             
+            // 更新全局变量
             if (!keyword) {
                 filteredArticles = articles;
             } else {
-                // 支持标题、摘要、标签全文检索
                 filteredArticles = articles.filter(a => 
                     a.title.toLowerCase().includes(keyword) || 
                     (a.summary && a.summary.toLowerCase().includes(keyword)) ||
                     (a.tags && a.tags.toLowerCase().includes(keyword))
                 );
             }
+            
+            console.log('filteredArticles updated:', filteredArticles.length);
+            
             currentPage = 1;
-            showListView();
-            // 确保搜索时filterBar和articlesList显示
-            document.getElementById('filterBar').classList.remove('hidden');
-            document.getElementById('articlesList').classList.remove('hidden');
             renderArticles(keyword);
         }
 
