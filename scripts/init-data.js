@@ -26,11 +26,7 @@ const initialData = [
     {title: '中国银行青海省分行信用卡业务管理不到位被罚55万元', summary: '2026年3月20日，中国银行青海省分行因信用卡业务管理不到位，���青海金融监管局罚款55万元。违规行为涉及信用卡授信管理、风险控制等方面的问题。', source: '青海金融监管局', url: 'https://www.nfra.gov.cn/', category: 'risk', tags: '["处罚","信用卡业务"]', publish_date: '2026-03-20'},
 
     // ========== 商机信息 ==========
-    {title: '场景金融：信用卡业务从"发卡"转向"场景获客"', summary: '随着信用卡新规实施，银行信用卡业务正从传统的跑马圈地转向场景化、精细化运营。场景金融成为信用卡获客和活客的核心抓手，包括线下商超、餐饮、文旅、出行等高频消费场景。县域下沉成为新增长点，三四线城市及农村市场信用卡渗透率提升空间巨大。', source: '行业研究', url: 'https://www.bbda.com/bidDetail/5864d5e3702b5a2aa8a4c5eab4767be74ee653b181edfde5d079a98b5083c293.html', category: 'business', tags: '["商机","场景金融"]', publish_date: '2026-04-01'},
-    {title: '数字化创新：AI+大数据赋能信用卡风控与营销', summary: '信用卡行业数字化转型加速，AI大模型、大数据风控、智能营销成为竞争焦点。银行加大对信用卡数字化渠道的投入，通过精准营销提升获客效率。智能风控、实时交易监测、反欺诈识别成为技术应用重点方向。', source: '行业研究', url: 'https://kpmg.com/cn/zh/insights/2026/04/financial-industry-regulation-q1-2026-data-penalty-analysis-and-insight-suggestions.html', category: 'business', tags: '["商机","数字化"]', publish_date: '2026-04-01'},
-    {title: '不良资产处置：信用卡不良资产批量转让市场升温', summary: '随着信用卡不良率攀升，银行加速通过批量转让方式出清信用卡不良资产。2026年1月，个人不良贷款批量转让市场持续升温，持牌消费金融公司在银登中心挂牌转让个人消费贷不良资产包超110亿元。信用卡不良资产转让成为银行出清风险的常规渠道。', source: '银登中心', url: 'https://www.yinchengdanchina.com/', category: 'business', tags: '["商机","不良资产"]', publish_date: '2026-04-01'},
-
-    // ========== 投标信息 (bid) - 2026年最新 ==========
+    // (商机信息数据暂时保留) (bid) - 2026年最新 ==========
     {title: '光大银行成都分行2026年4-12月信用卡场景流量获客项目', summary: '中国光大银行股份有限公司成都分行招标采购2026年4-12月信用卡场景流量获客服务，服务内容包括线下获客及活客活动、满减活动、分期营销活动、驻点服务、异业联盟场景营销、支行特色商圈配置等。', source: '四川东升项目管理', url: 'http://www.scdsxg.com/cms/news/1214.html', category: 'bid', tags: '["投标","光大银行"]', publish_date: '2026-03-18'},
     {title: '工商银行2026至2028年信用卡分期付款外呼项目', summary: '中国工商银行招标采购2026至2028年信用卡分期付款外呼服务，入围4家供应商，初始人员规模合计1100人。要求供应商具有金融行业呼叫中心服务经验，具备完善的质量管理体系。', source: '中信国际招标', url: 'https://www.bbda.com/bidDetail/0081fd592cd93bb6567cd7f303a4bab4ea86d46194a6d2d4d856ec9f2753a115.html', category: 'bid', tags: '["投标","工商银行"]', publish_date: '2025-11-18'},
     {title: '中信银行信用卡中心2026-2028年度前期电话催收业务外包项目', summary: '中信银行股份有限公司信用卡中心招标采购2026-2028年度前期电话催收业务外包服务，要求供应商具有独立法人资格，持有有效期内的《增值电信业务经营许可证》（含呼叫中心业务）。', source: '中信银行信用卡中心', url: 'https://www.bbda.com/bidDetail/4aaf8cca31bdd7890043fd5806ad8d3d24fe72083f46d47adaf721b7642d4016.html', category: 'bid', tags: '["投标","中信银行"]', publish_date: '2025-11-21'},
