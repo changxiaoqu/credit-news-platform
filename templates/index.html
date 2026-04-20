@@ -693,6 +693,31 @@
                 <div class="flex-1"></div>
             </div>
 
+            <div id="bankSummary" class="shadcn-card p-4 mb-4 hidden">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-semibold text-lg" id="bankSummaryTitle">银行统计</h3>
+                    <span class="text-sm text-muted-foreground" id="bankSummaryTotal"></span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
+                        <div class="text-sm text-muted-foreground">处罚记录</div>
+                        <div class="text-xl font-bold text-blue-600" id="bankPenaltyCount">0</div>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg">
+                        <div class="text-sm text-muted-foreground">投标信息</div>
+                        <div class="text-xl font-bold text-orange-600" id="bankBidCount">0</div>
+                    </div>
+                    <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg">
+                        <div class="text-sm text-muted-foreground">监管政策</div>
+                        <div class="text-xl font-bold text-green-600" id="bankPolicyCount">0</div>
+                    </div>
+                    <div class="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg">
+                        <div class="text-sm text-muted-foreground">行业资讯</div>
+                        <div class="text-xl font-bold text-purple-600" id="bankNewsCount">0</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Articles List -->
             <div id="articlesList" class="space-y-4"></div>
 
@@ -1410,6 +1435,45 @@
             renderArticles();
         }
 
+        // 银行统计摘要
+        function updateBankSummary(bankName) {
+            const summaryEl = document.getElementById('bankSummary');
+            if (bankName === 'all') {
+                summaryEl.classList.add('hidden');
+                return;
+            }
+            
+            // 筛选该银行的所有数据
+            const bankArticles = articles.filter(a => 
+                (a.parent_bank === bankName) || 
+                (a.penalized_institution && a.penalized_institution.includes(bankName)) ||
+                (a.procuring_entity && a.procuring_entity.includes(bankName)) ||
+                (a.source && a.source.includes(bankName))
+            );
+            
+            if (bankArticles.length === 0) {
+                summaryEl.classList.add('hidden');
+                return;
+            }
+            
+            // 统计各类别数量
+            const stats = {
+                risk: bankArticles.filter(a => a.category === 'risk').length,
+                bid: bankArticles.filter(a => a.category === 'bid').length,
+                policy: bankArticles.filter(a => a.category === 'policy').length,
+                news: bankArticles.filter(a => a.category === 'news').length
+            };
+            
+            document.getElementById('bankSummaryTitle').textContent = bankName + ' - 资讯统计';
+            document.getElementById('bankSummaryTotal').textContent = '共 ' + bankArticles.length + ' 条';
+            document.getElementById('bankPenaltyCount').textContent = stats.risk;
+            document.getElementById('bankBidCount').textContent = stats.bid;
+            document.getElementById('bankPolicyCount').textContent = stats.policy;
+            document.getElementById('bankNewsCount').textContent = stats.news;
+            
+            summaryEl.classList.remove('hidden');
+        }
+
         function applyFilters() {
             const timeFilter = document.getElementById('timeFilter').value;
             const bankFilter = document.getElementById('bankFilter').value;
@@ -1455,6 +1519,10 @@
             });
             
             currentPage = 1;
+            
+            // 更新银行统计摘要
+            updateBankSummary(bankFilter);
+            
             renderArticles();
         }
 
