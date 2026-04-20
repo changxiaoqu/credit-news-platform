@@ -104,9 +104,17 @@ CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
                 const total = allData.length;
 
                 allData.forEach(article => {
+                    // 先删除旧的industry/opportunity数据，再插入新的
                     db.run(
-                        `INSERT OR IGNORE INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [article.title, article.summary, article.source, article.url, article.category, article.tags, article.publish_date],
+                        `DELETE FROM articles WHERE category IN ('industry', 'opportunity')`,
+                        [],
+                        function(err) {
+                            if (err) console.error('Delete error:', err);
+                        }
+                    );
+                    db.run(
+                        `INSERT OR REPLACE INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                        [article.title, article.summary, article.source, article.url + '?t=' + Date.now(), article.category, article.tags, article.publish_date],
                         function(err) {
                             if (err) {
                                 console.error('Insert error:', err);
