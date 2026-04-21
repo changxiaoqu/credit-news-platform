@@ -1536,12 +1536,15 @@
                     if (endDate) timeMatch = timeMatch && date <= new Date(endDate + 'T23:59:59');
                 }
                 
-                // 银行筛选
+                // 银行筛选 - 支持 parent_bank, penalized_institution, procuring_entity 和标题摘要搜索
                 let bankMatch = true;
                 if (bankFilter !== 'all') {
                     bankMatch = (a.parent_bank === bankFilter) || 
                                 (a.penalized_institution && a.penalized_institution.includes(bankFilter)) ||
-                                (a.procuring_entity && a.procuring_entity.includes(bankFilter));
+                                (a.procuring_entity && a.procuring_entity.includes(bankFilter)) ||
+                                // 兼容：搜索标题和摘要中的银行名
+                                (a.title && a.title.includes(bankFilter)) ||
+                                (a.summary && a.summary.includes(bankFilter));
                 }
                 
                 return timeMatch && bankMatch;
