@@ -739,12 +739,18 @@
 
             <!-- Pagination -->
             <div id="paginationBar" class="flex items-center justify-center gap-2 hidden">
-                <button onclick="changePage(-1)" class="shadcn-button shadcn-button-secondary">
+                <button onclick="goToPage(1)" class="shadcn-button shadcn-button-secondary" title="首页">
+                    <i class="fas fa-angle-double-left"></i>
+                </button>
+                <button onclick="changePage(-1)" class="shadcn-button shadcn-button-secondary" title="上一页">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <span id="pageInfo" class="text-sm text-muted-foreground">第 1 页</span>
-                <button onclick="changePage(1)" class="shadcn-button shadcn-button-secondary">
+                <button onclick="changePage(1)" class="shadcn-button shadcn-button-secondary" title="下一页">
                     <i class="fas fa-chevron-right"></i>
+                </button>
+                <button onclick="goToPage(-1)" class="shadcn-button shadcn-button-secondary" title="尾页">
+                    <i class="fas fa-angle-double-right"></i>
                 </button>
             </div>
         </div>
@@ -1320,7 +1326,18 @@
             renderArticles(keyword);
         }
 
-        function changePage(delta) {
+        function goToPage(target) {
+    if (target === -1) {
+        // Go to last page
+        const totalPages = Math.ceil(filteredArticles.length / 10);
+        currentPage = totalPages;
+    } else {
+        currentPage = target;
+    }
+    renderArticles();
+}
+
+function changePage(delta) {
             console.log('changePage called, delta:', delta, 'currentPage before:', currentPage);
             const totalPages = Math.ceil(filteredArticles.length / 10);
             const newPage = currentPage + delta;
