@@ -42,10 +42,14 @@ const initialData = [
     // 大模型/支付
     {title: '广西北部湾银行DeepSeek大模型一体机项目', summary: '预算358万元，润建股份中标', source: '智探AI应用', url: 'http://mp.weixin.qq.com/s?__biz=MzIxMDIwODM2MA==', category: 'bid', tags: '["大模型","智能营销"]', publish_date: '2025-07-03'},
     
-    // 原有投标数据保留
+    // 原有投标数据保留 - 修正URL
     {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '["投标","中国银联"]', publish_date: '2026-04-11'},
     {title: '江苏省联社新核心业务系统项目测试服务招标公告', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标', source: 'js96008.com', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '["投标","省联社"]', publish_date: '2026-04-09'},
     {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标', source: '湖南银行', url: 'https://www.hunanbank.com.cn/', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
+    
+    // 修正URL的问题数据
+    {title: '湖南省农村信用社联合社2025年基础软硬件维保采购项目', summary: '预算74万元，NBU备份软件原厂维保57万+金蝶天燕WEB中间件及达梦数据库维保17万', source: '湖南省农村信用社', url: 'https://www.hnnxs.com/info/87595.jspx', category: 'bid', tags: '["维保","省联社"]', publish_date: '2026-04-03'},
+    {title: '广州农村商业银行2026-2027年信用卡中心服务外包项目', summary: '预算804万元，采购828人月外包服务，涵盖客户服务、催收、营销', source: '广州农商行', url: 'https://www.grcbank.com/grcbank/gywx/cggg/2026032416151748215/index.shtml', category: 'bid', tags: '["外包","农商行"]', publish_date: '2026-03-24'},
     
     // 四川银行招标 - 2026年4月新增
     {title: '四川银行双录服务系统2025年度升级项目', summary: '预算138万元，广州佰锐网络科技有限公司中标130万元', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6510307.html', category: 'bid', tags: '["双录","四川银行"]', publish_date: '2026-04-15'},
