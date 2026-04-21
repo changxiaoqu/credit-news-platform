@@ -45,7 +45,7 @@ const initialData = [
     // 原有投标数据保留 - 修正URL
     {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '["投标","中国银联"]', publish_date: '2026-04-11'},
     {title: '江苏省联社新核心业务系统项目测试服务招标公告', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标', source: 'js96008.com', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '["投标","省联社"]', publish_date: '2026-04-09'},
-    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标', source: '湖南银行', url: 'https://www.hunanbank.com.cn/', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
+    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标，预算193.9万元', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/07/article_2026040710591792837.shtml', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
     
     // 修正URL的问题数据
     {title: '湖南省农村信用社联合社2025年基础软硬件维保采购项目', summary: '预算74万元，NBU备份软件原厂维保57万+金蝶天燕WEB中间件及达梦数据库维保17万', source: '湖南省农村信用社', url: 'https://www.hnnxs.com/info/87595.jspx', category: 'bid', tags: '["维保","省联社"]', publish_date: '2026-04-03'},
