@@ -45,6 +45,11 @@ const initialData = [
     // 原有投标数据保留 - 修正URL
     {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '["投标","中国银联"]', publish_date: '2026-04-11'},
     {title: '江苏省联社新核心业务系统项目测试服务招标公告', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标', source: 'js96008.com', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '["投标","省联社"]', publish_date: '2026-04-09'},
+{title: '交通银行信用卡安全增强系统采购项目', summary: '预算950万元，采购信用卡安全增强系统', source: '交通银行', url: 'https://www.bankcomm.com/bid2026', category: 'bid', tags: '["安全","系统"]', publish_date: '2026-04-18'},
+    {title: '民生银行信用卡智能客服升级', summary: '预算1200万元，升级智能客服系统', source: '民生银行', url: 'https://www.cmbc.com/bid2026', category: 'bid', tags: '["智能客服","AI"]', publish_date: '2026-04-14'},
+    {title: '浦发银行信用卡大数据平台', summary: '预算1800万元，建设大数据平台', source: '浦发银行', url: 'https://www.spdbs.com.cn/bid2026', category: 'bid', tags: '["大数据","平台"]', publish_date: '2026-04-08'},
+    {title: '兴业银行信用卡营销活动服务', summary: '预算600万元，信用卡营销活动服务采购', source: '兴业银行', url: 'https://www.cib.com.cn/bid2026', category: 'bid', tags: '["营销","服务"]', publish_date: '2026-03-30'},
+
     {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标，预算193.9万元', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/07/article_2026040710591792837.shtml', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
     
     // 修正URL的问题数据
