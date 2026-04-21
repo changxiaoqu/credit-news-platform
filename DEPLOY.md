@@ -204,4 +204,4 @@ CRAWLER_SECRET=your-random-secret
 | 国内访问/企业使用 | 阿里云/腾讯云 |
 | 纯静态展示 | Vercel (免费) |
 
-需要我帮你配置哪个方案？
+需要我帮你配置哪个方案？# Trigger redeploy
