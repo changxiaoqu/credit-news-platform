@@ -1173,11 +1173,6 @@
             document.getElementById('filterBar').classList.remove('hidden');
             document.getElementById('articlesList').classList.remove('hidden');
             document.getElementById('paginationBar').classList.remove('hidden');
-            // 显示银行统计摘要（如果已选择银行）
-            const bankFilter = document.getElementById('bankFilter');
-            if (bankFilter && bankFilter.value !== 'all') {
-                updateBankSummary(bankFilter.value);
-            }
         }
 
         function showHomeView() {
@@ -1553,9 +1548,6 @@
             });
             
             currentPage = 1;
-            
-            // 更新银行统计摘要
-            updateBankSummary(bankFilter);
             
             renderArticles();
         }
