@@ -1286,7 +1286,15 @@
         }
 
         function performSearch() {
-            const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+            const keyword = document.getElementById('searchInput').value.trim();
+            
+            console.log('performSearch called, keyword:', keyword, 'articles loaded:', articles.length);
+            
+            // 检查数据是否加载完成
+            if (articles.length === 0) {
+                alert('数据加载中，请稍后再试');
+                return;
+            }
             
             // 确保内容区域显示
             document.getElementById('homeSections').classList.add('hidden');
@@ -1299,9 +1307,9 @@
                 filteredArticles = articles;
             } else {
                 filteredArticles = articles.filter(a => 
-                    a.title.toLowerCase().includes(keyword) || 
-                    (a.summary && a.summary.toLowerCase().includes(keyword)) ||
-                    (a.tags && a.tags.toLowerCase().includes(keyword))
+                    (a.title && a.title.includes(keyword)) || 
+                    (a.summary && a.summary.includes(keyword)) ||
+                    (a.tags && JSON.stringify(a.tags).includes(keyword))
                 );
             }
             
