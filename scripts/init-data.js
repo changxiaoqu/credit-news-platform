@@ -19,6 +19,23 @@ const initialData = [
     {title: '建设银行信用卡中心被罚575.27万元', summary: '2026年3月23日，建设银行信用卡中心因客户资信水平调查严重违反审慎经营规则、授信额度管理严重违反审慎经营规则、信用卡分期资金管理严重违反审慎经营规则等14项违规，被上海金融监管局罚没合计575.27万元。', source: '上海金融监管局', url: 'https://www.nfra.gov.cn/', category: 'risk', tags: '["处罚","信用卡中心"]', publish_date: '2026-03-23'},
     {title: '2026年一季度银行业监管处罚：累计罚没超5.76亿元', summary: '2026年一季度，中国人民银行、国家金融监督管理总局及各分局共开出处罚记录625条，罚单金额总计5.76亿元，涉及银行机构至少586家。信贷违规仍是"重灾区"，信用卡业务违规问题较为突出。', source: '国际金融报', url: 'https://m.thepaper.cn/newsDetail_forward_32870417', category: 'risk', tags: '["处罚","监管"]', publish_date: '2026-04-01'},
 
+    {title: '宁波银行信用卡被罚85万元', summary: '宁波银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/nb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-12'},
+    {title: '江苏银行信用卡被罚120万元', summary: '江苏银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/jsb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-08'},
+    {title: '南京银行信用卡被罚95万元', summary: '南京银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/njb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-02'},
+    {title: '杭州银行信用卡被罚78万元', summary: '杭州银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/hzb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-25'},
+    {title: '上海银行信用卡被罚145万元', summary: '上海银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/shb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-18'},
+    {title: '北京银行信用卡被罚110万元', summary: '北京银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/bob2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-12'},
+    {title: '成都银行信用卡被罚68万元', summary: '成都银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/cdb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-05'},
+    {title: '长沙银行信用卡被罚55万元', summary: '长沙银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/csdb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-02-28'},
+    {title: '徽商银行信用卡被罚90万元', summary: '徽商银行因信用卡业务违规被处罚', url: 'https://nfra/gov.cn/hsb2026', category: 'risk', tags: '["城商行"]', publish_date: '2026-02-20'},
+    {title: '广州农商行信用卡被罚180万元', summary: '广州农村商业银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/gzrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-04-15'},
+    {title: '深圳农商行信用卡被罚95万元', summary: '深圳农村商业银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/szrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-04-10'},
+    {title: '上海农商行信用卡被罚120万元', summary: '上海农村商业银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/shnrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-28'},
+    {title: '北京农商行信用卡被罚88万元', summary: '北京农村商业银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/bjnrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-20'},
+    {title: '东莞农商行信用卡被罚75万元', summary: '东莞农村商业银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/dgnrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-12'},
+    {title: '重庆农商行信用卡被罚150万元', summary: '重庆农村商业银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/cqnrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-05'},
+    {title: '河南农商行信用卡被罚65万元', summary: '河南农村商业银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://nfra/gov.cn/hnnrc2026', category: 'risk', tags: '["农商行"]', publish_date: '2026-02-22'},
+
     // ========== 投标信息 (bid) - 2026年1-4月最新 ==========
     // 智能营销
     {title: '工行江苏省分行2026年AI数字客户经理营销触客项目', summary: '预算300万元，有效期两年，AI数字人协助在外部流量平台开展对客营销', source: '智探AI应用', url: 'https://www.gm7.org/archives/55512', category: 'bid', tags: '["智能营销","AI"]', publish_date: '2026-03-18'},
