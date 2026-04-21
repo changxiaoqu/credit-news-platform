@@ -1578,11 +1578,11 @@
             bankFilter.parentNode.insertBefore(wrapper, bankFilter);
             wrapper.appendChild(bankFilter);
 
-            // 创建搜索输入框（移动端显示）
+            // 创建搜索输入框（始终显示）
             const searchInput = document.createElement('input');
             searchInput.type = 'text';
             searchInput.placeholder = '搜索银行...';
-            searchInput.className = 'shadcn-input w-auto md:hidden mb-2';
+            searchInput.className = 'shadcn-input w-auto mb-2';
             wrapper.insertBefore(searchInput, bankFilter);
 
             // 创建搜索结果下拉框
@@ -1638,7 +1638,7 @@
                 }
             });
 
-            // 在移动端隐藏原下拉框，使用搜索框代替
+            // 始终显示搜索框，下拉框在移动端隐藏
             if (window.innerWidth < 768) {
                 bankFilter.classList.add('hidden');
             }
@@ -1647,7 +1647,6 @@
                     bankFilter.classList.add('hidden');
                 } else {
                     bankFilter.classList.remove('hidden');
-                    searchInput.classList.add('hidden');
                 }
             });
         }
