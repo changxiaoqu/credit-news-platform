@@ -49,7 +49,7 @@ const initialData = [
     
     // 修正URL的问题数据
     {title: '湖南省农村信用社联合社2025年基础软硬件维保采购项目', summary: '预算74万元，NBU备份软件原厂维保57万+金蝶天燕WEB中间件及达梦数据库维保17万', source: '湖南省农村信用社', url: 'https://www.hnnxs.com/info/87595.jspx', category: 'bid', tags: '["维保","省联社"]', publish_date: '2026-04-03'},
-    {title: '广州农村商业银行2026-2027年信用卡中心服务外包项目', summary: '预算804万元，采购828人月外包服务，涵盖客户服务、催收、营销', source: '广州农商行', url: 'https://www.grcbank.com/grcbank/gywx/cggg/2026032416151748215/index.shtml', category: 'bid', tags: '["外包","农商行"]', publish_date: '2026-03-24'},
+    {title: '广州农村商业银行2026-2027年信用卡中心服务外包项目', summary: '预算804万元，采购828人月外包服务，涵盖客户服务、催收、营销', source: '广州农商行', url: 'https://newcpm.grcbank.com:8079/jcepp-esp/notice/toNoticeDetails?newsId=99dc858c4b834fcabe86637fd6712153&newsType=02', category: 'bid', tags: '["外包","农商行"]', publish_date: '2026-03-24'},
     
     // 四川银行招标 - 2026年4月新增
     {title: '四川银行双录服务系统2025年度升级项目', summary: '预算138万元，广州佰锐网络科技有限公司中标130万元', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6510307.html', category: 'bid', tags: '["双录","四川银行"]', publish_date: '2026-04-15'},
