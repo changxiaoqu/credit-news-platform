@@ -45,7 +45,15 @@ const initialData = [
     // 原有投标数据保留
     {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '["投标","中国银联"]', publish_date: '2026-04-11'},
     {title: '江苏省联社新核心业务系统项目测试服务招标公告', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标', source: 'js96008.com', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '["投标","省联社"]', publish_date: '2026-04-09'},
-    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标', source: '湖南银行', url: 'https://www.hunanbank.com.cn/', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'}
+    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标', source: '湖南银行', url: 'https://www.hunanbank.com.cn/', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
+    
+    // 四川银行招标 - 2026年4月新增
+    {title: '四川银行双录服务系统2025年度升级项目', summary: '预算138万元，广州佰锐网络科技有限公司中标130万元', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6510307.html', category: 'bid', tags: '["双录","四川银行"]', publish_date: '2026-04-15'},
+    {title: '四川银行2026年数据中心基础软硬件采购项目(数据中心基础通信设备)', summary: '预算7519.76万元，含交换机、路由器、防火墙等', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gongchengzhaobiao/67394.html', category: 'bid', tags: '["设备采购","四川银行"]', publish_date: '2026-03-14'},
+    {title: '四川银行2026年数据中心基础软硬件采购项目(C86服务器)', summary: '预算7580.18万元，采购C86服务器设备', source: '国信招标', url: 'http://www.qgzbcgjypt.com/xinwenzhongxin/67461.html', category: 'bid', tags: '["服务器","四川银行"]', publish_date: '2026-03-14'},
+    {title: '四川银行2026年2-4季度特色工程满减及券码活动采购项目', summary: '预算2276.21万元，八项工程满减及券码活动', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gonggaogongshi/69958.html', category: 'bid', tags: '["营销活动","四川银行"]', publish_date: '2026-03-20'},
+    {title: '四川银行2026年电子Ⅱ类户营销活动权益采购项目（第二批）', summary: '预算4101万元，权益发放服务采购', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6491225.html', category: 'bid', tags: '["权益营销","四川银行"]', publish_date: '2026-04-17'},
+    {title: '四川银行2026年测试技术服务框架采购项目', summary: '预算1460万元，测试技术服务框架采购', source: '移动支付网', url: 'https://www.mpaypass.com.cn/news/202601/26105144.html', category: 'bid', tags: '["测试服务","四川银行"]', publish_date: '2026-01-26'}
 ];
 
 function initData() {
