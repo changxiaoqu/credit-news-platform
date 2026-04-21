@@ -53,7 +53,15 @@ const initialData = [
     {title: '四川银行2026年数据中心基础软硬件采购项目(C86服务器)', summary: '预算7580.18万元，采购C86服务器设备', source: '国信招标', url: 'http://www.qgzbcgjypt.com/xinwenzhongxin/67461.html', category: 'bid', tags: '["服务器","四川银行"]', publish_date: '2026-03-14'},
     {title: '四川银行2026年2-4季度特色工程满减及券码活动采购项目', summary: '预算2276.21万元，八项工程满减及券码活动', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gonggaogongshi/69958.html', category: 'bid', tags: '["营销活动","四川银行"]', publish_date: '2026-03-20'},
     {title: '四川银行2026年电子Ⅱ类户营销活动权益采购项目（第二批）', summary: '预算4101万元，权益发放服务采购', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6491225.html', category: 'bid', tags: '["权益营销","四川银行"]', publish_date: '2026-04-17'},
-    {title: '四川银行2026年测试技术服务框架采购项目', summary: '预算1460万元，测试技术服务框架采购', source: '移动支付网', url: 'https://www.mpaypass.com.cn/news/202601/26105144.html', category: 'bid', tags: '["测试服务","四川银行"]', publish_date: '2026-01-26'}
+    {title: '四川银行2026年测试技术服务框架采购项目', summary: '预算1460万元，测试技术服务框架采购', source: '移动支付网', url: 'https://www.mpaypass.com.cn/news/202601/26105144.html', category: 'bid', tags: '["测试服务","四川银行"]', publish_date: '2026-01-26'},
+    
+    // 其他银行招标 - 2026年新增
+    {title: '兴业银行呼叫中心自助语音交互信创建设项目', summary: '中电金信软件有限公司中标，呼叫中心自助语音交互信创建设', source: '兴业银行', url: 'https://cg.cib.com.cn/cms/default/webfile/ywgg3/20260402/1224297819502804992.html', category: 'bid', tags: '["智能客服","兴业银行"]', publish_date: '2026-04-02'},
+    {title: '中信银行CANN生态信创大模型服务器入围采购项目', summary: '预算1658万元，神州鲲泰中标968万元，基于昇腾芯片', source: 'CSDN', url: 'https://gitcode.csdn.net/69db476b0a2f6a37c59efc9e.html', category: 'bid', tags: '["大模型","中信银行"]', publish_date: '2026-04-03'},
+    {title: '中国进出口银行AI大模型一体机采购项目', summary: '预算968万元，讯飞智元中标，用于构建AI算力底座', source: 'CSDN', url: 'https://gitcode.csdn.net/69db476b0a2f6a37c59efc9e.html', category: 'bid', tags: '["大模型","进出口银行"]', publish_date: '2026-03-01'},
+    {title: '天津银行智能客服平台数字人及智能Siri功能项目', summary: '预算121.5万元，在线客服增加数字人及智能Siri功能', source: '国信采招', url: 'http://gxzzzb.top/?m=home&c=View&a=index&aid=2400', category: 'bid', tags: '["智能客服","数字人","天津银行"]', publish_date: '2026-01-08'},
+    {title: '光大银行智能运营中心大模型GPU算力资源采购项目', summary: '预算3000万元，采购10台大模型算力服务器', source: '移动支付网', url: 'https://m.mpaypass.com.cn/news/202601/15102031.html', category: 'bid', tags: '["算力","光大银行"]', publish_date: '2025-09-01'},
+    {title: '浦发银行DeepSeek-R1671B千亿级大模型部署', summary: '计划投入约15亿元用于大模型相关技术研发和应用落地', source: 'CSDN', url: 'http://mp.weixin.qq.com/s?__biz=MjM5Njk3MDM0Mg==', category: 'bid', tags: '["大模型","浦发银行"]', publish_date: '2025-02-01'}
 ];
 
 function initData() {
