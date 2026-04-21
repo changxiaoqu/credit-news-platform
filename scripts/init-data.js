@@ -148,4 +148,9 @@ CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
     });
 }
 
-module.exports = { initData };
+module.exports = { initData };    // Additional penalty data
+    {title: '建设银行信用卡中心被罚575.27万元', summary: '因信用卡业务违规被上海金融监管局罚没575.27万元', source: '上海金融监管局', url: 'https://www.nfra.gov.cn/ccb2026', category: 'penalty', tags: '["处罚"]', publish_date: '2026-03-23'},
+    {title: '工商银行信用卡被罚200万元', summary: '工商银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://www.nfra.gov.cn/icbc2026a', category: 'penalty', tags: '["处罚"]', publish_date: '2026-04-20'},
+    {title: '农业银行信用卡被罚180万元', summary: '农业银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://www.nfra.gov.cn/abc2026b', category: 'penalty', tags: '["处罚"]', publish_date: '2026-04-15'},
+    {title: '中国银行信用卡被罚150万元', summary: '中国银行因信用卡违规被处罚', source: '金融监管总局', url: 'https://www.nfra.gov.cn/boc2026', category: 'penalty', tags: '["处罚"]', publish_date: '2026-04-10'},
+    {title: '交通银行信用卡被罚120万元', summary: '交通银行因信用卡业务违规被处罚', source: '金融监管总局', url: 'https://www.nfra.gov.cn/bcom2026', category: 'penalty', tags: '["处罚"]', publish_date: '2026-04-05'},
