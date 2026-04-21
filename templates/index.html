@@ -1472,12 +1472,14 @@
                 return;
             }
             
-            // 筛选该银行的所有数据
+            // 筛选该银行的所有数据（支持标题摘要搜索）
             const bankArticles = articles.filter(a => 
                 (a.parent_bank === bankName) || 
                 (a.penalized_institution && a.penalized_institution.includes(bankName)) ||
                 (a.procuring_entity && a.procuring_entity.includes(bankName)) ||
-                (a.source && a.source.includes(bankName))
+                (a.source && a.source.includes(bankName)) ||
+                (a.title && a.title.includes(bankName)) ||
+                (a.summary && a.summary.includes(bankName))
             );
             
             if (bankArticles.length === 0) {
