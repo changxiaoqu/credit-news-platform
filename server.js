@@ -318,19 +318,18 @@ async function start() {
         await initDB();
         console.log('Database initialized at:', DB_PATH);
 
-        // 检查是否需要初始化数据（表为空时）
+        // 检查是否需要初始化数据（Railway每次部署都重新初始化）
         const db = getDB();
         db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
             db.close();
-            if (!err && row.count === 0) {
-                console.log('Database is empty, initializing data...');
-                const { initData } = require('./scripts/init-data');
-                initData().then(() => {
-                    console.log('Initial data loaded');
-                }).catch(err => {
-                    console.error('Failed to load initial data:', err);
-                });
-            }
+            // Railway部署时强制重新初始化数据（因为没有持久化存储）
+            console.log('Initializing data on every deploy, articles count:', row.count);
+            const { initData } = require('./scripts/init-data');
+            initData().then(() => {
+                console.log('Initial data loaded');
+            }).catch(err => {
+                console.error('Failed to load initial data:', err);
+            });
         });
 
         app.listen(PORT, () => {
