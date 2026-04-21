@@ -107,18 +107,29 @@ CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
                     return;
                 }
 
-                db.run(`DELETE FROM articles WHERE category IN ('news', 'business', 'industry', 'opportunity')`, [], function(err) {
+                db.run(`DELETE FROM articles WHERE category IN ('news', 'business', 'industry', 'opportunity', 'bid')`, [], function(err) {
                     if (err) console.error('Delete error:', err);
                     else console.log('✅ 已清除旧数据');
+
+                    // 去重：按URL去重，保留第一条
+                    const uniqueData = [];
+                    const seenUrls = new Set();
+                    initialData.forEach(item => {
+                        if (!seenUrls.has(item.url)) {
+                            seenUrls.add(item.url);
+                            uniqueData.push(item);
+                        }
+                    });
+                    console.log(`去重后：${uniqueData.length} 条（原始 ${initialData.length} 条）`);
 
                     let inserted = 0;
                     const stmt = db.prepare(`INSERT OR REPLACE INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`);
                     
-                    initialData.forEach(item => {
+                    uniqueData.forEach(item => {
                         stmt.run(item.title, item.summary, item.source, item.url, item.category, item.tags, item.publish_date, function(err) {
                             if (err) console.error('Insert error:', err);
                             inserted++;
-                            if (inserted === initialData.length) {
+                            if (inserted === uniqueData.length) {
                                 stmt.finalize();
                                 db.close();
                                 console.log(`✅ 共插入 ${inserted} 条数据`);
