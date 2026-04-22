@@ -172,8 +172,15 @@
 </head>
 <body class="min-h-screen">
     <!-- Sidebar -->
+    <!-- 侧边栏遮罩层（移动端点击关闭） -->
+    <div id="sidebarBackdrop" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden" onclick="toggleSidebar()"></div>
+
     <aside id="sidebar" class="fixed left-0 top-0 z-40 h-screen w-64 border-r border-border bg-card transition-transform duration-300 -translate-x-full md:translate-x-0">
         <div class="flex h-16 items-center border-b border-border px-6">
+            <!-- 移动端关闭按钮 -->
+            <button id="sidebarCloseBtn" onclick="toggleSidebar()" class="mr-auto md:hidden flex items-center justify-center w-8 h-8 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
             <div class="flex items-center gap-3">
                 <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
                     <i class="fas fa-credit-card"></i>
@@ -939,10 +946,22 @@
 
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
+            // 移动端切换主题后关闭侧边栏
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarBackdrop').classList.add('hidden');
+            }
         }
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            sidebar.classList.toggle('-translate-x-full');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                backdrop.classList.add('hidden');
+            } else {
+                backdrop.classList.remove('hidden');
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1252,7 +1271,13 @@
                     el.classList.add('active');
                 }
             });
-            
+
+            // 移动端选分类后自动关闭侧边栏
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('-translate-x-full');
+                document.getElementById('sidebarBackdrop').classList.add('hidden');
+            }
+
             if (category === 'all') {
                 showHomeView();
             } else {
