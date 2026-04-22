@@ -1581,11 +1581,12 @@
         }
 
         // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            loadData();
+        // 页面加载后立即获取数据
+        (async function() {
+            await loadData();
             initBankSearch();
             showMobileNav();
-        });
+        })();
 
         // ★ 工具函数：转义正则特殊字符
         function escapeRegex(str) {
