@@ -30,9 +30,14 @@ function initDB() {
             if (err) reject(err);
             else {
                 if (dbExists) {
-                    // 数据库文件已存在，直接使用
-                    console.log('Using existing database:', DB_PATH);
-                    resolve(db);
+                    // 数据库文件已存在，确保 FTS5 表存在
+                    db.exec(`CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(title, summary, content)`, (err) => {
+                        if (err) reject(err);
+                        else {
+                            console.log('Using existing database with FTS5:', DB_PATH);
+                            resolve(db);
+                        }
+                    });
                 } else {
                     // 创建新表
                     const schema = `
@@ -55,13 +60,11 @@ CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
 CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
 
 -- FTS5 全文检索表（★新增）
--- content='' 表示不存储原文，由 articles 表提供
+-- 本地表模式，存储 title/summary/content 副本，INSERT OR REPLACE 同步更新
 CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(
     title,
     summary,
-    content,
-    content='articles',
-    content_rowid='id'
+    content
 );
                     `;
                     db.exec(schema, (err) => {
@@ -86,12 +89,14 @@ function syncToFTS(db, id, title, summary, content) {
 }
 
 // 重建 FTS5 索引（用于初始化时批量同步）
+// 策略：DROP + CREATE + INSERT，避免 DELETE 触发虚拟表内部问题
 function rebuildFTS(db) {
     return new Promise((resolve, reject) => {
         db.exec(`
-            DELETE FROM articles_fts;
+            DROP TABLE IF EXISTS articles_fts;
+            CREATE VIRTUAL TABLE articles_fts USING fts5(title, summary, content);
             INSERT INTO articles_fts(rowid, title, summary, content)
-            SELECT id, COALESCE(title,''), COALESCE(summary,''), COALESCE(content,'') FROM articles;
+                SELECT id, COALESCE(title,''), COALESCE(summary,''), COALESCE(content,'') FROM articles;
         `, (err) => {
             if (err) reject(err);
             else resolve();
@@ -118,14 +123,18 @@ app.get('/api/articles', (req, res) => {
         if (!safeQuery) {
             return res.json([]);
         }
-        // 生成多词 OR 查询，提升召回率
-        const ftsTerms = safeQuery.split(/\s+/).filter(t => t.length > 0);
-        const ftsQuery = ftsTerms.map(t => `"${t}"`).join(' OR ') || `"${safeQuery}"`;
+        // ★ FTS5 无 ICU 中文分词支持：中文按字符、英文按词分别前缀匹配
+        // "信用卡" → "信*" OR "用*" OR "卡*"
+        // "AI数字" → "AI"* OR "数*" OR "字*"
+        const allChars = safeQuery.replace(/\s/g, '').split('');
+        // 对每个字符/词生成前缀匹配条件
+        const conditions = allChars.map(c => `"${c}"*`);
+        const ftsQuery = conditions.join(' OR ');
 
         const sql = `
             SELECT a.*,
                 snippet(articles_fts, 1, '<mark>', '</mark>', '…', 32) AS highlight_summary,
-                snippet(articles_fts, 0, '<mark>', '</mark>', '…', 20) AS highlight_title
+                snippet(articles_fts, 0, '<mark>', '</mark>', '…', 40) AS highlight_title
             FROM articles a
             INNER JOIN articles_fts fts ON a.id = fts.rowid
             WHERE articles_fts MATCH ?
