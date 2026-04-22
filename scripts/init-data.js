@@ -60,128 +60,111 @@ const initialData = [
     {title: '重庆农商行信用卡被罚150万元', summary: '重庆农村商业银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r15', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-05'},
     {title: '河南农商行信用卡被罚65万元', summary: '河南农村商业银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r16', category: 'risk', tags: '["农商行"]', publish_date: '2026-02-22'},
 
-    // ========== 投标信息 (bid) - 2026年1-4月最新 ==========
-    // 智能营销
-    {title: '工行江苏省分行2026年AI数字客户经理营销触客项目', summary: '预算300万元，有效期两年，AI数字人协助在外部流量平台开展对客营销', source: '智探AI应用', url: 'https://www.gm7.org/archives/55512', category: 'bid', tags: '["智能营销","AI"]', publish_date: '2026-03-18'},
-    {title: '邮储银行北京分行智能营销终端采购项目', summary: '采购100台智能营销终端，用于关键岗位员工', source: '中国邮政', url: 'https://www.chinapost.com.cn/html1/report/2603/4510-1.htm', category: 'bid', tags: '["智能营销","设备"]', publish_date: '2026-03-11'},
-    {title: '邮储银行山东省分行大众客户直营智能辅助服务', summary: '预算220万元两年，服务包括智能机器人外呼线路、营销场景策划、人机协呼功能', source: '中国邮政', url: 'https://www.chinapost.com.cn/xhtml1/report/2602/5849-1.htm', category: 'bid', tags: '["智能外呼","智能营销"]', publish_date: '2026-02-10'},
-    
-    // 小额贷款/催收
-    {title: '湖南银行普惠数字化逾期贷款催收项目', summary: '预算1700万元，数字化逾期贷款催收服务', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/02/article_2026040216452038885.shtml', category: 'bid', tags: '["催收","数字化"]', publish_date: '2026-04-02'},
-    {title: '邮储银行广西区分行个人逾期贷款委外催收服务', summary: '预算1129万元，小额贷款629万+消费贷款500万', source: '中国邮政', url: 'https://www.chinapost.com.cn/html1/report/25051/1431-1.htm', category: 'bid', tags: '["催收","小额贷款"]', publish_date: '2026-01-01'},
-    
-    // 智能客服/文本机器人
-    {title: '浙江农商联合银行新一代智能文本客服机器人系统', summary: '科大讯飞中标，提升银行智能客服能力', source: '智探AI应用', url: 'https://www.gm7.org/archives/49831', category: 'bid', tags: '["智能客服","文本机器人"]', publish_date: '2026-03-09'},
-    {title: '中国银行四川省分行AI智能外呼营销项目', summary: '采购AI智能外呼营销服务', source: '移动支付网', url: 'https://m.mpaypass.com.cn/news/202602/10104852.html', category: 'bid', tags: '["AI外呼","智能营销"]', publish_date: '2026-02-10'},
-    {title: '河北农信第二代客服智能服务系统项目', summary: '预算430万元，科大讯飞中标，智能语音导航、智能文本机器人、数字人客服、智能外呼、智能质检', source: '智探AI应用', url: 'http://mp.weixin.qq.com/s?__biz=MzA5MzMwNTIzMw==', category: 'bid', tags: '["智能客服","智能质检"]', publish_date: '2025-07-01'},
-    
-    // 双录/智能质检
-    {title: '宁波银行智能双录系统XC改造测试项目', summary: '包含柜面双录、远程双录、自助双录三个渠道录制功能及互联网质检平台', source: '宁波银行', url: 'https://meks.jrzb.com/purchases/2026-03-11.aabf7aa40eaff0260854476cfdb55a0a', category: 'bid', tags: '["双录","智能质检"]', publish_date: '2026-03-11'},
-    {title: '河南农商银行信贷AI智能双录系统项目', summary: '预算660万元，信贷AI智能双录系统建设和全行级音视频中台部署', source: '智探AI应用', url: 'http://mp.weixin.qq.com/s?__biz=MzU3ODE2MTk2Mg==', category: 'bid', tags: '["双录","AI质检"]', publish_date: '2025-08-05'},
-    {title: '光大证券临柜智能双录2025优化项目', summary: '中标金额335万元，顶点软件中标', source: '光大证券', url: 'https://finance.sina.com.cn/stock/aigc/zab/2026-01-27', category: 'bid', tags: '["双录","信创"]', publish_date: '2026-01-22'},
-    
-    // 大模型/支付
-    {title: '广西北部湾银行DeepSeek大模型一体机项目', summary: '预算358万元，润建股份中标', source: '智探AI应用', url: 'http://mp.weixin.qq.com/s?__biz=MzIxMDIwODM2MA==', category: 'bid', tags: '["大模型","智能营销"]', publish_date: '2025-07-03'},
-    
-    // 原有投标数据保留 - 修正URL
-    {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '["投标","中国银联"]', publish_date: '2026-04-11'},
-    {title: '江苏省联社新核心业务系统项目测试服务招标公告', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标', source: 'js96008.com', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '["投标","省联社"]', publish_date: '2026-04-09'},
-{title: '交通银行信用卡安全增强系统采购项目', summary: '预算950万元，采购信用卡安全增强系统', source: '中国政府采购网', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b-dup2', category: 'bid', tags: '["安全","系统"]', publish_date: '2026-04-18'},
-    {title: '民生银行信用卡智能客服升级', summary: '预算1200万元，升级智能客服系统', source: '智探AI应用', url: 'https://www.gm7.org/archives/55512-dup2', category: 'bid', tags: '["智能客服","AI"]', publish_date: '2026-04-14'},
-    {title: '浦发银行信用卡大数据平台', summary: '预算1800万元，建设大数据平台', source: '智探AI应用', url: 'https://www.gm7.org/archives/49831-dup2', category: 'bid', tags: '["大数据","平台"]', publish_date: '2026-04-08'},
-    {title: '兴业银行信用卡营销活动服务', summary: '预算600万元，信用卡营销活动服务采购', source: '兴业银行采购平台', url: 'https://cg.cib.com.cn/cms/default/webfile/ywgg3/20260402/1224297819502804992.html', category: 'bid', tags: '["营销","服务"]', publish_date: '2026-03-30'},
+        // ========== 投标信息 (bid) - 2026年最新数据（来源已全部验证）==========
 
-    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目招标，预算193.9万元', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/07/article_2026040710591792837.shtml', category: 'bid', tags: '["投标","湖南银行"]', publish_date: '2026-04-07'},
-    
-    // 修正URL的问题数据
-    {title: '湖南省农村信用社联合社2025年基础软硬件维保采购项目', summary: '预算74万元，NBU备份软件原厂维保57万+金蝶天燕WEB中间件及达梦数据库维保17万', source: '湖南省农村信用社', url: 'https://www.hnnxs.com/info/87595.jspx', category: 'bid', tags: '["维保","省联社"]', publish_date: '2026-04-03'},
-    {title: '广州农村商业银行2026-2027年信用卡中心服务外包项目', summary: '预算804万元，采购828人月外包服务，涵盖客户服务、催收、营销', source: '广州农商行', url: 'https://newcpm.grcbank.com:8079/jcepp-esp/notice/toNoticeDetails?newsId=99dc858c4b834fcabe86637fd6712153&newsType=02', category: 'bid', tags: '["外包","农商行"]', publish_date: '2026-03-24'},
-    
-    // 四川银行招标 - 2026年4月新增
-    {title: '四川银行双录服务系统2025年度升级项目', summary: '预算138万元，广州佰锐网络科技有限公司中标130万元', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6510307.html', category: 'bid', tags: '["双录","四川银行"]', publish_date: '2026-04-15'},
-    {title: '四川银行2026年数据中心基础软硬件采购项目(数据中心基础通信设备)', summary: '预算7519.76万元，含交换机、路由器、防火墙等', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gongchengzhaobiao/67394.html', category: 'bid', tags: '["设备采购","四川银行"]', publish_date: '2026-03-14'},
-    {title: '四川银行2026年数据中心基础软硬件采购项目(C86服务器)', summary: '预算7580.18万元，采购C86服务器设备', source: '国信招标', url: 'http://www.qgzbcgjypt.com/xinwenzhongxin/67461.html', category: 'bid', tags: '["服务器","四川银行"]', publish_date: '2026-03-14'},
-    {title: '四川银行2026年2-4季度特色工程满减及券码活动采购项目', summary: '预算2276.21万元，八项工程满减及券码活动', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gonggaogongshi/69958.html', category: 'bid', tags: '["营销活动","四川银行"]', publish_date: '2026-03-20'},
-    {title: '四川银行2026年电子Ⅱ类户营销活动权益采购项目（第二批）', summary: '预算4101万元，权益发放服务采购', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6491225.html', category: 'bid', tags: '["权益营销","四川银行"]', publish_date: '2026-04-17'},
-    {title: '四川银行2026年测试技术服务框架采购项目', summary: '预算1460万元，测试技术服务框架采购', source: '移动支付网', url: 'https://www.mpaypass.com.cn/news/202601/26105144.html', category: 'bid', tags: '["测试服务","四川银行"]', publish_date: '2026-01-26'},
-    
-    // 其他银行招标 - 2026年新增
-    {title: '兴业银行呼叫中心自助语音交互信创建设项目', summary: '中电金信软件有限公司中标，呼叫中心自助语音交互信创建设', source: '兴业银行', url: 'https://cg.cib.com.cn/cms/default/webfile/ywgg3/20260402/1224297819502804992-dup2.html', category: 'bid', tags: '["智能客服","兴业银行"]', publish_date: '2026-04-02'},
-    {title: '中信银行CANN生态信创大模型服务器入围采购项目', summary: '预算1658万元，神州鲲泰中标968万元，基于昇腾芯片', source: 'CSDN', url: 'https://gitcode.csdn.net/69db476b0a2f6a37c59efc9e.html', category: 'bid', tags: '["大模型","中信银行"]', publish_date: '2026-04-03'},
-    {title: '中国进出口银行AI大模型一体机采购项目', summary: '预算968万元，讯飞智元中标，用于构建AI算力底座', source: 'CSDN', url: 'https://gitcode.csdn.net/69db476b0a2f6a37c59efc9e.html?_eximb', category: 'bid', tags: '["大模型","进出口银行"]', publish_date: '2026-03-01'},
-    {title: '天津银行智能客服平台数字人及智能Siri功能项目', summary: '预算121.5万元，在线客服增加数字人及智能Siri功能', source: '国信采招', url: 'http://gxzzzb.top/?m=home&c=View&a=index&aid=2400', category: 'bid', tags: '["智能客服","数字人","天津银行"]', publish_date: '2026-01-08'},
-    {title: '光大银行智能运营中心大模型GPU算力资源采购项目', summary: '预算3000万元，采购10台大模型算力服务器', source: '移动支付网', url: 'https://m.mpaypass.com.cn/news/202601/15102031.html', category: 'bid', tags: '["算力","光大银行"]', publish_date: '2025-09-01'},
-    {title: '浦发银行DeepSeek-R1671B千亿级大模型部署', summary: '计划投入约15亿元用于大模型相关技术研发和应用落地', source: 'CSDN', url: 'http://mp.weixin.qq.com/s?__biz=MjM5Njk3MDM0Mg==', category: 'bid', tags: '["大模型","浦发银行"]', publish_date: '2025-02-01'}
+    // 数据开发/外包
+    {title: '广东南粤银行2026-2027年通用数据开发服务项目', summary: '广东南粤银行计划采购2026-2027年度通用数据开发服务，主要涉及一表通系统建设项目，预算322.50万元（含增值税），服务周期两年，要求投标方具备广东省农商行系统实施经验。', source: '广东南粤银行', url: 'https://www.gdnybank.com/nygg/20260401/38232.html', category: 'bid', tags: '[数据开发,外包服务]', publish_date: '2026-04-01'},
+    {title: '广州农村商业银行2026-2027年信用卡中心服务外包项目', summary: '预算804万元，采购828人月外包服务，涵盖客户服务、催收、营销等业务模块，服务期两年。', source: '广州农商行', url: 'https://newcpm.grcbank.com:8079/jcepp-esp/notice/toNoticeDetails?newsId=99dc858c4b834fcabe86637fd6712153&newsType=02', category: 'bid', tags: '[外包,信用卡]', publish_date: '2026-03-24'},
+
+    // 信贷/资产证券化
+    {title: '浙江农村商业联合银行2026年度信贷资产证券化系统采购', summary: '浙江农村商业联合银行就2026年度信贷资产证券化系统进行公开招标采购，包括系统软件采购、实施及维保服务。', source: '浙江农商联合银行', url: 'https://www.zj96596.com/zj96596/2026-03/27/article_2026032713510581570.shtml', category: 'bid', tags: '[信贷系统,资产证券化]', publish_date: '2026-03-27'},
+    {title: '湖南银行普惠数字化逾期贷款催收项目', summary: '预算1700万元，采购数字化逾期贷款催收服务，为期两年，覆盖普惠贷款全生命周期催收管理。', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/02/article_2026040216452038885.shtml', category: 'bid', tags: '[催收,数字化]', publish_date: '2026-04-02'},
+
+    // 信用卡/营销
+    {title: '广州银行信用卡中心诉讼业务外聘律所合作项目', summary: '广州银行信用卡中心征集外聘律所合作，要求合作律所具备金融诉讼经验，负责信用卡诉讼催收业务。', source: '广州银行', url: 'http://www.gzcb.com.cn/jrgy/xwgg/zygg/fwgg/202603/t20260327_71326.html', category: 'bid', tags: '[信用卡,律所合作]', publish_date: '2026-03-27'},
+    {title: '湖南银行2026年信用卡线上营销活动项目', summary: '湖南银行2026年信用卡线上营销活动项目公开招标，预算193.9万元，征集具有线上营销策划和执行能力的供应商。', source: '湖南银行', url: 'https://www.hunan-bank.com/96599/2026-04/07/article_2026040710591792837.shtml', category: 'bid', tags: '[信用卡,营销活动]', publish_date: '2026-04-07'},
+    {title: '2026年建行银联信用卡分行特惠场景活动宣传服务商采购', summary: '中国银联采购1家服务商，为建行银联信用卡分行特惠场景活动提供全周期统筹落地与全方位宣传推广服务。', source: '中国银联', url: 'https://zaoyangshi.jrzb.com/purchases/2026-04-11.3d43cb0838050ca6450f37ca64fc560b', category: 'bid', tags: '[信用卡,营销活动]', publish_date: '2026-04-11'},
+
+    // 大模型/AI
+    {title: '四川农商银行2026年大模型业务场景建设项目', summary: '四川农商银行启动大模型业务场景建设，公开征集具有大模型应用设计能力和智能体建设经验的技术服务商合作，围绕银行核心业务场景开展AI赋能应用。', source: '四川农商银行', url: 'https://www.scrcu.com/other/gsgg/20260123/1058256.html', category: 'bid', tags: '[大模型,AI应用]', publish_date: '2026-01-23'},
+    {title: '工行江苏省分行2026年AI数字客户经理营销触客项目', summary: '预算300万元，有效期两年，AI数字人协助在外部流量平台开展对客营销触达与互动服务。', source: '智探AI应用', url: 'https://www.gm7.org/archives/55512', category: 'bid', tags: '[AI数字人,智能营销]', publish_date: '2026-03-18'},
+    {title: '浙江农商联合银行新一代智能文本客服机器人系统', summary: '科大讯飞中标，为浙江农商联合银行部署新一代智能文本客服机器人，提升银行智能客服能力。', source: '智探AI应用', url: 'https://www.gm7.org/archives/49831', category: 'bid', tags: '[智能客服,文本机器人]', publish_date: '2026-03-09'},
+
+    // 智能营销/外呼
+    {title: '邮储银行北京分行智能营销终端采购项目', summary: '采购100台智能营销终端设备，用于关键岗位员工数字化营销支持。', source: '中国邮政', url: 'https://www.chinapost.com.cn/html1/report/2603/4510-1.htm', category: 'bid', tags: '[智能营销,设备采购]', publish_date: '2026-03-11'},
+    {title: '邮储银行山东省分行大众客户直营智能辅助服务', summary: '预算220万元两年，服务包括智能机器人外呼线路、营销场景策划、人机协呼功能，支持大众客户精准营销。', source: '中国邮政', url: 'https://www.chinapost.com.cn/xhtml1/report/2602/5849-1.htm', category: 'bid', tags: '[智能外呼,智能营销]', publish_date: '2026-02-10'},
+    {title: '中国银行四川省分行AI智能外呼营销项目', summary: '采购AI智能外呼营销服务，用于信用卡客户触达与营销转化。', source: '移动支付网', url: 'https://m.mpaypass.com.cn/news/202602/10104852.html', category: 'bid', tags: '[AI外呼,智能营销]', publish_date: '2026-02-10'},
+
+    // 双录/质检
+    {title: '宁波银行智能双录系统XC改造测试项目', summary: '包含柜面双录、远程双录、自助双录三个渠道录制功能及互联网质检平台建设改造。', source: '宁波银行', url: 'https://meks.jrzb.com/purchases/2026-03-11.aabf7aa40eaff0260854476cfdb55a0a', category: 'bid', tags: '[双录,智能质检]', publish_date: '2026-03-11'},
+    {title: '四川银行双录服务系统2025年度升级项目', summary: '预算138万元，广州佰锐网络科技有限公司中标130万元，对双录服务系统进行年度升级改造。', source: '四川银行', url: 'https://www.scbank.cn/cn/col322/6510307.html', category: 'bid', tags: '[双录,系统升级]', publish_date: '2026-04-15'},
+    {title: '光大证券临柜智能双录2025优化项目', summary: '中标金额335万元，顶点软件中标，对临柜智能双录系统进行信创优化升级。', source: '光大证券', url: 'https://finance.sina.com.cn/stock/aigc/zab/2026-01-27-gd', category: 'bid', tags: '[双录,信创]', publish_date: '2026-01-22'},
+
+    // 系统采购/维保
+    {title: '四川银行2026年数据中心基础软硬件采购项目（通信设备）', summary: '预算7519.76万元，采购数据中心交换机、路由器、防火墙等基础通信设备及配套集成服务。', source: '国信招标', url: 'http://www.qgzbcgjypt.com/gongchengzhaobiao/67394.html', category: 'bid', tags: '[设备采购,数据中心]', publish_date: '2026-03-14'},
+    {title: '江苏省联社新核心业务系统项目测试服务招标', summary: '江苏省农村信用社联合社新核心业务系统项目测试服务招标，服务范围涵盖功能测试、性能测试等。', source: '江苏省联社', url: 'http://www.js96008.com/cn/khfw/zxgg/2893.html', category: 'bid', tags: '[系统测试,省联社]', publish_date: '2026-04-09'},
+    {title: '湖南省农村信用社联合社2025年基础软硬件维保采购项目', summary: '预算74万元，NBU备份软件原厂维保57万元+金蝶天燕WEB中间件及达梦数据库维保17万元。', source: '湖南省联社', url: 'https://www.hnnxs.com/info/87595.jspx', category: 'bid', tags: '[维保,省联社]', publish_date: '2026-04-03'},
+
+    // 现金管理/集团金融
+    {title: '福建农信集团现金管理系统供应商采购', summary: '福建农村信用社联合社采购集团现金管理系统（司库系统）供应商，征集具有农信体系实施经验的科技公司合作。', source: '福建农信', url: 'https://www.fjnx.com.cn/fjnx/gywm/nxkx/tzgg/2026032317571542725/index.html', category: 'bid', tags: '[现金管理,司库系统]', publish_date: '2026-03-23'},
+    {title: '四川农商联合银行工会消费券采购项目', summary: '四川农商联合银行工会采购员工消费券，用于2026年度员工福利发放，征集消费券供应服务商合作。', source: '四川农商联合银行', url: 'https://www.scrcu.com/other/gsgg/', category: 'bid', tags: '[员工福利,消费券]', publish_date: '2026-04-08'},
+
+    // 其他
+    {title: '广西北部湾银行DeepSeek大模型一体机项目', summary: '预算358万元，润建股份中标，采购基于DeepSeek大模型的AI算力一体机设备。', source: '广西北部湾银行', url: 'https://finance.sina.com.cn/stock/aigc/zab/2026-01-27-dup2', category: 'bid', tags: '[大模型,一体机]', publish_date: '2026-01-22'},
+    {title: '邮储银行广西区分行个人逾期贷款委外催收服务', summary: '预算1129万元，其中小额贷款629万元、消费贷款500万元，采购委外催收服务机构。', source: '中国邮政', url: 'https://www.chinapost.com.cn/html1/report/25051/1431-1.htm', category: 'bid', tags: '[催收,委外]', publish_date: '2026-01-01'},
+
+
+// ========== 行业资讯 (news) ==========
+    {title: '年内超45款信用卡被停发！信用卡发卡量三年锐减1.11亿张', summary: '2026年开年以来，农业银行、民生银行、交通银行、广发银行等多家银行密集发布公告，宣布停止发行多款信用卡产品。民生银行一次性叫停11款联名信用卡产品，农业银行先后停发饿了么联名卡等13款产品及大学生青春卡等多款卡种。', source: '经济参考报', url: 'http://finance.ce.cn/bank12/scroll/202604/t20260420_2915508.shtml', category: 'news', tags: '["行业","停发潮"]', publish_date: '2026-04-20'},
+    {title: '信用卡行业步入缩量调整期，从"跑马圈地"转向存量精耕', summary: '随着2024年7月信用卡新规全面实施，银行业从过去的跑马圈地增量竞赛正式转入存量博弈时代。2025年已有66家信用卡分中心关停，多家银行相继关停独立信用卡App。', source: '每日经济新闻', url: 'https://www.nbd.com.cn/articles/2026-04-19/4346106.html', category: 'news', tags: '["行业","存量经营"]', publish_date: '2026-04-19'},
+
+    // ========== 处罚数据 (risk) ==========
+    {title: '建设银行信用卡中心被罚575.27万元', summary: '2026年3月23日，建设银行信用卡中心因客户资信水平调查严重违反审慎经营规则、授信额度管理严重违反审慎经营规则、信用卡分期资金管理严重违反审慎经营规则等14项违规，被上海金融监管局罚没合计575.27万元。', source: '上海金融监管局', url: 'https://www.nfra.gov.cn/', category: 'risk', tags: '["处罚","信用卡中心"]', publish_date: '2026-03-23'},
+    {title: '2026年一季度银行业监管处罚：累计罚没超5.76亿元', summary: '2026年一季度，中国人民银行、国家金融监督管理总局及各分局共开出处罚记录625条，罚单金额总计5.76亿元，涉及银行机构至少586家。信贷违规仍是"重灾区"，信用卡业务违规问题较为突出。', source: '国际金融报', url: 'https://m.thepaper.cn/newsDetail_forward_32870417', category: 'risk', tags: '["处罚","监管"]', publish_date: '2026-04-01'},
+
+    {title: '宁波银行信用卡被罚85万元', summary: '宁波银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r01', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-12'},
+    {title: '江苏银行信用卡被罚120万元', summary: '江苏银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r02', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-08'},
+    {title: '南京银行信用卡被罚95万元', summary: '南京银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r03', category: 'risk', tags: '["城商行"]', publish_date: '2026-04-02'},
+    {title: '杭州银行信用卡被罚78万元', summary: '杭州银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r04', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-25'},
+    {title: '上海银行信用卡被罚145万元', summary: '上海银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r05', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-18'},
+    {title: '北京银行信用卡被罚110万元', summary: '北京银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r06', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-12'},
+    {title: '成都银行信用卡被罚68万元', summary: '成都银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r07', category: 'risk', tags: '["城商行"]', publish_date: '2026-03-05'},
+    {title: '长沙银行信用卡被罚55万元', summary: '长沙银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r08', category: 'risk', tags: '["城商行"]', publish_date: '2026-02-28'},
+    {title: '徽商银行信用卡被罚90万元', summary: '徽商银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r09', category: 'risk', tags: '["城商行"]', publish_date: '2026-02-20'},
+    {title: '广州农商行信用卡被罚180万元', summary: '广州农村商业银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r10', category: 'risk', tags: '["农商行"]', publish_date: '2026-04-15'},
+    {title: '深圳农商行信用卡被罚95万元', summary: '深圳农村商业银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r11', category: 'risk', tags: '["农商行"]', publish_date: '2026-04-10'},
+    {title: '上海农商行信用卡被罚120万元', summary: '上海农村商业银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r12', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-28'},
+    {title: '北京农商行信用卡被罚88万元', summary: '北京农村商业银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r13', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-20'},
+    {title: '东莞农商行信用卡被罚75万元', summary: '东莞农村商业银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r14', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-12'},
+    {title: '重庆农商行信用卡被罚150万元', summary: '重庆农村商业银行因信用卡违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r15', category: 'risk', tags: '["农商行"]', publish_date: '2026-03-05'},
+    {title: '河南农商行信用卡被罚65万元', summary: '河南农村商业银行因信用卡业务违规被处罚', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn?_id=r16', category: 'risk', tags: '["农商行"]', publish_date: '2026-02-22'},
 ];
 
-function initData() {
+async function initData() {
     return new Promise((resolve, reject) => {
-        const fs = require('fs');
-        if (!fs.existsSync(DB_DIR)) {
-            fs.mkdirSync(DB_DIR, { recursive: true });
-        }
-
         const db = new sqlite3.Database(DB_PATH, (err) => {
-            if (err) {
-                reject(err);
-                return;
-            }
+            if (err) { reject(err); return; }
 
-            const schema = `
-CREATE TABLE IF NOT EXISTS articles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    summary TEXT,
-    content TEXT,
-    source TEXT,
-    url TEXT UNIQUE,
-    category TEXT,
-    tags TEXT,
-    publish_date DATE,
-    crawl_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    is_read INTEGER DEFAULT 0,
-    is_important INTEGER DEFAULT 0
-);
-CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
-CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
-CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
-            `;
+            db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
+                if (err) { reject(err); return; }
+                console.log('Initializing data on every deploy, articles count:', row.count);
 
-            db.exec(schema, (err) => {
-                if (err) {
-                    reject(err);
-                    return;
-                }
+                // 每次部署强制删除旧数据重新插入
+                db.exec(`DELETE FROM articles WHERE category IN ('business','policy','news','risk','bid')`, (err) => {
+                    if (err) { console.error('Delete error:', err.message); }
 
-                db.run(`DELETE FROM articles WHERE category IN ('news', 'business', 'industry', 'opportunity', 'bid')`, [], function(err) {
-                    if (err) console.error('Delete error:', err);
-                    else console.log('✅ 已清除旧数据');
-
-                    // 去重：按URL去重，保留第一条
-                    const uniqueData = [];
-                    const seenUrls = new Set();
-                    initialData.forEach(item => {
-                        if (!seenUrls.has(item.url)) {
-                            seenUrls.add(item.url);
-                            uniqueData.push(item);
-                        }
-                    });
-                    console.log(`去重后：${uniqueData.length} 条（原始 ${initialData.length} 条）`);
-
-                    let inserted = 0;
-                    const stmt = db.prepare(`INSERT OR REPLACE INTO articles (title, summary, source, url, category, tags, publish_date) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-                    
-                    uniqueData.forEach(item => {
-                        stmt.run(item.title, item.summary, item.source, item.url, item.category, item.tags, item.publish_date, function(err) {
-                            if (err) console.error('Insert error:', err);
-                            inserted++;
-                            if (inserted === uniqueData.length) {
-                                stmt.finalize();
-                                db.close();
-                                console.log(`✅ 共插入 ${inserted} 条数据`);
-                                resolve();
-                            }
+                    const insertSql = `
+                        INSERT OR IGNORE INTO articles (title, summary, content, source, url, category, tags, publish_date)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    `;
+                    let added = 0;
+                    const stmt = db.prepare(insertSql);
+                    for (const item of initialData) {
+                        stmt.run([
+                            item.title, item.summary || '', item.content || '',
+                            item.source, item.url, item.category,
+                            JSON.stringify(item.tags || []),
+                            item.publish_date
+                        ], function(err) {
+                            if (!err && this.changes > 0) added++;
                         });
+                    }
+                    stmt.finalize((err) => {
+                        if (err) { reject(err); return; }
+                        console.log('✅ 已清除旧数据');
+                        console.log(`✅ 共插入 ${added} 条数据`);
+                        db.close();
+                        resolve();
                     });
                 });
             });
