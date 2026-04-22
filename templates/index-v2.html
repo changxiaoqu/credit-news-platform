@@ -711,21 +711,7 @@
                         <option value="乌鲁木齐农商行">乌鲁木齐农商行</option>
                         <option value="新疆自治区联社">新疆自治区联社</option>
                     </optgroup>
-                </select>
-                
-                <div class="flex-1"></div>
-                
-                <div class="flex flex-wrap gap-2">
-                    <span class="text-xs text-muted-foreground self-center mr-1">业务标签:</span>
-                    <button onclick="filterTag('收单')" class="shadcn-button shadcn-button-secondary text-xs">收单</button>
-                    <button onclick="filterTag('支付')" class="shadcn-button shadcn-button-secondary text-xs">支付</button>
-                    <button onclick="filterTag('信用卡')" class="shadcn-button shadcn-button-secondary text-xs">信用卡</button>
-                    <button onclick="filterTag('消费信贷')" class="shadcn-button shadcn-button-secondary text-xs">消费信贷</button>
-                    <button onclick="filterTag('权益营销')" class="shadcn-button shadcn-button-secondary text-xs">权益营销</button>
-                    <button onclick="filterTag('AI')" class="shadcn-button shadcn-button-secondary text-xs">AI</button>
-                    <button onclick="filterTag('大数据')" class="shadcn-button shadcn-button-secondary text-xs">大数据</button>
-                    <button onclick="filterTag('风控')" class="shadcn-button shadcn-button-secondary text-xs">风控</button>
-                </div>
+
             </div>
 
             <!-- Articles List -->
@@ -789,10 +775,6 @@
                         <div class="flex gap-4">
                             <span class="text-muted-foreground w-20">发布日期:</span>
                             <span id="modalPublishDate"></span>
-                        </div>
-                        <div class="flex gap-4" id="modalTagsRow">
-                            <span class="text-muted-foreground w-20">标签:</span>
-                            <span id="modalTags"></span>
                         </div>
                         <div class="flex gap-4" id="modalBanksRow">
                             <span class="text-muted-foreground w-20">关联银行:</span>
@@ -1242,7 +1224,6 @@
                                 <p class="article-highlight-summary">${summary}</p>
                                 <div class="flex items-center gap-4">
                                     <span class="text-sm text-muted-foreground"><i class="fas fa-building mr-1"></i>${item.source}</span>
-                                    <div class="flex gap-1">${(item.tags || []).map(tag => `<span class="text-xs bg-secondary px-2 py-1 rounded">${tag}</span>`).join('')}</div>
                                 </div>
                             </div>
                             ${item.penalty_amount ? `<div class="text-right"><span class="text-2xl font-bold text-red-600">${item.penalty_amount}万</span></div>` : ''}
@@ -1334,11 +1315,7 @@
             document.getElementById('modalSource').textContent = item.source;
             document.getElementById('modalPublishDate').textContent = item.publish_date;
             
-            // 标签
-            const tagsHtml = (item.tags || []).map(tag => `<span class="shadcn-badge bg-secondary text-secondary-foreground mr-1">${tag}</span>`).join('');
-            document.getElementById('modalTags').innerHTML = tagsHtml || '-';
-            document.getElementById('modalTagsRow').style.display = (item.tags || []).length > 0 ? 'flex' : 'none';
-            
+
             // 关联银行
             const banks = [];
             if (item.parent_bank) banks.push(item.parent_bank);
@@ -1457,13 +1434,6 @@
 
         function refreshData() {
             loadData();
-        }
-
-        function filterTag(tag) {
-            filteredArticles = articles.filter(a => (a.tags || []).includes(tag));
-            currentPage = 1;
-            showListView();
-            renderArticles();
         }
 
         function applyFilters() {
