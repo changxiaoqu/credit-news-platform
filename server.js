@@ -13,10 +13,10 @@ const DB_PATH = path.join(DB_DIR, 'news.db');
 
 // 中间件
 app.use(express.json());
-app.use(express.static('templates'));
 
-// 首页使用 index-v2.html
+// 首页必须放在 static 之前，否则 express.static 会先匹配到 index.html
 app.get('/', (req, res) => res.sendFile('index-v2.html', { root: 'templates' }));
+app.use(express.static('templates'));
 
 // 初始化数据库
 function initDB() {
