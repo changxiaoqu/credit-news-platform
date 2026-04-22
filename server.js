@@ -53,6 +53,16 @@ CREATE TABLE IF NOT EXISTS articles (
 CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
 CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
 CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
+
+-- FTS5 全文检索表（★新增）
+-- content='' 表示不存储原文，由 articles 表提供
+CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(
+    title,
+    summary,
+    content,
+    content='articles',
+    content_rowid='id'
+);
                     `;
                     db.exec(schema, (err) => {
                         if (err) reject(err);
@@ -60,6 +70,31 @@ CREATE INDEX IF NOT EXISTS idx_crawl_date ON articles(crawl_date);
                     });
                 }
             }
+        });
+    });
+}
+
+// 同步文章到 FTS5（★新增）
+function syncToFTS(db, id, title, summary, content) {
+    return new Promise((resolve, reject) => {
+        db.run(`INSERT OR REPLACE INTO articles_fts(rowid, title, summary, content) VALUES (?, ?, ?, ?)`,
+            [id, title || '', summary || '', content || ''], (err) => {
+                if (err) reject(err);
+                else resolve();
+            });
+    });
+}
+
+// 重建 FTS5 索引（用于初始化时批量同步）
+function rebuildFTS(db) {
+    return new Promise((resolve, reject) => {
+        db.exec(`
+            DELETE FROM articles_fts;
+            INSERT INTO articles_fts(rowid, title, summary, content)
+            SELECT id, COALESCE(title,''), COALESCE(summary,''), COALESCE(content,'') FROM articles;
+        `, (err) => {
+            if (err) reject(err);
+            else resolve();
         });
     });
 }
@@ -72,37 +107,98 @@ function getDB() {
 // API: 获取文章列表
 app.get('/api/articles', (req, res) => {
     const { category, page = 1, limit = 10, search } = req.query;
-    const offset = (page - 1) * limit;
-
-    let sql = 'SELECT * FROM articles WHERE 1=1';
-    const params = [];
-
-    if (category && category !== 'all') {
-        sql += ' AND category = ?';
-        params.push(category);
-    }
-
-    if (search) {
-        sql += ' AND (title LIKE ? OR summary LIKE ? OR content LIKE ?)';
-        params.push(`%${search}%`, `%${search}%`, `%${search}%`);
-    }
-
-    sql += ' ORDER BY publish_date DESC, crawl_date DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
+    const offset = (page - 1) * parseInt(limit);
 
     const db = getDB();
-    db.all(sql, params, (err, rows) => {
-        db.close();
-        if (err) {
-            res.status(500).json({ error: err.message });
-        } else {
-            res.json(rows.map(row => ({
-                ...row,
-                tags: JSON.parse(row.tags || '[]')
-            })));
+
+    // ★ FTS5 全文检索 + 高亮
+    if (search && search.trim()) {
+        // 转义 FTS5 特殊字符（只保留基础安全转义）
+        const safeQuery = search.trim().replace(/['"*()]/g, ' ').trim();
+        if (!safeQuery) {
+            return res.json([]);
         }
-    });
+        // 生成多词 OR 查询，提升召回率
+        const ftsTerms = safeQuery.split(/\s+/).filter(t => t.length > 0);
+        const ftsQuery = ftsTerms.map(t => `"${t}"`).join(' OR ') || `"${safeQuery}"`;
+
+        const sql = `
+            SELECT a.*,
+                snippet(articles_fts, 1, '<mark>', '</mark>', '…', 32) AS highlight_summary,
+                snippet(articles_fts, 0, '<mark>', '</mark>', '…', 20) AS highlight_title
+            FROM articles a
+            INNER JOIN articles_fts fts ON a.id = fts.rowid
+            WHERE articles_fts MATCH ?
+            ${category && category !== 'all' ? ' AND a.category = ?' : ''}
+            ORDER BY rank
+            LIMIT ? OFFSET ?
+        `;
+        const params = category && category !== 'all'
+            ? [ftsQuery, category, parseInt(limit), offset]
+            : [ftsQuery, parseInt(limit), offset];
+
+        db.all(sql, params, (err, rows) => {
+            db.close();
+            if (err) {
+                console.error('FTS search error:', err.message);
+                // FTS 失败时降级到 LIKE
+                fallbackSearch(db, category, search, parseInt(limit), offset, res);
+            } else {
+                res.json(rows.map(row => ({
+                    ...row,
+                    tags: JSON.parse(row.tags || '[]'),
+                    // 有高亮就用高亮，没有就用原字段
+                    _title: row.highlight_title || row.title,
+                    _summary: row.highlight_summary || row.summary
+                })));
+            }
+        });
+    } else {
+        // 无搜索时走普通查询
+        let sql = 'SELECT * FROM articles WHERE 1=1';
+        const params = [];
+        if (category && category !== 'all') {
+            sql += ' AND category = ?';
+            params.push(category);
+        }
+        sql += ' ORDER BY publish_date DESC, crawl_date DESC LIMIT ? OFFSET ?';
+        params.push(parseInt(limit), offset);
+
+        db.all(sql, params, (err, rows) => {
+            db.close();
+            if (err) {
+                res.status(500).json({ error: err.message });
+            } else {
+                res.json(rows.map(row => ({
+                    ...row,
+                    tags: JSON.parse(row.tags || '[]')
+                })));
+            }
+        });
+    }
 });
+
+// LIKE 降级搜索（当 FTS 不可用时）
+function fallbackSearch(db, category, search, limit, offset, res) {
+    const sql = `
+        SELECT * FROM articles
+        WHERE (title LIKE ? OR summary LIKE ? OR content LIKE ?)
+        ${category && category !== 'all' ? ' AND category = ?' : ''}
+        ORDER BY publish_date DESC
+        LIMIT ? OFFSET ?
+    `;
+    const p = [`%${search}%`, `%${search}%`, `%${search}%`];
+    if (category && category !== 'all') p.push(category);
+    p.push(limit, offset);
+    db.all(sql, p, (err, rows) => {
+        db.close();
+        if (err) { res.status(500).json({ error: err.message }); return; }
+        res.json(rows.map(row => ({
+            ...row,
+            tags: JSON.parse(row.tags || '[]')
+        })));
+    });
+}
 
 // API: 获取单篇文章
 app.get('/api/articles/:id', (req, res) => {
@@ -204,11 +300,12 @@ app.post('/api/articles/bulk-import', (req, res) => {
     let added = 0;
     let skipped = 0;
     let failed = 0;
+    const newIds = []; // 记录新插入的 id，用于同步 FTS
     
-    const stmt = db.prepare(sql);
-    
-    for (const article of articles) {
-        try {
+    db.serialize(() => {
+        const stmt = db.prepare(sql);
+        
+        for (const article of articles) {
             stmt.run([
                 article.title,
                 article.summary || '',
@@ -220,31 +317,41 @@ app.post('/api/articles/bulk-import', (req, res) => {
                 article.publish_date || new Date().toISOString().split('T')[0]
             ], function(err) {
                 if (err) {
-                    console.error(`导入失败: ${article.title}`, err.message);
                     failed++;
                 } else if (this.changes > 0) {
                     added++;
+                    newIds.push(this.lastID);
                 } else {
                     skipped++;
                 }
             });
-        } catch (err) {
-            console.error(`处理失败: ${article.title}`, err.message);
-            failed++;
         }
-    }
-    
-    stmt.finalize((err) => {
-        db.close();
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ 
-            success: true, 
-            added, 
-            skipped, 
-            failed,
-            total: articles.length 
+        
+        stmt.finalize((err) => {
+            if (err) {
+                db.close();
+                return res.status(500).json({ error: err.message });
+            }
+            
+            // ★ 同步新数据到 FTS5
+            if (newIds.length > 0) {
+                db.get(`SELECT id, title, summary, content FROM articles WHERE id IN (${newIds.map(() => '?').join(',')})`,
+                    newIds, (err, rows) => {
+                        // 逐条同步（简单处理，异步不阻塞响应）
+                        newIds.forEach(id => {
+                            db.get('SELECT id, title, summary, content FROM articles WHERE id = ?', [id], (err, row) => {
+                                if (!err && row) {
+                                    syncToFTS(db, row.id, row.title, row.summary, row.content);
+                                }
+                            });
+                        });
+                        db.close();
+                        res.json({ success: true, added, skipped, failed, total: articles.length });
+                    });
+            } else {
+                db.close();
+                res.json({ success: true, added, skipped, failed, total: articles.length });
+            }
         });
     });
 });
@@ -277,17 +384,21 @@ app.post('/api/articles', (req, res) => {
         JSON.stringify(tags || ['投标']),
         publish_date || new Date().toISOString().split('T')[0]
     ], function(err) {
-        db.close();
         if (err) {
+            db.close();
             return res.status(500).json({ error: err.message });
         }
         if (this.changes === 0) {
+            db.close();
             return res.status(409).json({ error: 'Article already exists' });
         }
-        res.status(201).json({ 
-            success: true, 
-            id: this.lastID,
-            message: 'Article added successfully' 
+        // ★ 同步到 FTS5
+        syncToFTS(db, this.lastID, title, summary || '', content || '').then(() => {
+            db.close();
+            res.status(201).json({ success: true, id: this.lastID, message: 'Article added successfully' });
+        }).catch(() => {
+            db.close();
+            res.status(201).json({ success: true, id: this.lastID, message: 'Article added (FTS sync pending)' });
         });
     });
 });
@@ -321,13 +432,17 @@ async function start() {
         // 检查是否需要初始化数据（Railway每次部署都重新初始化）
         const db = getDB();
         db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
-            db.close();
             // Railway部署时强制重新初始化数据（因为没有持久化存储）
             console.log('Initializing data on every deploy, articles count:', row.count);
             const { initData } = require('./scripts/init-data');
             initData().then(() => {
-                console.log('Initial data loaded');
+                // ★ 启动后重建 FTS 索引
+                return rebuildFTS(db);
+            }).then(() => {
+                console.log('✅ FTS5 index rebuilt');
+                db.close();
             }).catch(err => {
+                db.close();
                 console.error('Failed to load initial data:', err);
             });
         });
