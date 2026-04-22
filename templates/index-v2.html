@@ -1397,7 +1397,9 @@
             const sourceUrlEl = document.getElementById('modalSourceUrl');
             const contentLinkEl = document.getElementById('modalContentLink');
             const linkUrl = item.source_url || item.url || '#';
-            if (linkUrl !== '#') {
+            // 仅展示真实有效的外部链接
+            const isValidUrl = linkUrl && linkUrl !== '#' && !linkUrl.startsWith('business://');
+            if (isValidUrl) {
                 sourceUrlEl.href = linkUrl;
                 sourceUrlEl.classList.remove('hidden');
                 contentLinkEl.href = linkUrl;
