@@ -15,6 +15,9 @@ const DB_PATH = path.join(DB_DIR, 'news.db');
 app.use(express.json());
 app.use(express.static('templates'));
 
+// 首页使用 index-v2.html
+app.get('/', (req, res) => res.sendFile('index-v2.html', { root: 'templates' }));
+
 // 初始化数据库
 function initDB() {
     return new Promise((resolve, reject) => {
