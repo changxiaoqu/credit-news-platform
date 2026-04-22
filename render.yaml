@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: credit-news-platform
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/stats
+    plan: free
