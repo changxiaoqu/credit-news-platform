@@ -395,7 +395,8 @@
                     <input type="date" id="endDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
                 </div>
                 
-                <select id="bankFilter" onchange="applyFilters()" class="shadcn-input w-auto">
+                <input type="text" id="bankFilter" oninput="applyFilters()" placeholder="输入银行名称筛选" class="shadcn-input w-40 text-sm">
+                <select id="bankFilterSelect" onchange="applyFilters()" class="shadcn-input w-auto hidden">
                     <option value="all">全部银行</option>
                     <optgroup label="城市商业银行">
                         <option value="北京银行">北京银行</option>
@@ -1469,12 +1470,16 @@
                     if (endDate) timeMatch = timeMatch && date <= new Date(endDate + 'T23:59:59');
                 }
                 
-                // 银行筛选
+                // 银行筛选（输入框 + 下拉框并存，桌面用输入框，移动端用下拉）
                 let bankMatch = true;
-                if (bankFilter !== 'all') {
-                    bankMatch = (a.parent_bank === bankFilter) || 
-                                (a.penalized_institution && a.penalized_institution.includes(bankFilter)) ||
-                                (a.procuring_entity && a.procuring_entity.includes(bankFilter));
+                const bankInputVal = (document.getElementById('bankFilter') || {}).value || '';
+                const bankSelectVal = (document.getElementById('bankFilterSelect') || {}).value || 'all';
+                const effectiveBank = bankInputVal || bankSelectVal;
+                if (effectiveBank !== 'all') {
+                    bankMatch = (a.parent_bank && a.parent_bank.includes(effectiveBank)) ||
+                                (a.penalized_institution && a.penalized_institution.includes(effectiveBank)) ||
+                                (a.procuring_entity && a.procuring_entity.includes(effectiveBank)) ||
+                                (a.source && a.source.includes(effectiveBank));
                 }
                 
                 return timeMatch && bankMatch;
