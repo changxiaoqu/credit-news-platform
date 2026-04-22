@@ -1393,13 +1393,14 @@
                 policySection.classList.add('hidden');
             }
             
-            // 原始链接
+            // 原始链接（优先用 source_url，回退到 url）
             const sourceUrlEl = document.getElementById('modalSourceUrl');
             const contentLinkEl = document.getElementById('modalContentLink');
-            if (item.source_url) {
-                sourceUrlEl.href = item.source_url;
+            const linkUrl = item.source_url || item.url || '#';
+            if (linkUrl !== '#') {
+                sourceUrlEl.href = linkUrl;
                 sourceUrlEl.classList.remove('hidden');
-                contentLinkEl.href = item.source_url;
+                contentLinkEl.href = linkUrl;
                 contentLinkEl.classList.remove('hidden');
             } else {
                 sourceUrlEl.classList.add('hidden');
