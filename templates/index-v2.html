@@ -1470,16 +1470,14 @@
                     if (endDate) timeMatch = timeMatch && date <= new Date(endDate + 'T23:59:59');
                 }
                 
-                // 银行筛选（输入框 + 下拉框并存，桌面用输入框，移动端用下拉）
-                let bankMatch = true;
-                const bankInputVal = (document.getElementById('bankFilter') || {}).value || '';
-                const bankSelectVal = (document.getElementById('bankFilterSelect') || {}).value || 'all';
-                const effectiveBank = bankInputVal || bankSelectVal;
-                if (effectiveBank !== 'all') {
-                    bankMatch = (a.parent_bank && a.parent_bank.includes(effectiveBank)) ||
-                                (a.penalized_institution && a.penalized_institution.includes(effectiveBank)) ||
-                                (a.procuring_entity && a.procuring_entity.includes(effectiveBank)) ||
-                                (a.source && a.source.includes(effectiveBank));
+                // 银行筛选（统一用输入框，支持模糊匹配）
+                const bankKeyword = bankFilter.trim();
+                if (bankKeyword) {
+                    bankMatch = (a.parent_bank && a.parent_bank.includes(bankKeyword)) ||
+                                (a.penalized_institution && a.penalized_institution.includes(bankKeyword)) ||
+                                (a.procuring_entity && a.procuring_entity.includes(bankKeyword)) ||
+                                (a.source && a.source.includes(bankKeyword)) ||
+                                (a.title && a.title.includes(bankKeyword));
                 }
                 
                 return timeMatch && bankMatch;
