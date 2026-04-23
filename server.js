@@ -27,6 +27,17 @@ app.get('/reset-db', (req, res) => {
     }
 });
 
+// 手动初始化数据（访问 /init-data 触发）
+app.get('/init-data', async (req, res) => {
+    try {
+        const { initData } = require('./scripts/init-data');
+        await initData();
+        res.json({ ok: true, message: '数据初始化完成' });
+    } catch (err) {
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 // 中间件
 app.use(express.json());
 
@@ -322,6 +333,8 @@ app.get('/api/articles/:id', (req, res) => {
 });
 
 // API: 获取统计信息
+app.get('/api/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
+
 app.get('/api/stats', (req, res) => {
     const db = getDB();
     const stats = {};
@@ -537,15 +550,21 @@ async function start() {
         db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
             // Railway部署时强制重新初始化数据（因为没有持久化存储）
             console.log('Initializing data on every deploy, articles count:', row.count);
-            const { initData } = require('./scripts/init-data');
-            initData().then(() => {
-                // ★ 启动后重建 FTS 索引
-                return rebuildFTS(db);
-            }).then(() => {
-                console.log('✅ FTS5 index rebuilt');
+            if (process.env.INIT_DATA !== 'false') {
+                const { initData } = require('./scripts/init-data');
+                initData().then(() => {
+                    return rebuildFTS(db);
+                }).then(() => {
+                    console.log('✅ FTS5 index rebuilt');
+                    db.close();
+                }).catch(err => {
+                    db.close();
+                    console.error('❌ Data init error:', err.message);
+                });
+            } else {
                 db.close();
-            }).catch(err => {
-                db.close();
+                console.log('Data init skipped (INIT_DATA=false)');
+            }
                 console.error('Failed to load initial data:', err);
             });
         });
