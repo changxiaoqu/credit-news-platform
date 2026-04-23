@@ -1270,10 +1270,16 @@
         }
 
         function filterCategory(category) {
+            // 调试：查看调用时的变量状态
+            console.log('filterCategory调用: category=', category, 'window.articles=', window.articles ? window.articles.length : 'undefined');
+            
             // 确保从 window 获取最新数据
-            articles = window.articles || articles;
+            const winArticles = window.articles;
+            articles = winArticles || articles;
             filteredArticles = window.filteredArticles || filteredArticles;
             currentPage = window.currentPage || 1;
+            
+            console.log('filterCategory执行: articles=', articles ? articles.length : 0, 'filteredArticles=', filteredArticles ? filteredArticles.length : 0);
             
             currentCategory = category;
             currentPage = 1;
