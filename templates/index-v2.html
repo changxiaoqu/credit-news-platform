@@ -1259,6 +1259,7 @@
         }
 
         function filterCategory(category) {
+            alert('filterCategory 执行! category=' + category);
             console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
