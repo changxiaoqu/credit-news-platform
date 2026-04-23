@@ -958,6 +958,7 @@
 
 
         async function loadData() {
+            console.log('>>> loadData 开始执行');
             try {
                 const response = await fetch('/api/articles');
                 const data = await response.json();
@@ -1201,6 +1202,7 @@
         }
 
         function renderArticles(highlightKeyword = '') {
+            console.log('>>> renderArticles: window.filteredArticles =', window.filteredArticles?.length);
             const container = document.getElementById('articlesList');
             const page = window.currentPage || 1;
             const filt = window.filteredArticles || [];
@@ -1252,6 +1254,7 @@
         }
 
         function filterCategory(category) {
+            console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
             
