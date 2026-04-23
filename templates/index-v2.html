@@ -918,7 +918,13 @@
     </div>
 
     <script>
-        let articles = [], currentPage = 1, currentCategory = 'all', filteredArticles = [];
+        // 将变量声明到 window 上以便调试
+        window.articles = window.articles || [];
+        window.currentPage = window.currentPage || 1;
+        window.currentCategory = window.currentCategory || 'all';
+        window.filteredArticles = window.filteredArticles || [];
+        
+        let articles = window.articles, currentPage = window.currentPage, currentCategory = window.currentCategory, filteredArticles = window.filteredArticles;
         
         const categoryConfig = {
             policy: { name: '监管政策', badgeClass: 'shadcn-badge-policy', icon: 'fa-file-alt' },
@@ -959,6 +965,8 @@
                 articles = getMockData();
             }
             filteredArticles = articles;
+            window.articles = articles;
+            window.filteredArticles = articles;
             console.log('filteredArticles长度:', filteredArticles.length);
             updateStats();
             console.log('调用showListView');
