@@ -180,7 +180,7 @@
             <button id="sidebarCloseBtn" onclick="toggleSidebar()" class="mr-auto md:hidden flex items-center justify-center w-8 h-8 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
                 <i class="fas fa-times text-lg"></i>
             </button>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showHomeView()">
                 <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
                     <i class="fas fa-credit-card"></i>
                 </div>
@@ -189,8 +189,8 @@
         </div>
         
         <nav class="space-y-1 p-4">
-            <a href="#" class="sidebar-link active" onclick="filterCategory('all')">
-                <i class="fas fa-home w-5"></i>全部资讯
+            <a href="#" class="sidebar-link" onclick="filterCategory('all')">
+                <i class="fas fa-list w-5"></i>全部资讯
             </a>
             <a href="#" class="sidebar-link" onclick="filterCategory('policy')">
                 <i class="fas fa-file-alt w-5"></i>监管政策
@@ -206,6 +206,10 @@
             </a>
             <a href="#" class="sidebar-link" onclick="filterCategory('bid')">
                 <i class="fas fa-handshake w-5"></i>投标信息
+            </a>
+            <hr class="my-2 border-border">
+            <a href="#" class="sidebar-link" onclick="showHomeView()">
+                <i class="fas fa-home w-5"></i>首页
             </a>
         </nav>
         
@@ -1169,6 +1173,14 @@
             document.getElementById('articlesList').classList.add('hidden');
             document.getElementById('paginationBar').classList.add('hidden');
             renderHomeSections();
+            
+            // 更新侧边栏 active 状态
+            document.querySelectorAll('.sidebar-link').forEach(el => {
+                el.classList.remove('active');
+                if (el.textContent.includes('首页')) {
+                    el.classList.add('active');
+                }
+            });
         }
 
         function updateStats() {
@@ -1248,6 +1260,8 @@
                     el.classList.add('active');
                 } else if (category === 'bid' && el.textContent.includes('投标信息')) {
                     el.classList.add('active');
+                } else if (category === 'home' && el.textContent.includes('首页')) {
+                    el.classList.add('active');
                 }
             });
 
@@ -1258,7 +1272,8 @@
             }
 
             if (category === 'all') {
-                showHomeView();
+                showListView();
+                renderArticles();
             } else {
                 showListView();
                 renderArticles();
