@@ -216,7 +216,7 @@ function getDB() {
 
 // API: 获取文章列表
 app.get('/api/articles', (req, res) => {
-    const { category, page = 1, limit = 100, search } = req.query;
+    const { category, page = 1, limit = 1000, search } = req.query;
     const offset = (page - 1) * parseInt(limit);
 
     const db = getDB();
