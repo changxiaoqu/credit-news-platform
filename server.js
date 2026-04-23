@@ -11,6 +11,12 @@ const PORT = process.env.PORT || 3000;
 const DB_DIR = process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, 'data');
 const DB_PATH = path.join(DB_DIR, 'news.db');
 
+// 强制重新初始化（设置环境变量 FORCE_INIT=true 后重启即可清除旧数据重新加载）
+if (process.env.FORCE_INIT === 'true' && fs.existsSync(DB_PATH)) {
+    console.log('FORCE_INIT=true，删除旧数据库重新初始化...');
+    fs.unlinkSync(DB_PATH);
+}
+
 // 中间件
 app.use(express.json());
 
