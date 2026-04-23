@@ -180,7 +180,7 @@
             <button id="sidebarCloseBtn" onclick="toggleSidebar()" class="mr-auto md:hidden flex items-center justify-center w-8 h-8 rounded hover:bg-accent text-muted-foreground hover:text-foreground transition-colors">
                 <i class="fas fa-times text-lg"></i>
             </button>
-            <div class="flex items-center gap-3 cursor-pointer" onclick="showHomeView()">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="showHomeView(); return false;">
                 <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
                     <i class="fas fa-credit-card"></i>
                 </div>
@@ -189,25 +189,25 @@
         </div>
         
         <nav class="space-y-1 p-4">
-            <a href="#" class="sidebar-link" onclick="showHomeView()">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="showHomeView(); return false;">
                 <i class="fas fa-home w-5"></i>首页
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('all')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('all')">
                 <i class="fas fa-list w-5"></i>全部资讯
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('policy')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('policy')">
                 <i class="fas fa-file-alt w-5"></i>监管政策
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('news')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('news')">
                 <i class="fas fa-newspaper w-5"></i>行业资讯
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('risk')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('risk')">
                 <i class="fas fa-gavel w-5"></i>处罚数据
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('business')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('business')">
                 <i class="fas fa-briefcase w-5"></i>商机信息
             </a>
-            <a href="#" class="sidebar-link" onclick="filterCategory('bid')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('bid')">
                 <i class="fas fa-handshake w-5"></i>投标信息
             </a>
         </nav>
