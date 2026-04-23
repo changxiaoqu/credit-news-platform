@@ -17,6 +17,16 @@ if (process.env.FORCE_INIT === 'true' && fs.existsSync(DB_PATH)) {
     fs.unlinkSync(DB_PATH);
 }
 
+// 删除数据库重新初始化（访问 /reset-db 触发）
+app.get('/reset-db', (req, res) => {
+    if (fs.existsSync(DB_PATH)) {
+        fs.unlinkSync(DB_PATH);
+        res.send('数据库已删除，刷新页面将重新初始化...');
+    } else {
+        res.send('数据库不存在，无需删除');
+    }
+});
+
 // 中间件
 app.use(express.json());
 
