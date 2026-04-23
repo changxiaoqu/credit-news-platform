@@ -1259,8 +1259,22 @@
         }
 
         function filterCategory(category) {
-            alert('filterCategory 执行! category=' + category);
+            alert('filterCategory 执行! category=' + category + ', articles=' + window.articles?.length);
             console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
+            
+            window.currentCategory = category;
+            window.currentPage = 1;
+            
+            const allArticles = window.articles;
+            alert('allArticles: ' + (allArticles?.length || 0));
+            
+            if (category === 'all') {
+                window.filteredArticles = allArticles;
+            } else {
+                window.filteredArticles = (allArticles || []).filter(a => a.category === category);
+            }
+            
+            alert('filteredArticles: ' + window.filteredArticles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
             
