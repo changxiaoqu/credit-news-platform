@@ -1161,14 +1161,12 @@
 
         function showListView() {
             document.getElementById('homeSections').classList.add('hidden');
-            document.getElementById('filterBar').classList.remove('hidden');
             document.getElementById('articlesList').classList.remove('hidden');
             document.getElementById('paginationBar').classList.remove('hidden');
         }
 
         function showHomeView() {
             document.getElementById('homeSections').classList.remove('hidden');
-            document.getElementById('filterBar').classList.add('hidden');
             document.getElementById('articlesList').classList.add('hidden');
             document.getElementById('paginationBar').classList.add('hidden');
             renderHomeSections();
