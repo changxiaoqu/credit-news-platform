@@ -1273,6 +1273,9 @@
             currentCategory = category;
             currentPage = 1;
             filteredArticles = category === 'all' ? articles : articles.filter(a => a.category === category);
+            window.filteredArticles = filteredArticles;
+            window.currentPage = 1;
+            window.currentCategory = category;
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
@@ -1322,6 +1325,8 @@
                 );
             }
             currentPage = 1;
+            window.currentPage = 1;
+            window.filteredArticles = filteredArticles;
             showListView();
             renderArticles(keyword);
         }
@@ -1507,6 +1512,8 @@
             });
             
             currentPage = 1;
+            window.currentPage = 1;
+            window.filteredArticles = filteredArticles;
             renderArticles();
         }
 
