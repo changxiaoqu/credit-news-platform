@@ -192,22 +192,22 @@
             <a href="javascript:void(0)" class="sidebar-link" onclick="showHomeView(); return false;">
                 <i class="fas fa-home w-5"></i>首页
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('all')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('all'); return false;">
                 <i class="fas fa-list w-5"></i>全部资讯
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('policy')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('policy'); return false;">
                 <i class="fas fa-file-alt w-5"></i>监管政策
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('news')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('news'); return false;">
                 <i class="fas fa-newspaper w-5"></i>行业资讯
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('risk')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('risk'); return false;">
                 <i class="fas fa-gavel w-5"></i>处罚数据
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('business')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('business'); return false;">
                 <i class="fas fa-briefcase w-5"></i>商机信息
             </a>
-            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('bid')">
+            <a href="javascript:void(0)" class="sidebar-link" onclick="filterCategory('bid'); return false;">
                 <i class="fas fa-handshake w-5"></i>投标信息
             </a>
         </nav>
@@ -270,7 +270,7 @@
         <div class="p-6 space-y-6">
             <!-- Stats Cards -->
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-green-400 transition-colors" onclick="filterCategory('policy')">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-green-400 transition-colors" onclick="filterCategory('policy'); return false;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-muted-foreground">监管政策</p>
@@ -282,7 +282,7 @@
                     </div>
                 </div>
                 
-                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-blue-400 transition-colors" onclick="filterCategory('news')">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-blue-400 transition-colors" onclick="filterCategory('news'); return false;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-muted-foreground">行业资讯</p>
@@ -294,7 +294,7 @@
                     </div>
                 </div>
                 
-                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-red-400 transition-colors" onclick="filterCategory('risk')">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-red-400 transition-colors" onclick="filterCategory('risk'); return false;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-muted-foreground">处罚数据</p>
@@ -306,7 +306,7 @@
                     </div>
                 </div>
                 
-                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-purple-400 transition-colors" onclick="filterCategory('business')">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-purple-400 transition-colors" onclick="filterCategory('business'); return false;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-muted-foreground">商机信息</p>
@@ -318,7 +318,7 @@
                     </div>
                 </div>
                 
-                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-orange-400 transition-colors" onclick="filterCategory('bid')">
+                <div class="shadcn-card p-6 animate-in cursor-pointer hover:border-orange-400 transition-colors" onclick="filterCategory('bid'); return false;">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm font-medium text-muted-foreground">投标信息</p>
@@ -340,7 +340,7 @@
                             <i class="fas fa-bolt text-yellow-500"></i>今日要闻
                             <span id="count-today" class="text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300 px-2 py-0.5 rounded-full">0条</span>
                         </h3>
-                        <button onclick="filterCategory('news')" class="text-sm text-primary hover:underline">查看更多</button>
+                        <button onclick="filterCategory('news'); return false;" class="text-sm text-primary hover:underline">查看更多</button>
                     </div>
                     <div id="todayNewsList" class="space-y-3">
                         <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
@@ -353,7 +353,7 @@
                         <h3 class="text-lg font-semibold flex items-center gap-2">
                             <i class="fas fa-exclamation-triangle text-red-500"></i>最新处罚速递
                         </h3>
-                        <button onclick="filterCategory('risk')" class="text-sm text-primary hover:underline">查看更多</button>
+                        <button onclick="filterCategory('risk'); return false;" class="text-sm text-primary hover:underline">查看更多</button>
                     </div>
                     <div id="latestPenaltyList" class="space-y-3">
                         <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
@@ -367,7 +367,7 @@
                             <i class="fas fa-clock text-orange-500"></i>即将截止商机
                             <span class="text-xs font-normal text-muted-foreground">(7天内)</span>
                         </h3>
-                        <button onclick="filterCategory('bid')" class="text-sm text-primary hover:underline">查看更多</button>
+                        <button onclick="filterCategory('bid'); return false;" class="text-sm text-primary hover:underline">查看更多</button>
                     </div>
                     <div id="upcomingBidsList" class="space-y-3">
                         <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
@@ -380,7 +380,7 @@
                         <h3 class="text-lg font-semibold flex items-center gap-2">
                             <i class="fas fa-star text-green-500"></i>重点政策
                         </h3>
-                        <button onclick="filterCategory('policy')" class="text-sm text-primary hover:underline">查看更多</button>
+                        <button onclick="filterCategory('policy'); return false;" class="text-sm text-primary hover:underline">查看更多</button>
                     </div>
                     <div id="keyPolicyList" class="space-y-3">
                         <div class="text-center text-muted-foreground py-8"><i class="fas fa-spinner fa-spin"></i> 加载中...</div>
@@ -1254,7 +1254,6 @@
         }
 
         function filterCategory(category) {
-            alert('filterCategory called: ' + category + ', articles=' + (window.articles?.length || 0));
             console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
