@@ -167,8 +167,7 @@
             cursor: pointer; 
             font-size: 14px;
         }
-        .bank-search-item:hover { background: hsl(var(--accent)); }
-    </style>
+        </style>
 </head>
 <body class="min-h-screen">
     <!-- Sidebar -->
@@ -1430,7 +1429,6 @@
 
         function applyFilters() {
             const timeFilter = document.getElementById('timeFilter').value;
-            const bankFilter = document.getElementById('bankFilter').value;
             const customDateRange = document.getElementById('customDateRange');
             const today = new Date();
             
@@ -1461,17 +1459,7 @@
                     if (endDate) timeMatch = timeMatch && date <= new Date(endDate + 'T23:59:59');
                 }
                 
-                // 银行筛选（统一用输入框，支持模糊匹配）
-                const bankKeyword = bankFilter.trim();
-                if (bankKeyword) {
-                    bankMatch = (a.parent_bank && a.parent_bank.includes(bankKeyword)) ||
-                                (a.penalized_institution && a.penalized_institution.includes(bankKeyword)) ||
-                                (a.procuring_entity && a.procuring_entity.includes(bankKeyword)) ||
-                                (a.source && a.source.includes(bankKeyword)) ||
-                                (a.title && a.title.includes(bankKeyword));
-                }
-                
-                return timeMatch && bankMatch;
+                return timeMatch;
             });
             
             currentPage = 1;
@@ -1487,96 +1475,10 @@
             }
         }
 
-        // 银行筛选搜索功能
-        function initBankSearch() {
-            const bankFilter = document.getElementById('bankFilter');
-            if (!bankFilter) return;
-
-            // 创建搜索容器
-            const wrapper = document.createElement('div');
-            wrapper.className = 'bank-search-container';
-            bankFilter.parentNode.insertBefore(wrapper, bankFilter);
-            wrapper.appendChild(bankFilter);
-
-            // 创建搜索输入框（所有屏幕尺寸显示）
-            const searchInput = document.createElement('input');
-            searchInput.type = 'text';
-            searchInput.placeholder = '搜索银行...';
-            searchInput.className = 'shadcn-input w-auto mb-2';
-            wrapper.insertBefore(searchInput, bankFilter);
-
-            // 创建搜索结果下拉框
-            const resultsDiv = document.createElement('div');
-            resultsDiv.className = 'bank-search-results';
-            wrapper.appendChild(resultsDiv);
-
-            // 获取所有银行选项
-            const allBanks = [];
-            bankFilter.querySelectorAll('option').forEach(opt => {
-                if (opt.value !== 'all') {
-                    allBanks.push({ value: opt.value, text: opt.textContent, group: opt.parentElement.label });
-                }
-            });
-
-            // 搜索功能
-            searchInput.addEventListener('input', (e) => {
-                const keyword = e.target.value.toLowerCase();
-                if (!keyword) {
-                    resultsDiv.classList.remove('show');
-                    return;
-                }
-
-                const filtered = allBanks.filter(b => b.text.toLowerCase().includes(keyword));
-                if (filtered.length > 0) {
-                    resultsDiv.innerHTML = filtered.map(b => `
-                        <div class="bank-search-item" data-value="${b.value}">
-                            <span class="text-xs text-muted-foreground">${b.group}</span>
-                            <div>${b.text}</div>
-                        </div>
-                    `).join('');
-                    resultsDiv.classList.add('show');
-
-                    // 绑定点击事件
-                    resultsDiv.querySelectorAll('.bank-search-item').forEach(item => {
-                        item.addEventListener('click', () => {
-                            bankFilter.value = item.dataset.value;
-                            searchInput.value = item.querySelector('div').textContent;
-                            resultsDiv.classList.remove('show');
-                            applyFilters();
-                        });
-                    });
-                } else {
-                    resultsDiv.innerHTML = '<div class="bank-search-item text-muted-foreground">无匹配结果</div>';
-                    resultsDiv.classList.add('show');
-                }
-            });
-
-            // 点击外部关闭搜索结果
-            document.addEventListener('click', (e) => {
-                if (!wrapper.contains(e.target)) {
-                    resultsDiv.classList.remove('show');
-                }
-            });
-
-            // 在移动端隐藏原下拉框，使用搜索框代替
-            if (window.innerWidth < 768) {
-                bankFilter.classList.add('hidden');
-            }
-            window.addEventListener('resize', () => {
-                if (window.innerWidth < 768) {
-                    bankFilter.classList.add('hidden');
-                } else {
-                    bankFilter.classList.remove('hidden');
-                    searchInput.classList.add('hidden');
-                }
-            });
-        }
-
         // 初始化
         // 页面加载后立即获取数据
         (async function() {
             await loadData();
-            initBankSearch();
             showMobileNav();
         })();
 
