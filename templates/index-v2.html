@@ -918,13 +918,15 @@
     </div>
 
     <script>
-        // 将变量声明到 window 上以便调试
+        // 所有变量直接声明在 window 上，确保全局共享
         window.articles = window.articles || [];
         window.currentPage = window.currentPage || 1;
         window.currentCategory = window.currentCategory || 'all';
         window.filteredArticles = window.filteredArticles || [];
         
-        let articles = window.articles, currentPage = window.currentPage, currentCategory = window.currentCategory, filteredArticles = window.filteredArticles;
+        // 函数内部直接使用 window.xxx
+        function getArticles() { return window.articles; }
+        function setArticles(arr) { window.articles = arr; }
         
         const categoryConfig = {
             policy: { name: '监管政策', badgeClass: 'shadcn-badge-policy', icon: 'fa-file-alt' },
@@ -958,22 +960,16 @@
         async function loadData() {
             try {
                 const response = await fetch('/api/articles');
-                articles = await response.json();
-                // console.log('加载到数据:', articles.length, '条');
+                const data = await response.json();
+                window.articles = data;
+                window.filteredArticles = data;
             } catch (err) {
-                // console.error('加载数据失败:', err);
-                articles = getMockData();
+                window.articles = getMockData();
+                window.filteredArticles = getMockData();
             }
-            filteredArticles = articles;
-            window.articles = articles;
-            window.filteredArticles = articles;
-            // console.log('filteredArticles长度:', filteredArticles.length);
             updateStats();
-            // console.log('调用showListView');
             showListView();
-            // console.log('调用renderArticles');
             renderArticles();
-            // console.log('loadData完成');
             renderHomeSections();
             updateBankFilter();
             updateLastUpdateTime();
@@ -1196,6 +1192,7 @@
 
         function updateStats() {
             const today = new Date().toISOString().split('T')[0];
+            const articles = window.articles || [];
             document.getElementById('count-today').textContent = articles.filter(a => a.publish_date === today).length + '条';
             Object.keys(categoryConfig).forEach(cat => {
                 const el = document.getElementById(`count-${cat}`);
@@ -1204,27 +1201,12 @@
         }
 
         function renderArticles(highlightKeyword = '') {
-            // console.log('=== renderArticles 开始 ===');
-            // console.log('window.articles:', typeof window.articles, window.articles ? window.articles.length : 'undefined');
-            // console.log('window.filteredArticles:', typeof window.filteredArticles, window.filteredArticles ? window.filteredArticles.length : 'undefined');
-            // console.log('window.currentPage:', window.currentPage);
-            
-            // 尝试从全局获取
-            let art = window.articles || articles;
-            let filt = window.filteredArticles || filteredArticles;
-            let page = window.currentPage || currentPage;
-            
-            // console.log('使用变量: articles=', art ? art.length : 0, 'filteredArticles=', filt ? filt.length : 0, 'currentPage=', page);
-            
             const container = document.getElementById('articlesList');
-            if (!container) {
-                console.error('找不到articlesList容器!');
-                return;
-            }
+            const page = window.currentPage || 1;
+            const filt = window.filteredArticles || [];
             
             const start = (page - 1) * 10;
-            const pageData = (filt || []).slice(start, start + 10);
-            // console.log('pageData长度:', pageData.length);
+            const pageData = filt.slice(start, start + 10);
 
             if (pageData.length === 0) {
                 container.innerHTML = '<div class="shadcn-card p-12 text-center text-muted-foreground"><i class="fas fa-inbox text-4xl mb-4"></i><p>暂无数据</p></div>';
@@ -1266,30 +1248,19 @@
                 `;
             }).join('');
 
-            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页 / 共 ${Math.ceil(filteredArticles.length / 10)} 页`;
+            document.getElementById('pageInfo').textContent = `第 ${window.currentPage || 1} 页 / 共 ${Math.ceil((window.filteredArticles || []).length / 10)} 页`;
         }
 
         function filterCategory(category) {
-            // 调试：查看调用时的变量状态
-            console.log('filterCategory调用: category=', category, 'window.articles=', window.articles ? window.articles.length : 'undefined');
-            
-            // 确保从 window 获取最新数据
-            const winArticles = window.articles;
-            articles = winArticles || articles;
-            filteredArticles = window.filteredArticles || filteredArticles;
-            currentPage = window.currentPage || 1;
-            
-            console.log('filterCategory执行: articles=', articles ? articles.length : 0, 'filteredArticles=', filteredArticles ? filteredArticles.length : 0);
-            
-            currentCategory = category;
-            currentPage = 1;
-            filteredArticles = category === 'all' ? articles : (articles || []).filter(a => a.category === category);
-            
-            // 同步到 window
-            window.filteredArticles = filteredArticles;
-            window.currentPage = 1;
             window.currentCategory = category;
-            window.articles = articles;
+            window.currentPage = 1;
+            
+            const allArticles = window.articles;
+            if (category === 'all') {
+                window.filteredArticles = allArticles;
+            } else {
+                window.filteredArticles = (allArticles || []).filter(a => a.category === category);
+            }
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
@@ -1317,28 +1288,23 @@
                 document.getElementById('sidebarBackdrop').classList.add('hidden');
             }
 
-            if (category === 'all') {
-                showListView();
-                renderArticles();
-            } else {
-                showListView();
-                renderArticles();
-            }
+            showListView();
+            renderArticles();
         }
 
         function performSearch() {
             const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
             if (!keyword) {
-                filteredArticles = articles;
+                window.filteredArticles = window.articles;
             } else {
                 // 支持标题、摘要、正文全文检索
-                filteredArticles = articles.filter(a => 
+                window.filteredArticles = (window.articles || []).filter(a => 
                     a.title.toLowerCase().includes(keyword) || 
                     (a.summary && a.summary.toLowerCase().includes(keyword)) ||
                     (a.full_content && a.full_content.toLowerCase().includes(keyword))
                 );
             }
-            currentPage = 1;
+            window.currentPage = 1;
             window.currentPage = 1;
             window.filteredArticles = filteredArticles;
             showListView();
@@ -1348,11 +1314,11 @@
         function changePage(delta) {
             const totalPages = Math.ceil(filteredArticles.length / 10);
             if (delta === -999) {
-                currentPage = 1; // 首页
+                window.currentPage = 1; // 首页
             } else if (delta === 999) {
-                currentPage = totalPages; // 尾页
+                window.currentPage = totalPages; // 尾页
             } else {
-                currentPage = Math.max(1, Math.min(totalPages, currentPage + delta));
+                window.currentPage = Math.max(1, Math.min(totalPages, window.currentPage + delta));
             }
             renderArticles();
         }
@@ -1502,7 +1468,7 @@
                 customDateRange.classList.add('hidden');
             }
             
-            filteredArticles = articles.filter(a => {
+            window.filteredArticles = (window.articles || []).filter(a => {
                 const date = new Date(a.publish_date);
                 let timeMatch = true;
                 
@@ -1525,7 +1491,7 @@
                 return timeMatch;
             });
             
-            currentPage = 1;
+            window.currentPage = 1;
             window.currentPage = 1;
             window.filteredArticles = filteredArticles;
             renderArticles();
