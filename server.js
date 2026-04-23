@@ -565,8 +565,6 @@ async function start() {
                 db.close();
                 console.log('Data init skipped (INIT_DATA=false)');
             }
-                console.error('Failed to load initial data:', err);
-            });
         });
 
         app.listen(PORT, () => {
