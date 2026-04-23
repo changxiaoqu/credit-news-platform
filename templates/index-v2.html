@@ -1254,6 +1254,7 @@
         }
 
         function filterCategory(category) {
+            alert('filterCategory called: ' + category + ', articles=' + (window.articles?.length || 0));
             console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
