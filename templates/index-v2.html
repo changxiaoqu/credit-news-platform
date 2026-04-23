@@ -1196,10 +1196,26 @@
         }
 
         function renderArticles(highlightKeyword = '') {
+            console.log('=== renderArticles 开始 ===');
+            console.log('window.articles:', typeof window.articles, window.articles ? window.articles.length : 'undefined');
+            console.log('window.filteredArticles:', typeof window.filteredArticles, window.filteredArticles ? window.filteredArticles.length : 'undefined');
+            console.log('window.currentPage:', window.currentPage);
+            
+            // 尝试从全局获取
+            let art = window.articles || articles;
+            let filt = window.filteredArticles || filteredArticles;
+            let page = window.currentPage || currentPage;
+            
+            console.log('使用变量: articles=', art ? art.length : 0, 'filteredArticles=', filt ? filt.length : 0, 'currentPage=', page);
+            
             const container = document.getElementById('articlesList');
-            console.log('renderArticles执行: filteredArticles=', filteredArticles.length, 'currentPage=', currentPage);
-            const start = (currentPage - 1) * 10;
-            const pageData = filteredArticles.slice(start, start + 10);
+            if (!container) {
+                console.error('找不到articlesList容器!');
+                return;
+            }
+            
+            const start = (page - 1) * 10;
+            const pageData = (filt || []).slice(start, start + 10);
             console.log('pageData长度:', pageData.length);
 
             if (pageData.length === 0) {
