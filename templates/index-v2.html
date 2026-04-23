@@ -959,21 +959,21 @@
             try {
                 const response = await fetch('/api/articles');
                 articles = await response.json();
-                console.log('加载到数据:', articles.length, '条');
+                // console.log('加载到数据:', articles.length, '条');
             } catch (err) {
-                console.error('加载数据失败:', err);
+                // console.error('加载数据失败:', err);
                 articles = getMockData();
             }
             filteredArticles = articles;
             window.articles = articles;
             window.filteredArticles = articles;
-            console.log('filteredArticles长度:', filteredArticles.length);
+            // console.log('filteredArticles长度:', filteredArticles.length);
             updateStats();
-            console.log('调用showListView');
+            // console.log('调用showListView');
             showListView();
-            console.log('调用renderArticles');
+            // console.log('调用renderArticles');
             renderArticles();
-            console.log('loadData完成');
+            // console.log('loadData完成');
             renderHomeSections();
             updateBankFilter();
             updateLastUpdateTime();
@@ -1204,17 +1204,17 @@
         }
 
         function renderArticles(highlightKeyword = '') {
-            console.log('=== renderArticles 开始 ===');
-            console.log('window.articles:', typeof window.articles, window.articles ? window.articles.length : 'undefined');
-            console.log('window.filteredArticles:', typeof window.filteredArticles, window.filteredArticles ? window.filteredArticles.length : 'undefined');
-            console.log('window.currentPage:', window.currentPage);
+            // console.log('=== renderArticles 开始 ===');
+            // console.log('window.articles:', typeof window.articles, window.articles ? window.articles.length : 'undefined');
+            // console.log('window.filteredArticles:', typeof window.filteredArticles, window.filteredArticles ? window.filteredArticles.length : 'undefined');
+            // console.log('window.currentPage:', window.currentPage);
             
             // 尝试从全局获取
             let art = window.articles || articles;
             let filt = window.filteredArticles || filteredArticles;
             let page = window.currentPage || currentPage;
             
-            console.log('使用变量: articles=', art ? art.length : 0, 'filteredArticles=', filt ? filt.length : 0, 'currentPage=', page);
+            // console.log('使用变量: articles=', art ? art.length : 0, 'filteredArticles=', filt ? filt.length : 0, 'currentPage=', page);
             
             const container = document.getElementById('articlesList');
             if (!container) {
@@ -1224,7 +1224,7 @@
             
             const start = (page - 1) * 10;
             const pageData = (filt || []).slice(start, start + 10);
-            console.log('pageData长度:', pageData.length);
+            // console.log('pageData长度:', pageData.length);
 
             if (pageData.length === 0) {
                 container.innerHTML = '<div class="shadcn-card p-12 text-center text-muted-foreground"><i class="fas fa-inbox text-4xl mb-4"></i><p>暂无数据</p></div>';
