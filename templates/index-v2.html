@@ -959,9 +959,13 @@
                 articles = getMockData();
             }
             filteredArticles = articles;
+            console.log('filteredArticles长度:', filteredArticles.length);
             updateStats();
+            console.log('调用showListView');
             showListView();
+            console.log('调用renderArticles');
             renderArticles();
+            console.log('loadData完成');
             renderHomeSections();
             updateBankFilter();
             updateLastUpdateTime();
