@@ -229,17 +229,29 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 
-                <div class="flex flex-1 items-center gap-4">
-                    <div class="relative flex-1 max-w-md">
+                <div class="flex flex-1 items-center gap-3">
+                    <!-- 搜索框 -->
+                    <div class="relative flex-1 max-w-xs">
                         <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></i>
                         <input type="text" id="searchInput" placeholder="搜索资讯..." 
                             class="shadcn-input pl-10"
                             onkeypress="if(event.key==='Enter')performSearch()">
                     </div>
                     
-                    <button onclick="performSearch()" class="shadcn-button shadcn-button-primary">
-                        <i class="fas fa-search"></i>搜索
-                    </button>
+                    <!-- 时间筛选 - 移到顶部搜索框右边 -->
+                    <select id="timeFilter" onchange="applyFilters()" class="shadcn-input w-auto text-sm">
+                        <option value="all">全部时间</option>
+                        <option value="3days">最近三天</option>
+                        <option value="week">最近一周</option>
+                        <option value="month">最近一月</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                    
+                    <div id="customDateRange" class="hidden items-center gap-1">
+                        <input type="date" id="startDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
+                        <span class="text-muted-foreground text-xs">至</span>
+                        <input type="date" id="endDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
+                    </div>
                 </div>
                 
                 <div class="flex items-center gap-2">
@@ -378,21 +390,7 @@
             <div id="filterBar" class="shadcn-card p-4 flex flex-wrap items-center gap-4 hidden">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-filter text-muted-foreground"></i>
-                    <span class="text-sm font-medium">筛选:</span>
-                </div>
-                
-                <select id="timeFilter" onchange="applyFilters()" class="shadcn-input w-auto">
-                    <option value="all">全部时间</option>
-                    <option value="3days">最近三天</option>
-                    <option value="week">最近一周</option>
-                    <option value="month">最近一月</option>
-                    <option value="custom">自定义</option>
-                </select>
-                
-                <div id="customDateRange" class="hidden flex items-center gap-2">
-                    <input type="date" id="startDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
-                    <span class="text-muted-foreground">至</span>
-                    <input type="date" id="endDate" class="shadcn-input w-auto text-sm" onchange="applyFilters()">
+                    <span class="text-sm font-medium">银行筛选:</span>
                 </div>
                 
                 <input type="text" id="bankFilter" oninput="applyFilters()" placeholder="输入银行名称筛选" class="shadcn-input w-40 text-sm">
