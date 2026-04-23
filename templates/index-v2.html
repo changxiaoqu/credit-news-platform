@@ -1270,12 +1270,20 @@
         }
 
         function filterCategory(category) {
+            // 确保从 window 获取最新数据
+            articles = window.articles || articles;
+            filteredArticles = window.filteredArticles || filteredArticles;
+            currentPage = window.currentPage || 1;
+            
             currentCategory = category;
             currentPage = 1;
-            filteredArticles = category === 'all' ? articles : articles.filter(a => a.category === category);
+            filteredArticles = category === 'all' ? articles : (articles || []).filter(a => a.category === category);
+            
+            // 同步到 window
             window.filteredArticles = filteredArticles;
             window.currentPage = 1;
             window.currentCategory = category;
+            window.articles = articles;
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
