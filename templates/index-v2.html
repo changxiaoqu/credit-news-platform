@@ -953,13 +953,15 @@
             try {
                 const response = await fetch('/api/articles');
                 articles = await response.json();
+                console.log('加载到数据:', articles.length, '条');
             } catch (err) {
+                console.error('加载数据失败:', err);
                 articles = getMockData();
             }
             filteredArticles = articles;
             updateStats();
-            renderArticles();
             showListView();
+            renderArticles();
             renderHomeSections();
             updateBankFilter();
             updateLastUpdateTime();
