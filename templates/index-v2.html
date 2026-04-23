@@ -386,14 +386,8 @@
                 </div>
             </div>
 
-            <!-- Filter Bar -->
-            <div id="filterBar" class="shadcn-card p-4 flex flex-wrap items-center gap-4 hidden">
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-filter text-muted-foreground"></i>
-                    <span class="text-sm font-medium">银行筛选:</span>
-                </div>
-                
-                <input type="text" id="bankFilter" oninput="applyFilters()" placeholder="输入银行名称筛选" class="shadcn-input w-40 text-sm">
+            <!-- Filter Bar (已移除，功能合并到顶部搜索框右侧) -->
+            <div id="filterBar" class="hidden">
                 <select id="bankFilterSelect" onchange="applyFilters()" class="shadcn-input w-auto hidden">
                     <option value="all">全部银行</option>
                     <optgroup label="城市商业银行">
