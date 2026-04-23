@@ -33,10 +33,50 @@ function initDB() {
             if (err) reject(err);
             else {
                 if (dbExists) {
-                    // 数据库文件已存在，确保 FTS5 表存在
-                    db.exec(`CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(title, summary, content)`, (err) => {
+                    // 数据库文件已存在，确保 FTS5 表存在 + 迁移新字段
+                    db.exec(`
+                        CREATE VIRTUAL TABLE IF NOT EXISTS articles_fts USING fts5(title, summary, content);
+                    `, (err) => {
                         if (err) reject(err);
                         else {
+                            // 迁移：为已有表添加缺失的扩展字段
+                            const migrations = [
+                                'ALTER TABLE articles ADD COLUMN full_content TEXT',
+                                'ALTER TABLE articles ADD COLUMN related_banks TEXT',
+                                'ALTER TABLE articles ADD COLUMN is_duplicate INTEGER DEFAULT 0',
+                                'ALTER TABLE articles ADD COLUMN duplicate_sources TEXT',
+                                'ALTER TABLE articles ADD COLUMN penalty_amount REAL',
+                                'ALTER TABLE articles ADD COLUMN penalized_institution TEXT',
+                                'ALTER TABLE articles ADD COLUMN institution_level TEXT',
+                                'ALTER TABLE articles ADD COLUMN parent_bank TEXT',
+                                'ALTER TABLE articles ADD COLUMN bank_type TEXT',
+                                'ALTER TABLE articles ADD COLUMN penalty_authority TEXT',
+                                'ALTER TABLE articles ADD COLUMN penalty_date DATE',
+                                'ALTER TABLE articles ADD COLUMN penalty_reason TEXT',
+                                'ALTER TABLE articles ADD COLUMN penalty_document_no TEXT',
+                                'ALTER TABLE articles ADD COLUMN other_punishments TEXT',
+                                'ALTER TABLE articles ADD COLUMN project_name TEXT',
+                                'ALTER TABLE articles ADD COLUMN procuring_entity TEXT',
+                                'ALTER TABLE articles ADD COLUMN procuring_level TEXT',
+                                'ALTER TABLE articles ADD COLUMN budget TEXT',
+                                'ALTER TABLE articles ADD COLUMN bid_deadline DATE',
+                                'ALTER TABLE articles ADD COLUMN bid_status TEXT',
+                                'ALTER TABLE articles ADD COLUMN winner TEXT',
+                                'ALTER TABLE articles ADD COLUMN winner_amount TEXT',
+                                'ALTER TABLE articles ADD COLUMN core_requirements TEXT',
+                                'ALTER TABLE articles ADD COLUMN policy_no TEXT',
+                                'ALTER TABLE articles ADD COLUMN issuing_authority TEXT',
+                                'ALTER TABLE articles ADD COLUMN effective_date DATE',
+                                'ALTER TABLE articles ADD COLUMN policy_level TEXT',
+                                'ALTER TABLE articles ADD COLUMN key_points TEXT',
+                                'ALTER TABLE articles ADD COLUMN is_key_policy INTEGER DEFAULT 0'
+                            ];
+                            
+                            let migrated = 0;
+                            migrations.forEach(sql => {
+                                db.run(sql, (e) => { /* 忽略已存在列的错误 */ });
+                            });
+                            
                             console.log('Using existing database with FTS5:', DB_PATH);
                             resolve(db);
                         }
@@ -49,6 +89,7 @@ CREATE TABLE IF NOT EXISTS articles (
     title TEXT NOT NULL,
     summary TEXT,
     content TEXT,
+    full_content TEXT,
     source TEXT,
     url TEXT UNIQUE,
     category TEXT,
@@ -56,7 +97,41 @@ CREATE TABLE IF NOT EXISTS articles (
     publish_date DATE,
     crawl_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     is_read INTEGER DEFAULT 0,
-    is_important INTEGER DEFAULT 0
+    is_important INTEGER DEFAULT 0,
+    related_banks TEXT,
+    is_duplicate INTEGER DEFAULT 0,
+    duplicate_sources TEXT,
+    
+    -- 处罚专用字段
+    penalty_amount REAL,
+    penalized_institution TEXT,
+    institution_level TEXT,
+    parent_bank TEXT,
+    bank_type TEXT,
+    penalty_authority TEXT,
+    penalty_date DATE,
+    penalty_reason TEXT,
+    penalty_document_no TEXT,
+    other_punishments TEXT,
+    
+    -- 投标/商机专用字段
+    project_name TEXT,
+    procuring_entity TEXT,
+    procuring_level TEXT,
+    budget TEXT,
+    bid_deadline DATE,
+    bid_status TEXT,
+    winner TEXT,
+    winner_amount TEXT,
+    core_requirements TEXT,
+    
+    -- 政策专用字段
+    policy_no TEXT,
+    issuing_authority TEXT,
+    effective_date DATE,
+    policy_level TEXT,
+    key_points TEXT,
+    is_key_policy INTEGER DEFAULT 0
 );
 CREATE INDEX IF NOT EXISTS idx_category ON articles(category);
 CREATE INDEX IF NOT EXISTS idx_publish_date ON articles(publish_date);
