@@ -188,11 +188,6 @@
             </div>
         </div>
         
-        <!-- 测试按钮 -->
-<div style="position:fixed;top:10px;right:10px;z-index:9999;background:red;padding:10px;">
-    <button onclick="filterCategory('policy'); return false;">测试filterCategory(policy)</button>
-</div>
-
 <nav class="space-y-1 p-4">
             <button class="sidebar-link w-full text-left" onclick="showHomeView(); return false;">
                 <i class="fas fa-home w-5"></i>首页
@@ -971,7 +966,6 @@
 
 
         async function loadData() {
-            alert('loadData 开始执行');
             console.log('>>> loadData 开始执行');
             try {
                 const response = await fetch('/api/articles');
@@ -1274,22 +1268,8 @@
         }
 
         function filterCategory(category) {
-            alert('filterCategory 执行! category=' + category + ', articles=' + window.articles?.length);
             console.log('>>> filterCategory:', category, 'window.articles:', window.articles?.length);
             
-            window.currentCategory = category;
-            window.currentPage = 1;
-            
-            const allArticles = window.articles;
-            alert('allArticles: ' + (allArticles?.length || 0));
-            
-            if (category === 'all') {
-                window.filteredArticles = allArticles;
-            } else {
-                window.filteredArticles = (allArticles || []).filter(a => a.category === category);
-            }
-            
-            alert('filteredArticles: ' + window.filteredArticles?.length);
             window.currentCategory = category;
             window.currentPage = 1;
             
