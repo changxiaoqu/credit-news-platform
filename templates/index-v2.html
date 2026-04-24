@@ -245,7 +245,15 @@
                             onkeypress="if(event.key==='Enter')performSearch()">
                     </div>
                     
-                    <!-- 时间筛选 - 移到顶部搜索框右边 -->
+                    <!-- 政策类型筛选（监管政策专用） -->
+                    <select id="policyTypeFilter" onchange="applyFilters()" class="shadcn-input w-auto text-sm hidden">
+                        <option value="all">全部类型</option>
+                        <option value="签约">签约类</option>
+                        <option value="支付">支付类</option>
+                        <option value="小程序">微信小程序类</option>
+                    </select>
+                    
+                    <!-- 时间筛选 -->
                     <select id="timeFilter" onchange="applyFilters()" class="shadcn-input w-auto text-sm">
                         <option value="all">全部时间</option>
                         <option value="3days">最近三天</option>
@@ -1020,7 +1028,9 @@
             const mar1 = '2026-03-01';
             const mar15 = '2026-03-15';
             const apr1 = '2026-04-01';
-            const apr2 = '2026-04-02';
+            const apr2 = "2026-04-02";
+            const jul1_2025 = "2025-07-01";
+            const sep1_2025 = "2025-09-01";
             
             // 未来日期（用于投标截止）
             const futureApr10 = '2026-04-10';
@@ -1036,10 +1046,14 @@
             
             return [
                 // ========== 监管政策（全行业） ==========
-                { id: 1, title: "《信用卡业务监督管理办法》修订版正式发布", summary: "国家金融监督管理总局发布修订后的《信用卡业务监督管理办法》，自2026年5月1日起施行。新规对信用卡授信管理、风险防控、消费者权益保护等方面进行了全面完善...", category: "policy", source: "国家金融监督管理总局", publish_date: apr1, is_important: true, is_key_policy: true, tags: ["信用卡", "风控", "监管"], policy_no: "金监规〔2026〕8号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-05-01", policy_level: "部门规章", key_points: "1.明确信用卡资金不得用于投资、购房等非消费领域；2.强化授信额度动态管理；3.完善消费者权益保护机制" },
-                { id: 2, title: "央行：进一步加强信用卡分期业务管理", summary: "中国人民银行发布通知，要求各银行加强信用卡分期业务管理，规范分期手续费披露，禁止诱导性营销...", category: "policy", source: "中国人民银行", publish_date: mar15, is_important: true, is_key_policy: true, tags: ["信用卡", "消费信贷", "监管"], policy_no: "银发〔2026〕45号", issuing_authority: "中国人民银行", effective_date: "2026-04-01", policy_level: "规范性文件", key_points: "1.分期手续费必须明示年化利率；2.禁止默认勾选分期；3.加强分期营销合规管理" },
-                { id: 3, title: "关于规范信用卡积分业务的指导意见", summary: "银保监会发布指导意见，规范信用卡积分累积、兑换和使用，保护持卡人合法权益...", category: "policy", source: "银保监会", publish_date: feb15, is_important: false, is_key_policy: false, tags: ["信用卡", "权益营销"], policy_no: "银保监办发〔2026〕23号", issuing_authority: "银保监会", effective_date: "2026-03-01", policy_level: "规范性文件", key_points: "1.积分规则须清晰透明；2.禁止单方面调整已累积积分价值；3.保障持卡人积分兑换权益" },
-                { id: 4, title: "金融数据安全管理办法：信用卡数据保护新规", summary: "《金融数据安全管理办法》正式施行，对信用卡业务中的个人数据收集、使用、存储提出更高要求...", category: "policy", source: "国家金融监督管理总局", publish_date: jan15, is_important: true, is_key_policy: true, tags: ["信用卡", "大数据", "风控"], policy_no: "金监规〔2026〕2号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-02-01", policy_level: "部门规章", key_points: "1.强化信用卡持卡人数据保护；2.规范数据共享和外包管理；3.明确数据安全责任" },
+                { id: 1, title: "《信用卡业务监督管理办法》修订版正式发布", summary: "国家金融监督管理总局发布修订后的《信用卡业务监督管理办法》，自2026年5月1日起施行。新规对信用卡授信管理、风险防控、消费者权益保护等方面进行了全面完善...", category: "policy", source: "国家金融监督管理总局", publish_date: apr1, is_important: true, is_key_policy: true, tags: ["信用卡", "风控", "监管", "签约"], policy_no: "金监规〔2026〕8号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-05-01", policy_level: "部门规章", key_points: "1.明确信用卡资金不得用于投资、购房等非消费领域；2.强化授信额度动态管理；3.完善消费者权益保护机制" },
+                { id: 2, title: "央行：进一步加强信用卡分期业务管理", summary: "中国人民银行发布通知，要求各银行加强信用卡分期业务管理，规范分期手续费披露，禁止诱导性营销...", category: "policy", source: "中国人民银行", publish_date: mar15, is_important: true, is_key_policy: true, tags: ["信用卡", "消费信贷", "监管", "支付"], policy_no: "银发〔2026〕45号", issuing_authority: "中国人民银行", effective_date: "2026-04-01", policy_level: "规范性文件", key_points: "1.分期手续费必须明示年化利率；2.禁止默认勾选分期；3.加强分期营销合规管理" },
+                { id: 3, title: "关于规范信用卡积分业务的指导意见", summary: "银保监会发布指导意见，规范信用卡积分累积、兑换和使用，保护持卡人合法权益...", category: "policy", source: "银保监会", publish_date: feb15, is_important: false, is_key_policy: false, tags: ["信用卡", "权益营销", "小程序"], policy_no: "银保监办发〔2026〕23号", issuing_authority: "银保监会", effective_date: "2026-03-01", policy_level: "规范性文件", key_points: "1.积分规则须清晰透明；2.禁止单方面调整已累积积分价值；3.保障持卡人积分兑换权益" },
+                { id: 4, title: "金融数据安全管理办法：信用卡数据保护新规", summary: "《金融数据安全管理办法》正式施行，对信用卡业务中的个人数据收集、使用、存储提出更高要求...", category: "policy", source: "国家金融监督管理总局", publish_date: jan15, is_important: true, is_key_policy: true, tags: ["信用卡", "大数据", "风控", "支付"], policy_no: "金监规〔2026〕2号", issuing_authority: "国家金融监督管理总局", effective_date: "2026-02-01", policy_level: "部门规章", key_points: "1.强化信用卡持卡人数据保护；2.规范数据共享和外包管理；3.明确数据安全责任" },
+                { id: 5, title: "商业银行信用卡业务监督管理办法（2025修订版）", summary: "银保监会发布新修订的信用卡业务监督管理办法，对信用卡申请、额度管理、息费收取等作出新规定...", category: "policy", source: "国家金融监督管理总局", publish_date: jul1_2025, is_important: true, is_key_policy: true, tags: ["信用卡", "监管", "签约"], policy_no: "银保监规〔2025〕13号", issuing_authority: "国家金融监督管理总局", effective_date: "2025-07-01", policy_level: "部门规章", key_points: "1.债务收入比不超过55%；2.严格管控资金流向；3.睡眠卡比例不超过20%" },
+                { id: 6, title: "央行发布支付机构管理新规", summary: "中国人民银行发布支付机构分类评级新规，对支付机构进行A-E分类监管，自2026年2月1日起实施...", category: "policy", source: "中国人民银行", publish_date: jan1, is_important: true, is_key_policy: false, tags: ["支付", "监管", "支付"], policy_no: "银发〔2026〕8号", issuing_authority: "中国人民银行", effective_date: "2026-02-01", policy_level: "规范性文件", key_points: "1.支付机构分类评级A-E共5类11级；2.差异化监管措施；3.备付金管理要求" },
+                { id: 7, title: "微信小程序虚拟支付业务管理规范", summary: "微信团队发布小程序虚拟支付业务管理规范更新公告，要求开发者4月1日前接入虚拟支付...", category: "policy", source: "微信支付", publish_date: mar2, is_important: false, is_key_policy: false, tags: ["小程序", "支付", "小程序"], policy_no: "", issuing_authority: "腾讯公司", effective_date: "2026-04-01", policy_level: "行业规范", key_points: "1.iOS端虚拟支付享受15%优惠费率；2.虚拟商品需接入小程序虚拟支付；3.未接入将被判定违规" },
+                { id: 8, title: "电子支付指引修改：单笔不超1000元限制拟取消", summary: "央行发布《修改〈电子支付指引（第一号）〉等4件规范性文件有关公告》，拟取消电子支付单笔1000元限额...", category: "policy", source: "中国人民银行", publish_date: sep1_2025, is_important: true, is_key_policy: false, tags: ["支付", "监管", "支付"], policy_no: "银发〔2025〕120号", issuing_authority: "中国人民银行", effective_date: "待定", policy_level: "规范性文件", key_points: "1.删除电子支付单笔限额；2.信用卡透支利率市场化；3.简化信息披露要求" },
                 
                 // ========== 处罚数据（城商行和农商行） ==========
                 // 城商行处罚
