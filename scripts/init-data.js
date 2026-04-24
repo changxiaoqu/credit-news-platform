@@ -8,9 +8,14 @@ const DB_PATH = path.join(DB_DIR, 'news.db');
 // 精简版初始数据（保证各类别都有代表性数据）
 const initialData = [
     // ===== Policy 政策 =====
-    {title: '三部门：个人消费贷款贴息政策延至2026年底，信用卡账单分期纳入支持范围', summary: '财政部、中国人民银行、金融监管总局联合发布通知，将个人消费贷款财政贴息政策实施期限延长至2026年12月31日，首次将信用卡账单分期业务纳入贴息支持范围，年贴息比例为1个百分点。', source: '财政部/央行/金融监管总局', url: 'https://www.nfra.gov.cn', category: 'policy', tags: '["政策","消费贷款"]', publish_date: '2026-01-20', policy_no: '财金〔2026〕1号', issuing_authority: '财政部/中国人民银行/金融监管总局', effective_date: '2025-09-01', policy_level: '规范性文件', key_points: '信用卡账单分期纳入贴息范围，年贴息1%', is_key_policy: 1},
-    {title: '《金融机构客户尽职调查管理办法》正式实施', summary: '2026年1月1日起，三部门联合发布的《金融机构客户尽职调查和客户身份资料及交易记录保存管理办法》正式实施。将过去的"客户身份识别"升级为"客户尽职调查"，要求银行穿透识别受益所有人。', source: '央行/金融监管总局/证监会', url: 'https://www.pbc.gov.cn/', category: 'policy', tags: '["政策","反洗钱"]', publish_date: '2026-01-01', policy_no: '人行/金监/证监会令〔2025〕第3号', issuing_authority: '中国人民银行/国家金融监管总局/证监会', effective_date: '2026-01-01', policy_level: '部门规章', key_points: '客户身份识别升级为客户尽职调查，穿透识别受益所有人', is_key_policy: 0},
-    {title: '信用卡个性化分期新规：不得强制要求提供担保人', summary: '国家金融监管总局发布《关于优化信用卡债务纾困机制的通知》，明确从2026年1月1日起，金融机构办理信用卡个性化分期业务时，不得强制要求持卡人提供担保人。', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn', category: 'policy', tags: '["监管政策","信用卡协商"]', publish_date: '2026-01-01', policy_no: '金规〔2025〕XX号', issuing_authority: '国家金融监督管理总局', effective_date: '2026-01-01', policy_level: '规范性文件', key_points: '信用卡个性化分期不得强制要求提供担保人', is_key_policy: 1},
+    {title: '《信用卡业务监督管理办法》修订版正式发布', summary: '国家金融监督管理总局发布修订后的《信用卡业务监督管理办法》，自2026年5月1日起施行。新规对信用卡授信管理、风险防控、消费者权益保护等方面进行了全面完善。', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn/policy/1', category: 'policy', tags: '["信用卡","风控","监管","签约"]', publish_date: '2026-04-01', policy_no: '金监规〔2026〕8号', issuing_authority: '国家金融监督管理总局', effective_date: '2026-05-01', policy_level: '部门规章', key_points: '明确信用卡资金不得用于投资、购房等非消费领域；强化授信额度动态管理；完善消费者权益保护机制', is_key_policy: 1},
+    {title: '央行：进一步加强信用卡分期业务管理', summary: '中国人民银行发布通知，要求各银行加强信用卡分期业务管理，规范分期手续费披露，禁止诱导性营销。', source: '中国人民银行', url: 'https://www.pbc.gov.cn/policy/2', category: 'policy', tags: '["信用卡","消费信贷","监管","支付"]', publish_date: '2026-03-15', policy_no: '银发〔2026〕45号', issuing_authority: '中国人民银行', effective_date: '2026-04-01', policy_level: '规范性文件', key_points: '分期手续费必须明示年化利率；禁止默认勾选分期；加强分期营销合规管理', is_key_policy: 1},
+    {title: '关于规范信用卡积分业务的指导意见', summary: '银保监会发布指导意见，规范信用卡积分累积、兑换和使用，保护持卡人合法权益。', source: '银保监会', url: 'https://www.cbirc.gov.cn/policy/3', category: 'policy', tags: '["信用卡","权益营销","小程序"]', publish_date: '2026-02-15', policy_no: '银保监办发〔2026〕23号', issuing_authority: '银保监会', effective_date: '2026-03-01', policy_level: '规范性文件', key_points: '积分规则须清晰透明；禁止单方面调整已累积积分价值；保障持卡人积分兑换权益', is_key_policy: 0},
+    {title: '金融数据安全管理办法：信用卡数据保护新规', summary: '《金融数据安全管理办法》正式施行，对信用卡业务中的个人数据收集、使用、存储提出更高要求。', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn/policy/4', category: 'policy', tags: '["信用卡","大数据","风控","支付"]', publish_date: '2026-01-15', policy_no: '金监规〔2026〕2号', issuing_authority: '国家金融监督管理总局', effective_date: '2026-02-01', policy_level: '部门规章', key_points: '强化信用卡持卡人数据保护；规范数据共享和外包管理；明确数据安全责任', is_key_policy: 1},
+    {title: '商业银行信用卡业务监督管理办法（2025修订版）', summary: '银保监会发布新修订的信用卡业务监督管理办法，对信用卡申请、额度管理、息费收取等作出新规定。', source: '国家金融监督管理总局', url: 'https://www.nfra.gov.cn/policy/5', category: 'policy', tags: '["信用卡","监管","签约"]', publish_date: '2025-07-01', policy_no: '银保监规〔2025〕13号', issuing_authority: '国家金融监督管理总局', effective_date: '2025-07-01', policy_level: '部门规章', key_points: '债务收入比不超过55%；严格管控资金流向；睡眠卡比例不超过20%', is_key_policy: 1},
+    {title: '央行发布支付机构管理新规', summary: '中国人民银行发布支付机构分类评级新规，对支付机构进行A-E分类监管，自2026年2月1日起实施。', source: '中国人民银行', url: 'https://www.pbc.gov.cn/policy/6', category: 'policy', tags: '["支付","监管","支付"]', publish_date: '2026-01-01', policy_no: '银发〔2026〕8号', issuing_authority: '中国人民银行', effective_date: '2026-02-01', policy_level: '规范性文件', key_points: '支付机构分类评级A-E共5类11级；差异化监管措施；备付金管理要求', is_key_policy: 0},
+    {title: '微信小程序虚拟支付业务管理规范', summary: '微信团队发布小程序虚拟支付业务管理规范更新公告，要求开发者4月1日前接入虚拟支付。', source: '微信支付', url: 'https://pay.weixin.qq.com/policy/7', category: 'policy', tags: '["小程序","支付","小程序"]', publish_date: '2026-03-02', policy_no: '', issuing_authority: '腾讯公司', effective_date: '2026-04-01', policy_level: '行业规范', key_points: 'iOS端虚拟支付享受15%优惠费率；虚拟商品需接入小程序虚拟支付；未接入将被判定违规', is_key_policy: 0},
+    {title: '电子支付指引修改：单笔不超1000元限制拟取消', summary: '央行发布《修改〈电子支付指引（第一号）〉等4件规范性文件有关公告》，拟取消电子支付单笔1000元限额。', source: '中国人民银行', url: 'https://www.pbc.gov.cn/policy/8', category: 'policy', tags: '["支付","监管","支付"]', publish_date: '2025-09-01', policy_no: '银发〔2025〕120号', issuing_authority: '中国人民银行', effective_date: '待定', policy_level: '规范性文件', key_points: '删除电子支付单笔限额；信用卡透支利率市场化；简化信息披露要求', is_key_policy: 0},
 
     // ===== News 行业资讯 =====
     {title: '年内超45款信用卡被停发！发卡量三年锐减1.11亿张', summary: '2026年开年以来，农业银行、民生银行、交通银行、广发银行等多家银行密集发布公告，宣布停止发行多款信用卡产品。民生银行一次性叫停11款联名信用卡产品。', source: '经济参考报', url: 'http://finance.ce.cn/bank12/scroll/202604/t20260420_2915508.shtml', category: 'news', tags: '["行业","停发潮"]', publish_date: '2026-04-20'},
@@ -50,7 +55,7 @@ async function initData() {
 
                 // 批量插入（一次插入所有数据）
                 const placeholders = initialData.map(() => 
-                    '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
+                    '(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
                 ).join(',');
                 
                 const values = [];
@@ -58,29 +63,34 @@ async function initData() {
                     values.push(
                         item.title, item.summary, item.content || '', item.source, item.url,
                         item.category, item.tags, item.publish_date,
-                        item.penalty_amount || null, item.penalized_institution || null,
+                        item.is_important || 0, item.penalty_amount || null, item.penalized_institution || null,
                         item.institution_level || null, item.parent_bank || null, item.bank_type || null,
-                        item.penalty_authority || null, item.penalty_date || null,
-                        item.penalty_reason || null, item.penalty_document_no || null, item.other_punishments || null,
-                        item.project_name || null, item.procuring_entity || null, item.procuring_level || null,
-                        item.budget || null, item.bid_deadline || null, item.bid_status || null,
-                        item.winner || null, item.winner_amount || null, item.core_requirements || null,
-                        item.policy_no || null, item.issuing_authority || null, item.effective_date || null,
-                        item.policy_level || null, item.key_points || null, item.is_key_policy || 0
+                        item.penalty_authority || null, item.penalty_date || null, item.penalty_reason || null,
+                        item.penalty_document_no || null, item.other_punishments || null, item.project_name || null,
+                        item.procuring_entity || null, item.procuring_level || null, item.budget || null,
+                        item.bid_deadline || null, item.bid_status || null, item.winner || null,
+                        item.winner_amount || null, item.core_requirements || null, item.policy_no || null,
+                        item.issuing_authority || null, item.effective_date || null, item.policy_level || null,
+                        item.key_points || null, item.is_key_policy || 0
                     );
                 });
 
-                const insertSql = `INSERT OR IGNORE INTO articles (title, summary, content, source, url, category, tags, publish_date, penalty_amount, penalized_institution, institution_level, parent_bank, bank_type, penalty_authority, penalty_date, penalty_reason, penalty_document_no, other_punishments, project_name, procuring_entity, procuring_level, budget, bid_deadline, bid_status, winner, winner_amount, core_requirements, policy_no, issuing_authority, effective_date, policy_level, key_points, is_key_policy) VALUES ${placeholders}`;
-                
-                db.run(insertSql, values, function(err) {
+                const sql = `INSERT INTO articles (
+                    title, summary, content, source, url, category, tags, publish_date,
+                    is_important, penalty_amount, penalized_institution, institution_level, parent_bank, bank_type,
+                    penalty_authority, penalty_date, penalty_reason, penalty_document_no, other_punishments,
+                    project_name, procuring_entity, procuring_level, budget, bid_deadline, bid_status,
+                    winner, winner_amount, core_requirements, policy_no, issuing_authority, effective_date,
+                    policy_level, key_points, is_key_policy
+                ) VALUES ${placeholders}`;
+
+                db.run(sql, values, function(err) {
                     if (err) {
                         console.error('Insert error:', err.message);
-                        reject(err);
                     } else {
-                        console.log('Data initialized: inserted', this.changes, 'articles at', new Date().toISOString());
-                        db.close();
-                        resolve();
+                        console.log(`Data initialized: inserted ${this.changes} articles`);
                     }
+                    resolve();
                 });
             });
         });

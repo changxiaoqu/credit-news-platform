@@ -549,7 +549,8 @@ async function start() {
         const db = getDB();
         db.get('SELECT COUNT(*) as count FROM articles', [], (err, row) => {
             // Railway部署时强制重新初始化数据（因为没有持久化存储）
-            console.log('Initializing data on every deploy, articles count:', row.count);
+            const articleCount = row && row.count ? row.count : 0;
+            if (err) { console.log('Table not ready, initializing...'); } else { console.log('Current articles count:', articleCount); }
             if (process.env.INIT_DATA !== 'false') {
                 const { initData } = require('./scripts/init-data');
                 initData().then(() => {
