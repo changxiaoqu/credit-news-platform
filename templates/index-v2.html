@@ -1224,6 +1224,8 @@
             const start = (page - 1) * 10;
             const pageData = filt.slice(start, start + 10);
 
+            console.log('>>> renderArticles: pageData.length =', pageData.length);
+
             if (pageData.length === 0) {
                 container.innerHTML = '<div class="shadcn-card p-12 text-center text-muted-foreground"><i class="fas fa-inbox text-4xl mb-4"></i><p>暂无数据</p></div>';
                 return;
@@ -1279,6 +1281,8 @@
             } else {
                 window.filteredArticles = (allArticles || []).filter(a => a.category === category);
             }
+            
+            console.log('>>> filterCategory: filteredArticles =', window.filteredArticles?.length);
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
