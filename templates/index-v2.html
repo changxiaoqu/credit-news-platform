@@ -970,12 +970,15 @@
             try {
                 const response = await fetch('/api/articles');
                 const data = await response.json();
+                console.log('>>> API 返回数据条数:', data?.length, '数据示例:', data[0]);
                 window.articles = data;
                 window.filteredArticles = data;
             } catch (err) {
+                console.error('>>> API 请求失败，使用mock数据:', err);
                 window.articles = getMockData();
                 window.filteredArticles = getMockData();
             }
+            console.log('>>> window.articles 最终数据条数:', window.articles?.length);
             updateStats();
             showListView();
             renderArticles();
