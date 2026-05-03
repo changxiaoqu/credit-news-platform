@@ -1549,11 +1549,14 @@
         // 页面加载后立即获取数据
         (async function() {
             try {
+                console.log('🔄 开始初始化...');
                 await loadData();
-                console.log('✅ 初始化完成，数据条数:', window.articles?.length);
+                console.log('✅ 初始化完成，调用 renderArticles...');
+                renderArticles();
+                console.log('✅ renderArticles 完成');
             } catch(e) {
                 console.error('❌ 初始化失败:', e);
-                alert('数据加载失败，请按F12查看控制台错误信息');
+                alert('错误: ' + e.message);
             }
         })();
 
