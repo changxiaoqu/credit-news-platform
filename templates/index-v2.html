@@ -1289,6 +1289,10 @@
                 return;
             }
             
+            // 调试：打印所有 category 值
+            const allCategories = (allArticles || []).map(a => a.category);
+            console.log('>>> 所有 category:', allCategories, '过滤目标:', category);
+            
             if (category === 'all') {
                 window.filteredArticles = allArticles;
             } else {
