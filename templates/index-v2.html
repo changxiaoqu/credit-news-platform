@@ -1218,6 +1218,10 @@
         function renderArticles(highlightKeyword = '') {
             console.log('>>> renderArticles: window.filteredArticles =', window.filteredArticles?.length);
             const container = document.getElementById('articlesList');
+            if (!container) {
+                console.error('❌ articlesList 容器不存在!');
+                return;
+            }
             const page = window.currentPage || 1;
             const filt = window.filteredArticles || [];
             
@@ -1276,13 +1280,19 @@
             window.currentPage = 1;
             
             const allArticles = window.articles;
+            if (!allArticles) {
+                console.error('❌ window.articles 为空!');
+                alert('数据未加载，请查看控制台');
+                return;
+            }
+            
             if (category === 'all') {
                 window.filteredArticles = allArticles;
             } else {
                 window.filteredArticles = (allArticles || []).filter(a => a.category === category);
             }
             
-            console.log('>>> filterCategory: filteredArticles =', window.filteredArticles?.length);
+            console.log('>>> filterCategory: filteredArticles =', window.filteredArticles?.length, 'category:', category);
             
             // Update sidebar active state
             document.querySelectorAll('.sidebar-link').forEach(el => {
@@ -1531,7 +1541,13 @@
         // 初始化
         // 页面加载后立即获取数据
         (async function() {
-            await loadData();
+            try {
+                await loadData();
+                console.log('✅ 初始化完成，数据条数:', window.articles?.length);
+            } catch(e) {
+                console.error('❌ 初始化失败:', e);
+                alert('数据加载失败，请按F12查看控制台错误信息');
+            }
         })();
 
         // ★ 工具函数：转义正则特殊字符
