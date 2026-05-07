@@ -82,7 +82,7 @@ function initDB() {
 
 // API: 获取文章列表
 app.get('/api/articles', (req, res) => {
-    const { category, page = 1, limit = 20, search, days, start, end } = req.query;
+    const { category, page = 1, limit = 100, search, days, start, end } = req.query;
     const offset = (page - 1) * parseInt(limit);
     const db = new sqlite3.Database(DB_PATH);
     
