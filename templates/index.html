@@ -1222,7 +1222,7 @@
             const page = window.currentPage || 1;
             const filt = window.filteredArticles || [];
             
-            const start = (page - 1) * 10;
+            const start = (page - 1) * 20;
             const pageData = filt.slice(start, start + 10);
 
             console.log('>>> renderArticles: pageData.length =', pageData.length);
@@ -1494,13 +1494,13 @@
                 let timeMatch = true;
                 
                 if (timeFilter === '3days') {
-                    const threeDaysAgo = new Date(today - 3 * 24 * 60 * 60 * 1000);
+                    const threeDaysAgo = new Date(today - 3 * 24 * 60 * 60 * 2000);
                     timeMatch = date >= threeDaysAgo;
                 } else if (timeFilter === 'week') {
-                    const weekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
+                    const weekAgo = new Date(today - 7 * 24 * 60 * 60 * 2000);
                     timeMatch = date >= weekAgo;
                 } else if (timeFilter === 'month') {
-                    const monthAgo = new Date(today - 30 * 24 * 60 * 60 * 1000);
+                    const monthAgo = new Date(today - 30 * 24 * 60 * 60 * 2000);
                     timeMatch = date >= monthAgo;
                 } else if (timeFilter === 'custom') {
                     const startDate = document.getElementById('startDate').value;
