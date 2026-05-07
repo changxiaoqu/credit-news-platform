@@ -1,0 +1,14 @@
+{
+  "name": "credit-news-platform",
+  "version": "1.0.0",
+  "description": "信用卡行业资讯聚合平台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5"
+  }
+}

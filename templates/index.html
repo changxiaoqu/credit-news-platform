@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信用卡行业资讯平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .card:hover { transform: translateY(-2px); }
+        .card { transition: all 0.3s ease; }
+        .gradient-overlay { background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%); }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- 顶部导航 -->
+    <nav class="bg-white/95 backdrop-blur border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-6">
+                    <h1 class="text-xl font-bold text-blue-600">信用卡行业资讯</h1>
+                    <div class="flex gap-1 text-sm">
+                        <button onclick="showView('home')" id="nav-home" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">首页</button>
+                        <button onclick="filterCategory('all')" id="nav-all" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">全部</button>
+                        <button onclick="filterCategory('policy')" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">政策</button>
+                        <button onclick="filterCategory('news')" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">资讯</button>
+                        <button onclick="filterCategory('risk')" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">处罚</button>
+                        <button onclick="filterCategory('business')" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">商机</button>
+                        <button onclick="filterCategory('bid')" class="nav-btn px-3 py-1.5 rounded text-gray-500 hover:text-blue-600 hover:bg-blue-50">投标</button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <select id="timeFilter" onchange="applyTimeFilter()" class="bg-gray-50 border border-gray-200 px-3 py-1.5 rounded text-sm text-gray-600">
+                        <option value="">全部时间</option>
+                        <option value="3">最近三天</option>
+                        <option value="7">最近一周</option>
+                        <option value="30">最近一月</option>
+                    </select>
+                    <input type="text" id="searchInput" placeholder="搜索..." class="bg-gray-50 border border-gray-200 px-3 py-1.5 rounded text-sm w-40" onkeyup="if(event.key==='Enter')performSearch()">
+                    <button onclick="performSearch()" class="px-3 py-1.5 bg-blue-600 rounded text-sm text-white"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 统计栏 -->
+    <div class="bg-gray-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-2 flex gap-6 text-sm text-gray-500">
+            <span>总计: <strong class="text-gray-800" id="totalCount">-</strong></span>
+            <span class="text-green-600">政策: <strong class="text-gray-800" id="count-policy">-</strong></span>
+            <span class="text-blue-600">资讯: <strong class="text-gray-800" id="count-news">-</strong></span>
+            <span class="text-red-600">处罚: <strong class="text-gray-800" id="count-risk">-</strong></span>
+            <span class="text-purple-600">商机: <strong class="text-gray-800" id="count-business">-</strong></span>
+            <span class="text-orange-600">投标: <strong class="text-gray-800" id="count-bid">-</strong></span>
+            <span id="lastUpdate" class="ml-auto text-gray-400"></span>
+        </div>
+    </div>
+
+    <!-- 首页分区视图 -->
+    <main id="homeView" class="max-w-7xl mx-auto px-4 py-6">
+        <!-- 今日要闻 + 最新处罚 -->
+        <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                    <span class="font-medium text-gray-700">【今日要闻】</span>
+                    <button onclick="filterCategory('news')" class="text-blue-500 text-sm hover:underline">更多→</button>
+                </div>
+                <div id="homeNews" class="divide-y divide-gray-100"></div>
+            </div>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                    <span class="font-medium text-gray-700">【最新处罚速递】</span>
+                    <button onclick="filterCategory('risk')" class="text-blue-500 text-sm hover:underline">更多→</button>
+                </div>
+                <div id="homeRisk" class="divide-y divide-gray-100"></div>
+            </div>
+        </div>
+        <!-- 即将截止 + 重点政策 -->
+        <div class="grid md:grid-cols-2 gap-4">
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                    <span class="font-medium text-gray-700">【即将截止·商机】</span>
+                    <button onclick="filterCategory('bid')" class="text-blue-500 text-sm hover:underline">更多→</button>
+                </div>
+                <div id="homeBid" class="divide-y divide-gray-100"></div>
+            </div>
+            <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between items-center">
+                    <span class="font-medium text-gray-700">【重点政策】</span>
+                    <button onclick="filterCategory('policy')" class="text-blue-500 text-sm hover:underline">更多→</button>
+                </div>
+                <div id="homePolicy" class="divide-y divide-gray-100"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 列表视图 -->
+    <main id="listView" class="max-w-7xl mx-auto px-4 py-6 hidden">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+            <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <span class="font-medium text-gray-700" id="listCategoryTitle">列表</span>
+            </div>
+            <div id="articlesList" class="divide-y divide-gray-100"></div>
+        </div>
+        <div id="pagination" class="flex justify-center gap-2 mt-4"></div>
+    </main>
+
+    <!-- 详情弹窗 -->
+    <div id="detailModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+                <h2 id="detailTitle" class="font-bold text-xl text-gray-800"></h2>
+                <button onclick="closeDetail()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div id="detailContent" class="p-6"></div>
+        </div>
+    </div>
+
+    <script>
+        const categoryNames = {
+            policy: { name: '政策', badge: 'bg-green-500', icon: 'fa-file-alt' },
+            news: { name: '资讯', badge: 'bg-blue-500', icon: 'fa-newspaper' },
+            risk: { name: '处罚', badge: 'bg-red-500', icon: 'fa-gavel' },
+            business: { name: '商机', badge: 'bg-purple-500', icon: 'fa-briefcase' },
+            bid: { name: '投标', badge: 'bg-orange-500', icon: 'fa-file-contract' }
+        };
+
+        let allArticles = [];
+        let currentCategory = 'all';
+        let currentView = 'home';
+        let currentPage = 1;
+        let pageSize = 9;
+
+        async function loadData() {
+            try {
+                const res = await fetch('/api/articles?limit=100');
+                allArticles = await res.json();
+                renderHome();
+                updateStats();
+                updateLastTime();
+            } catch (e) { console.error(e); }
+        }
+
+        function renderHome() {
+            const news = allArticles.filter(a => a.category === 'news').slice(0, 5);
+            document.getElementById('homeNews').innerHTML = news.length ? news.map(renderCard).join('') : noData();
+            
+            const risks = allArticles.filter(a => a.category === 'risk').slice(0, 5);
+            document.getElementById('homeRisk').innerHTML = risks.length ? risks.map(renderCard).join('') : noData();
+            
+            const sevenDays = new Date();
+            sevenDays.setDate(sevenDays.getDate() + 7);
+            const bids = allArticles.filter(a => (a.category === 'bid' || a.category === 'business') && a.bid_deadline).filter(a => new Date(a.bid_deadline) <= sevenDays).slice(0, 5);
+            document.getElementById('homeBid').innerHTML = bids.length ? bids.map(renderCard).join('') : noData();
+            
+            const policies = allArticles.filter(a => a.category === 'policy' && a.is_key_policy).slice(0, 5);
+            document.getElementById('homePolicy').innerHTML = policies.length ? policies.map(renderCard).join('') : noData();
+        }
+
+        function noData() { return '<div class="px-4 py-3 text-gray-400 text-sm">暂无数据</div>'; }
+
+        function renderCard(item) {
+            const cat = categoryNames[item.category];
+            const icons = { policy: '📋', news: '📰', risk: '🔴', business: '🟣', bid: '🟠' };
+            let extra = '';
+            if (item.penalty_amount) extra += ` <span class="text-red-500">罚${item.penalty_amount}万</span>`;
+            if (item.budget) extra += ` <span class="text-purple-500">${item.budget}</span>`;
+            if (item.bid_deadline) {
+                const days = Math.ceil((new Date(item.bid_deadline) - new Date()) / 86400000);
+                extra += ` <span class="text-orange-500">${days < 0 ? '已截止' : '剩' + days + '天'}</span>`;
+            }
+            if (item.is_key_policy) extra += ' <span class="text-yellow-500">★重点</span>';
+            
+            return `
+                <div class="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" onclick="showDetail(${item.id})">
+                    <span class="text-base">${icons[item.category]}</span>
+                    <span class="flex-1 text-gray-700 truncate">${item.title}</span>
+                    <span class="text-gray-400 text-xs whitespace-nowrap">${extra}</span>
+                </div>
+            `;
+        }
+
+        function updateStats() {
+            document.getElementById('totalCount').textContent = allArticles.length;
+            const counts = { policy: 0, news: 0, risk: 0, business: 0, bid: 0 };
+            allArticles.forEach(a => counts[a.category] = (counts[a.category] || 0) + 1);
+            document.getElementById('count-policy').textContent = counts.policy;
+            document.getElementById('count-news').textContent = counts.news;
+            document.getElementById('count-risk').textContent = counts.risk;
+            document.getElementById('count-business').textContent = counts.business;
+            document.getElementById('count-bid').textContent = counts.bid;
+        }
+
+        function updateLastTime() {
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = '更新于: ' + now.toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+        }
+
+        function showView(view) {
+            currentView = view;
+            currentCategory = 'all';
+            document.getElementById('homeView').classList.toggle('hidden', view !== 'home');
+            document.getElementById('listView').classList.toggle('hidden', view !== 'list');
+            if (view === 'list') {
+                document.getElementById('listCategoryTitle').textContent = '全部';
+                renderList();
+            }
+        }
+
+        function renderList() {
+            let items = allArticles;
+            if (currentCategory !== 'all') items = items.filter(a => a.category === currentCategory);
+            
+            const total = items.length;
+            const totalPages = Math.ceil(total / pageSize);
+            const start = (currentPage - 1) * pageSize;
+            items = items.slice(start, start + pageSize);
+            
+            const container = document.getElementById('articlesList');
+            container.innerHTML = items.length ? items.map(renderCard).join('') : '<div class="px-4 py-8 text-gray-400 text-center">暂无数据</div>';
+            
+            let pgHtml = '';
+            if (totalPages > 1) {
+                pgHtml += `<button onclick="goPage(1)" class="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200">首页</button>`;
+                pgHtml += `<button onclick="goPage(${currentPage-1})" class="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 ${currentPage<=1?'opacity-50':''}">上一页</button>`;
+                pgHtml += `<span class="px-3 py-1 text-gray-600">${currentPage} / ${totalPages}</span>`;
+                pgHtml += `<button onclick="goPage(${currentPage+1})" class="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200 ${currentPage>=totalPages?'opacity-50':''}">下一页</button>`;
+                pgHtml += `<button onclick="goPage(${totalPages})" class="px-3 py-1 bg-gray-100 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-200">尾页</button>`;
+            }
+            document.getElementById('pagination').innerHTML = pgHtml;
+        }
+
+        function goPage(p) {
+            currentPage = p;
+            renderList();
+            window.scrollTo(0, 0);
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            const titles = { all: '全部', policy: '政策', news: '资讯', risk: '处罚', business: '商机', bid: '投标' };
+            document.getElementById('listCategoryTitle').textContent = titles[cat] || '列表';
+            showView('list');
+            renderList();
+        }
+
+        function performSearch() {
+            const keyword = document.getElementById('searchInput').value;
+            allArticles = allArticles.filter(a => a.title.includes(keyword) || (a.summary && a.summary.includes(keyword)));
+            showView('list');
+            renderList();
+        }
+
+        function applyTimeFilter() {
+            const days = document.getElementById('timeFilter').value;
+            if (days) {
+                const date = new Date();
+                date.setDate(date.getDate() - parseInt(days));
+                allArticles = allArticles.filter(a => a.publish_date >= date.toISOString().split('T')[0]);
+            }
+            renderHome();
+            updateStats();
+        }
+
+        function showDetail(id) {
+            const item = allArticles.find(a => a.id === id);
+            if (!item) return;
+            document.getElementById('detailTitle').textContent = item.title;
+            let content = `<div class="text-sm text-gray-400 mb-4"><span>${item.source}</span> · <span>${item.publish_date}</span></div><p class="whitespace-pre-wrap text-gray-600 leading-relaxed">${item.full_content || item.summary || '无详细内容'}</p>`;
+            
+            if (item.category === 'risk') {
+                content += `<div class="mt-6 p-4 bg-gray-50 rounded-lg"><h4 class="font-bold text-red-500 mb-3">处罚信息</h4><div class="grid grid-cols-2 gap-2 text-sm"><p><span class="text-gray-500">受罚机构：</span>${item.penalized_institution || '-'}</p><p><span class="text-gray-500">银行类型：</span>${item.bank_type || '-'}</p><p><span class="text-gray-500">罚款金额：</span>${item.penalty_amount ? item.penalty_amount + '万元' : '-'}</p><p><span class="text-gray-500">处罚机关：</span>${item.penalty_authority || '-'}</p><p class="col-span-2"><span class="text-gray-500">违规事由：</span>${item.penalty_reason || '-'}</p></div></div>`;
+            }
+            if (item.category === 'bid' || item.category === 'business') {
+                content += `<div class="mt-6 p-4 bg-gray-50 rounded-lg"><h4 class="font-bold text-orange-500 mb-3">${item.category === 'bid' ? '投标信息' : '商机信息'}</h4><div class="grid grid-cols-2 gap-2 text-sm"><p><span class="text-gray-500">采购方：</span>${item.procuring_entity || '-'}</p><p><span class="text-gray-500">预算：</span>${item.budget || '-'}</p><p><span class="text-gray-500">截止：</span>${item.bid_deadline || '-'}</p><p><span class="text-gray-500">状态：</span>${item.bid_status || '-'}</p></div></div>`;
+            }
+            if (item.category === 'policy') {
+                content += `<div class="mt-6 p-4 bg-gray-50 rounded-lg"><h4 class="font-bold text-green-500 mb-3">政策信息</h4><div class="text-sm"><p><span class="text-gray-500">文号：</span>${item.policy_no || '-'}</p><p><span class="text-gray-500">发文机关：</span>${item.issuing_authority || '-'}</p><p><span class="text-gray-500">核心要点：</span>${item.key_points || '-'}</p></div></div>`;
+            }
+            if (item.source_url) content += `<div class="mt-6"><a href="${item.source_url}" target="_blank" class="text-blue-500 hover:underline">查看原文 →</a></div>`;
+            document.getElementById('detailContent').innerHTML = content;
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+        function closeDetail() { document.getElementById('detailModal').classList.add('hidden'); }
+
+        loadData();
+    </script>
+</body>
+</html>
