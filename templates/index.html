@@ -1223,7 +1223,7 @@
             const filt = window.filteredArticles || [];
             
             const start = (page - 1) * 20;
-            const pageData = filt.slice(start, start + 10);
+            const pageData = filt.slice(start, start + 20);
 
             console.log('>>> renderArticles: pageData.length =', pageData.length);
 
@@ -1267,7 +1267,7 @@
                 `;
             }).join('');
 
-            document.getElementById('pageInfo').textContent = `第 ${window.currentPage || 1} 页 / 共 ${Math.ceil((window.filteredArticles || []).length / 10)} 页`;
+            document.getElementById('pageInfo').textContent = `第 ${window.currentPage || 1} 页 / 共 ${Math.ceil((window.filteredArticles || []).length / 20)} 页`;
         }
 
         function filterCategory(category) {
@@ -1333,7 +1333,7 @@
         }
 
         function changePage(delta) {
-            const totalPages = Math.ceil((window.filteredArticles || []).length / 10);
+            const totalPages = Math.ceil((window.filteredArticles || []).length / 20);
             if (delta === -999) {
                 window.currentPage = 1; // 首页
             } else if (delta === 999) {
