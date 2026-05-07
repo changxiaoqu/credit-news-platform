@@ -14,37 +14,76 @@ log() {
 
 log "=== 开始抓取处罚数据 ==="
 
-# 搜索处罚数据的函数
-search_penalty() {
+# 检查 Kimi API Key
+if [ -z "$KIMI_PLUGIN_API_KEY" ]; then
+    log "未配置 KIMI_PLUGIN_API_KEY，使用 kimi_search 工具"
+    USE_TOOL=1
+else
+    log "已配置 KIMI_PLUGIN_API_KEY"
+    USE_TOOL=0
+fi
+
+# 搜索关键词列表
+SEARCH_QUERIES=(
+    "城商行 农商行 2026年 信用卡 处罚 site:gov.cn"
+    "银行 2026年 信用卡 违规 罚款 site:nfra.gov.cn"
+    "2026年 银行 罚单 农商行 site:pbc.gov.cn"
+)
+
+# 手动抓取函数（使用 kimi_search 工具）
+manual_crawl() {
+    log "手动抓取模式"
+    
+    # 这里通过调用 kim i_search 获取数据
+    # 结果需要手动整理后写入数据库
+    log "请使用 kimi_search 搜索后手动写入"
+}
+
+# 自动抓取函数（通过API）
+auto_crawl() {
     local query="$1"
     log "搜索: $query"
     
-    # 使用 curl 调用 Kimi Search API
-    # 这里需要先配置 KIMI_API_KEY
-    if [ -z "$KIMI_API_KEY" ]; then
-        log "未配置 KIMI_API_KEY，跳过"
-        return 1
-    fi
-    
     local response=$(curl -s -X POST 'https://api.moonshot.cn/v1/search' \
         -H "Content-Type: application/json" \
-        -H "Authorization: Bearer $KIMI_API_KEY" \
-        -d "{\"query\": \"$query\", \"count\": 10}")
+        -H "Authorization: Bearer $KIMI_PLUGIN_API_KEY" \
+        -d "{\"query\": \"$query\", \"count\": 15}")
     
     if [ -n "$response" ]; then
-        log "获取到数据: ${response:0:100}..."
+        log "获取到数据: ${response:0:200}..."
+        # 解析并写入数据库
+        echo "$response" | jq -r '.results[] | select(.title != null) | @json' 2>/dev/null || true
     fi
 }
 
-# 搜索关键词
-SEARCH_QUERIES=(
-    "城商行 农商行 信用卡 处罚 罚单 2026年"
-    "银行 信用卡 违规 罚款 监管总局 2026"
-)
+# 写入数据库函数
+insert_penalty() {
+    local title="$1"
+    local amount="$2"
+    local bank="$3"
+    local date="$4"
+    local reason="$5"
+    local authority="$6"
+    
+    if [ -z "$title" ]; then
+        return
+    fi
+    
+    log "写入: $title"
+    
+    sqlite3 "$DB_FILE" "
+    INSERT INTO articles (title, summary, full_content, source, source_url, publish_date, category, penalized_institution, bank_type, penalty_authority, penalty_amount, penalty_reason) VALUES 
+    ('$title', '抓取数据', '抓取数据', 'Kimi Search', 'N/A', '$date', 'risk', '$bank', '待确认', '$authority', $amount, '$reason');
+    " 2>/dev/null || log "写入失败或已存在"
+}
 
-# 执行搜索
+# 搜索处罚数据
 for query in "${SEARCH_QUERIES[@]}"; do
-    search_penalty "$query"
+    if [ $USE_TOOL -eq 1 ]; then
+        manual_crawl
+    else
+        auto_crawl "$query"
+    fi
 done
 
 # 推送到 GitHub
@@ -70,3 +109,4 @@ push_to_github() {
 push_to_github
 
 log "=== 抓取完成 ==="
+log "提示: 当前需要手动通过 kimi_search 搜索后写入数据库"
