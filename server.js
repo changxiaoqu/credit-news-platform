@@ -7,6 +7,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const DB_PATH = path.join(__dirname, 'data', 'news.db');
 
+console.log('Starting server, DB_PATH:', DB_PATH);
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static('templates'));
