@@ -177,7 +177,7 @@ function autoCrawl() {
 }
 
 // 启动
-initDB().then(() => autoCrawl()).then(() => {
+initDB().then(() => {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
