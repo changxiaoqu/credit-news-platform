@@ -152,25 +152,20 @@ app.get('/api/stats', (req, res) => {
 
 // 启动时自动抓取数据
 function autoCrawl() {
-    return new Promise((resolve, reject) => {
-        const { exec } = require('child_process');
-        const script = process.env.CRAWL_SCRIPT || path.join(__dirname, 'scripts', 'crawl_all.sh');
-        
-        // 仅在生产环境且无数据时抓取
+    const { exec } = require('child_process');
+    const script = path.join(__dirname, 'scripts', 'crawl_all.sh');
+    
+    return new Promise((resolve) => {
         const db = new sqlite3.Database(DB_PATH);
         db.get('SELECT COUNT(*) as cnt FROM articles', [], (err, row) => {
             db.close();
             const isEmpty = !row || row.cnt === 0;
-            const isProduction = process.env.RAILWAY_ENVIRONMENT || process.env.NODE_ENV === 'production';
             
-            if ((isEmpty || isProduction) && !process.env.SKIP_CRAWL) {
+            if (isEmpty) {
                 console.log('触发数据抓取...');
-                exec(`bash ${script}`, (err, stdout, stderr) => {
-                    if (err) {
-                        console.error('抓取失败:', stderr);
-                    } else {
-                        console.log('抓取完成:', stdout.slice(0, 200));
-                    }
+                exec(`bash ${script}`, { cwd: __dirname }, (err, stdout, stderr) => {
+                    if (err) console.error('抓取失败:', stderr);
+                    else console.log('抓取完成');
                     resolve();
                 });
             } else {
