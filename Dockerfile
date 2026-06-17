@@ -6,4 +6,4 @@ RUN npm ci --production || npm install --production
 COPY . .
 RUN ls -la
 EXPOSE 3000
-CMD ["node", "-e", "console.log('start'); require('./server.js')"]
+CMD ["node", "-e", "console.log('start'); require('./server.js')"]# Wed Jun 17 16:46:56 CST 2026
